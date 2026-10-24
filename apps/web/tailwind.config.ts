@@ -6,7 +6,7 @@ export default {
   theme: {
     extend: {
       colors: { ...colors },
-      fontFamily: { heading: [fonts.heading, "sans-serif"], body: [fonts.body, "sans-serif"] },
+      fontFamily: { heading: ["var(--font-heading)", fonts.heading, "sans-serif"], body: ["var(--font-body)", fonts.body, "sans-serif"] },
       borderRadius: { card: `${radius.md}px`, xl2: `${radius.lg}px` },
     },
   },

@@ -1,5 +1,5 @@
 {
-  "common": { "appName": "kickoff", "email": "E-Mail", "password": "Passwort", "loading": "Lädt…", "logout": "Abmelden" },
+  "common": { "appName": "kickoff", "email": "E-Mail", "password": "Passwort", "loading": "Lädt…", "logout": "Abmelden", "back": "Zurück", "yes": "Ja", "no": "Nein" },
   "home": { "title": "Finde deine zukünftigen Lernenden", "subtitle": "Die Plattform, die Walliser Lehrbetriebe mit Jugendlichen auf Lehrstellensuche verbindet.", "signup": "Firmenkonto erstellen", "login": "Anmelden" },
   "login": { "title": "Anmeldung", "submit": "Anmelden", "noAccount": "Noch kein Konto?", "error": "E-Mail oder Passwort falsch." },
   "signup": {
@@ -15,5 +15,89 @@
     "error": "Konto konnte nicht erstellt werden. Prüfe die Felder.",
     "errors": { "invalid_ide": "Ungültige UID-Nummer." }
   },
-  "dashboard": { "welcome": "Willkommen, {company}", "empty": "Deine Inserate und Bewerbungen erscheinen hier (bald).", "pending": "Konto wartet auf Überprüfung durch das Kickoff-Team." }
+  "dashboard": {
+    "welcome": "Willkommen, {company}",
+    "pending": "Konto wartet auf Überprüfung durch das Kickoff-Team. Deine Inserate sind für Jugendliche sichtbar, sobald deine Firma überprüft ist.",
+    "listingsTitle": "Deine Inserate",
+    "newListing": "Neues Inserat",
+    "noListings": "Du hast noch kein Inserat. Erstelle das erste in wenigen Minuten.",
+    "applicationsCount": "{count, plural, =0 {Keine Bewerbung} one {# Bewerbung} other {# Bewerbungen}}",
+    "startDate": "Lehrbeginn: {date}",
+    "places": "{count, plural, one {# Platz} other {# Plätze}}"
+  },
+  "listingStatus": { "draft": "Entwurf", "open": "Offen", "filled": "Besetzt", "closed": "Geschlossen" },
+  "listingForm": {
+    "title": "Neues Inserat",
+    "sectionInfo": "Das Wichtigste",
+    "profession": "Beruf",
+    "choose": "Auswählen…",
+    "commune": "Gemeinde des Ausbildungsorts",
+    "address": "Adresse (optional)",
+    "listingTitle": "Titel des Inserats",
+    "listingTitleHint": "Kurz und verständlich für 15-Jährige.",
+    "description": "Beschreibung",
+    "descriptionHint": "Was die lernende Person im Alltag macht, wie das Team ist, was sie lernt.",
+    "startDate": "Lehrbeginn",
+    "placesCount": "Anzahl Plätze",
+    "contactName": "Kontaktperson",
+    "contactEmail": "Kontakt-E-Mail (optional)",
+    "trialDates": "Mögliche Daten für Schnupperlehren",
+    "addTrialDate": "Datum hinzufügen",
+    "remove": "Entfernen",
+    "sectionRequired": "Unverzichtbar",
+    "sectionRequiredHint": "Kriterien, ohne die eine Bewerbung nicht klappen kann.",
+    "sectionBonus": "Ein Plus",
+    "sectionBonusHint": "Was den Unterschied macht, ohne Pflicht zu sein.",
+    "sectionWeights": "Was dir am wichtigsten ist",
+    "sectionWeightsHint": "So können wir passende Profile hervorheben. Entscheiden tut immer ein Mensch.",
+    "minAverageValue": "Mindestdurchschnitt",
+    "languagesRequired": "Unverzichtbare Sprachen",
+    "languagesBonus": "Sprachen als Plus",
+    "submit": "Inserat veröffentlichen",
+    "error": "Prüfe die Felder: Es fehlen Angaben oder ein Format ist falsch.",
+    "errorServer": "Das Inserat konnte nicht gespeichert werden. Versuche es nochmals."
+  },
+  "criteria": {
+    "trial_done": "Schnupperlehre im Beruf gemacht",
+    "min_average": "Mindestdurchschnitt",
+    "aptitude_test": "Eignungstest absolviert (Multicheck, Basic-check…)",
+    "languages": "Sprachen",
+    "moped_license": "Mofaprüfung",
+    "volunteering": "Freiwilligenarbeit oder Vereinsengagement"
+  },
+  "weights": {
+    "motivation": "Motivation",
+    "grades": "Noten",
+    "soft_skills": "Sozialkompetenz",
+    "practical_experience": "Praktische Erfahrung",
+    "1": "Etwas",
+    "2": "Mittel",
+    "3": "Sehr"
+  },
+  "languages": { "fr": "Französisch", "de": "Deutsch", "it": "Italienisch", "en": "Englisch", "es": "Spanisch", "pt": "Portugiesisch" },
+  "softSkills": { "punctual": "Pünktlich", "team_player": "Teamfähig", "curious": "Neugierig", "careful": "Sorgfältig", "friendly": "Freundlich", "autonomous": "Selbstständig", "organized": "Organisiert", "patient": "Geduldig" },
+  "listingPage": {
+    "applications": "Bewerbungen",
+    "applicationsHint": "In Eingangsreihenfolge. Sie erscheinen hier live.",
+    "noApplications": "Noch keine Bewerbung. Sie erscheinen hier automatisch.",
+    "newApplication": "Neue Bewerbung erhalten!",
+    "new": "Neu",
+    "criteria": "Kriterien"
+  },
+  "candidate": {
+    "age": "{age} Jahre",
+    "schoolYear": "{year}. Schuljahr",
+    "average": "Durchschnitt {value}",
+    "tests": "Tests",
+    "trials": "Schnupperlehren",
+    "languages": "Sprachen",
+    "softSkills": "Sozialkompetenz",
+    "moped": "Mofaprüfung",
+    "volunteering": "Freiwilligenarbeit",
+    "letter": "Motivationsschreiben",
+    "noLetter": "Kein Schreiben beigelegt.",
+    "cv": "Lebenslauf ansehen",
+    "noCv": "Kein Lebenslauf beigelegt.",
+    "receivedOn": "Erhalten am {date}"
+  }
 }

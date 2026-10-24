@@ -1,5 +1,5 @@
 {
-  "common": { "appName": "kickoff", "email": "Email", "password": "Mot de passe", "loading": "Chargement…", "logout": "Se déconnecter" },
+  "common": { "appName": "kickoff", "email": "Email", "password": "Mot de passe", "loading": "Chargement…", "logout": "Se déconnecter", "back": "Retour", "yes": "Oui", "no": "Non" },
   "home": { "title": "Recrute tes futurs apprentis", "subtitle": "La plateforme qui relie les entreprises formatrices valaisannes aux jeunes en recherche de place.", "signup": "Créer un compte entreprise", "login": "Se connecter" },
   "login": { "title": "Connexion", "submit": "Se connecter", "noAccount": "Pas encore de compte ?", "error": "Email ou mot de passe incorrect." },
   "signup": {
@@ -15,5 +15,89 @@
     "error": "Impossible de créer le compte. Vérifie les champs.",
     "errors": { "invalid_ide": "Numéro IDE invalide." }
   },
-  "dashboard": { "welcome": "Bienvenue, {company}", "empty": "Tes annonces et candidatures apparaîtront ici (bientôt).", "pending": "Compte en attente de vérification par l'équipe Kickoff." }
+  "dashboard": {
+    "welcome": "Bienvenue, {company}",
+    "pending": "Compte en attente de vérification par l'équipe Kickoff. Tes annonces seront visibles par les jeunes dès que ton entreprise est vérifiée.",
+    "listingsTitle": "Tes annonces",
+    "newListing": "Nouvelle annonce",
+    "noListings": "Tu n'as pas encore d'annonce. Crée la première en quelques minutes.",
+    "applicationsCount": "{count, plural, =0 {Aucune candidature} one {# candidature} other {# candidatures}}",
+    "startDate": "Rentrée : {date}",
+    "places": "{count, plural, one {# place} other {# places}}"
+  },
+  "listingStatus": { "draft": "Brouillon", "open": "Ouverte", "filled": "Pourvue", "closed": "Fermée" },
+  "listingForm": {
+    "title": "Nouvelle annonce",
+    "sectionInfo": "L'essentiel",
+    "profession": "Métier",
+    "choose": "Choisir…",
+    "commune": "Commune du lieu de formation",
+    "address": "Adresse (optionnel)",
+    "listingTitle": "Titre de l'annonce",
+    "listingTitleHint": "Court et parlant pour un·e jeune de 15 ans.",
+    "description": "Description",
+    "descriptionHint": "Ce que l'apprenti·e fera au quotidien, l'ambiance de l'équipe, ce qu'il ou elle apprendra.",
+    "startDate": "Date de rentrée",
+    "placesCount": "Nombre de places",
+    "contactName": "Personne de contact",
+    "contactEmail": "Email de contact (optionnel)",
+    "trialDates": "Dates possibles de stage d'essai",
+    "addTrialDate": "Ajouter une date",
+    "remove": "Retirer",
+    "sectionRequired": "Indispensable",
+    "sectionRequiredHint": "Les critères sans lesquels la candidature ne peut pas aboutir.",
+    "sectionBonus": "Un plus",
+    "sectionBonusHint": "Ce qui fait la différence, sans être obligatoire.",
+    "sectionWeights": "Ce qui compte le plus pour toi",
+    "sectionWeightsHint": "Ça nous aide à mettre en avant les profils qui te correspondent. Un humain décide toujours.",
+    "minAverageValue": "Moyenne minimale",
+    "languagesRequired": "Langues indispensables",
+    "languagesBonus": "Langues en plus",
+    "submit": "Publier l'annonce",
+    "error": "Vérifie les champs : il manque des informations ou un format est incorrect.",
+    "errorServer": "L'annonce n'a pas pu être enregistrée. Réessaie."
+  },
+  "criteria": {
+    "trial_done": "Stage d'essai fait dans le métier",
+    "min_average": "Moyenne générale minimale",
+    "aptitude_test": "Test d'aptitudes passé (Multicheck, Basic-check…)",
+    "languages": "Langues",
+    "moped_license": "Permis vélomoteur",
+    "volunteering": "Bénévolat ou engagement associatif"
+  },
+  "weights": {
+    "motivation": "Motivation",
+    "grades": "Notes",
+    "soft_skills": "Savoir-être",
+    "practical_experience": "Expérience pratique",
+    "1": "Un peu",
+    "2": "Moyen",
+    "3": "Beaucoup"
+  },
+  "languages": { "fr": "Français", "de": "Allemand", "it": "Italien", "en": "Anglais", "es": "Espagnol", "pt": "Portugais" },
+  "softSkills": { "punctual": "Ponctuel·le", "team_player": "Esprit d'équipe", "curious": "Curieux·se", "careful": "Soigneux·se", "friendly": "Souriant·e", "autonomous": "Autonome", "organized": "Organisé·e", "patient": "Patient·e" },
+  "listingPage": {
+    "applications": "Candidatures",
+    "applicationsHint": "Par ordre d'arrivée. Elles s'affichent ici en direct.",
+    "noApplications": "Pas encore de candidature. Elles apparaîtront ici automatiquement.",
+    "newApplication": "Nouvelle candidature reçue !",
+    "new": "Nouveau",
+    "criteria": "Critères"
+  },
+  "candidate": {
+    "age": "{age} ans",
+    "schoolYear": "{year}e année",
+    "average": "Moyenne {value}",
+    "tests": "Tests",
+    "trials": "Stages d'essai",
+    "languages": "Langues",
+    "softSkills": "Savoir-être",
+    "moped": "Permis vélomoteur",
+    "volunteering": "Bénévolat",
+    "letter": "Lettre de motivation",
+    "noLetter": "Pas de lettre jointe.",
+    "cv": "Voir le CV",
+    "noCv": "Pas de CV joint.",
+    "receivedOn": "Reçue le {date}"
+  }
 }

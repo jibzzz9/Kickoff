@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { DEFAULT_MIN_AGE_WITHOUT_PARENT_CONSENT, needsParentConsent, signupStudentSchema } from "@kickoff/shared";
 import { supabase } from "../../src/lib/supabase";
 import { Button, Field, styles } from "../../src/ui";
+import { CommunePicker } from "../../src/ui/CommunePicker";
 
 export default function Signup() {
   const { t, i18n } = useTranslation();
@@ -57,7 +58,7 @@ export default function Signup() {
       <Text style={styles.title}>{t("signup.title")}</Text>
       <Field label={t("signup.firstName")} value={f.firstName} onChangeText={set("firstName")} autoCapitalize="words" />
       <Field label={t("signup.birthDate")} value={f.birthDate} onChangeText={set("birthDate")} keyboardType="numbers-and-punctuation" placeholder="2010-05-24" />
-      <Field label={t("signup.commune")} value={f.commune} onChangeText={set("commune")} autoCapitalize="words" />
+      <CommunePicker label={t("signup.commune")} value={f.commune} onChange={(name) => set("commune")(name)} />
       <Field label={t("common.email")} value={f.email} onChangeText={set("email")} keyboardType="email-address" autoComplete="email" />
       <Field label={t("common.password")} value={f.password} onChangeText={set("password")} secureTextEntry autoComplete="new-password" />
       {minor && (

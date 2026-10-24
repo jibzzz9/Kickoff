@@ -15,6 +15,27 @@ pnpm --filter @kickoff/web dev        # http://localhost:3000
 pnpm --filter @kickoff/mobile start   # QR code pour Expo Go
 ```
 
+## Comptes de démo (données fictives)
+
+Créés par `npx supabase db reset`. Mot de passe : `demo1234`.
+
+| Compte | Rôle |
+|---|---|
+| `ems@demo.kickoff.ch` | Entreprise EMS Les Tilleuls (Sion) |
+| `pharmacie@demo.kickoff.ch` | Entreprise Pharmacie du Rhône (Martigny) |
+| `garage@demo.kickoff.ch` | Entreprise Garage Alpin (Brig-Glis, en allemand) |
+| `logistique@demo.kickoff.ch` | Entreprise Logistique du Simplon SA (Visp) |
+| `boulangerie@demo.kickoff.ch` | Entreprise **non vérifiée** : ses annonces sont invisibles pour les élèves |
+| `lea@demo.kickoff.ch` | Élève, 16 ans, Sion, profil complet |
+| `noah@demo.kickoff.ch` | Élève, 15 ans, consentement parental validé, 1 candidature |
+| `mia@demo.kickoff.ch` | Élève, 14 ans, consentement en attente : ne peut pas encore postuler |
+
+Une entreprise créée depuis le web n'est pas vérifiée. Pour la vérifier en local :
+
+```bash
+docker exec supabase_db_kickoff psql -U postgres -c "update companies set verified_at = now() where name = 'Nom de l''entreprise';"
+```
+
 ## Vérifications
 
 ```bash

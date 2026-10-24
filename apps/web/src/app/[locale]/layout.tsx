@@ -3,6 +3,10 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import { Bricolage_Grotesque, Inter } from "next/font/google";
+
+const heading = Bricolage_Grotesque({ subsets: ["latin"], weight: ["700", "800"], variable: "--font-heading" });
+const body = Inter({ subsets: ["latin"], variable: "--font-body" });
 
 export default async function LocaleLayout({
   children,
@@ -16,7 +20,7 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
   const messages = await getMessages();
   return (
-    <html lang={locale}>
+    <html lang={locale} className={`${heading.variable} ${body.variable}`}>
       <body className="min-h-screen">
         <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
       </body>
