@@ -1,0 +1,19 @@
+{
+  "common": { "appName": "kickoff", "email": "E-Mail", "password": "Passwort", "loading": "Lädt…", "logout": "Abmelden" },
+  "home": { "title": "Finde deine zukünftigen Lernenden", "subtitle": "Die Plattform, die Walliser Lehrbetriebe mit Jugendlichen auf Lehrstellensuche verbindet.", "signup": "Firmenkonto erstellen", "login": "Anmelden" },
+  "login": { "title": "Anmeldung", "submit": "Anmelden", "noAccount": "Noch kein Konto?", "error": "E-Mail oder Passwort falsch." },
+  "signup": {
+    "title": "Firmenkonto erstellen",
+    "contactName": "Dein Name",
+    "companyName": "Name der Firma",
+    "ideNumber": "UID-Nummer (optional)",
+    "ideHint": "Format: CHE-123.456.789. Die Ausbildungsbewilligung prüfen wir manuell.",
+    "commune": "Gemeinde",
+    "acceptTerms": "Ich akzeptiere die Nutzungsbedingungen und die Datenschutzerklärung (Entwürfe).",
+    "submit": "Konto erstellen",
+    "hasAccount": "Schon ein Konto?",
+    "error": "Konto konnte nicht erstellt werden. Prüfe die Felder.",
+    "errors": { "invalid_ide": "Ungültige UID-Nummer." }
+  },
+  "dashboard": { "welcome": "Willkommen, {company}", "empty": "Deine Inserate und Bewerbungen erscheinen hier (bald).", "pending": "Konto wartet auf Überprüfung durch das Kickoff-Team." }
+}

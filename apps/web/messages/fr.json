@@ -1,0 +1,19 @@
+{
+  "common": { "appName": "kickoff", "email": "Email", "password": "Mot de passe", "loading": "Chargement…", "logout": "Se déconnecter" },
+  "home": { "title": "Recrute tes futurs apprentis", "subtitle": "La plateforme qui relie les entreprises formatrices valaisannes aux jeunes en recherche de place.", "signup": "Créer un compte entreprise", "login": "Se connecter" },
+  "login": { "title": "Connexion", "submit": "Se connecter", "noAccount": "Pas encore de compte ?", "error": "Email ou mot de passe incorrect." },
+  "signup": {
+    "title": "Créer un compte entreprise",
+    "contactName": "Ton nom",
+    "companyName": "Nom de l'entreprise",
+    "ideNumber": "Numéro IDE (optionnel)",
+    "ideHint": "Format : CHE-123.456.789. Nous vérifions l'autorisation de former manuellement.",
+    "commune": "Commune",
+    "acceptTerms": "J'accepte les conditions d'utilisation et la politique de confidentialité (brouillons).",
+    "submit": "Créer le compte",
+    "hasAccount": "Déjà un compte ?",
+    "error": "Impossible de créer le compte. Vérifie les champs.",
+    "errors": { "invalid_ide": "Numéro IDE invalide." }
+  },
+  "dashboard": { "welcome": "Bienvenue, {company}", "empty": "Tes annonces et candidatures apparaîtront ici (bientôt).", "pending": "Compte en attente de vérification par l'équipe Kickoff." }
+}
