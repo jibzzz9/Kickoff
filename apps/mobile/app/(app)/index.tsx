@@ -10,6 +10,9 @@ import { formatDate, professionName } from "../../src/lib/format";
 import type { ListingCard } from "../../src/lib/types";
 import { Chip, styles } from "../../src/ui";
 import { fetchCompat, type StudentMatch } from "../../src/lib/match";
+import { useUnreadCount } from "../../src/lib/notifications";
+import { useAuth } from "../../src/auth/AuthProvider";
+import { Ionicons } from "@expo/vector-icons";
 
 const VALAIS = { latitude: 46.22, longitude: 7.5, latitudeDelta: 0.9, longitudeDelta: 1.3 };
 
@@ -18,6 +21,8 @@ export default function Places() {
   const router = useRouter();
   const [listings, setListings] = useState<ListingCard[]>([]);
   const [compat, setCompat] = useState<Record<string, StudentMatch>>({});
+  const { session } = useAuth();
+  const unread = useUnreadCount(session?.user.id);
   const [loading, setLoading] = useState(false);
   const [mode, setMode] = useState<"list" | "map">("list");
   const [profession, setProfession] = useState<string | null>(null);
@@ -62,7 +67,22 @@ export default function Places() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface }} edges={["top"]}>
       <View style={{ paddingHorizontal: spacing.lg, paddingTop: spacing.md, gap: spacing.sm }}>
-        <Text style={[styles.title, { marginBottom: 0 }]}>{t("places.title")}</Text>
+        <View style={[styles.row, { justifyContent: "space-between", flexWrap: "nowrap" }]}>
+          <Text style={[styles.title, { marginBottom: 0, flex: 1 }]}>{t("places.title")}</Text>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={t("notifications.open", { count: unread.count })}
+            onPress={() => router.push("/notifications")}
+            style={{ minWidth: 44, minHeight: 44, alignItems: "center", justifyContent: "center" }}
+          >
+            <Ionicons name="notifications" size={26} color={colors.ink} />
+            {unread.count > 0 && (
+              <View style={{ position: "absolute", top: 4, right: 2, backgroundColor: colors.coral, borderRadius: 10, minWidth: 20, paddingHorizontal: 4 }}>
+                <Text style={{ color: colors.white, fontWeight: "800", fontSize: 12, textAlign: "center" }}>{unread.count}</Text>
+              </View>
+            )}
+          </Pressable>
+        </View>
         <View style={styles.row}>
           <Chip label={t("places.list")} selected={mode === "list"} onPress={() => setMode("list")} />
           <Chip label={t("places.map")} selected={mode === "map"} onPress={() => setMode("map")} />

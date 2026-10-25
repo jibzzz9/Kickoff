@@ -16,10 +16,16 @@ export default function AppLayout() {
         options={{ title: t("tabs.applications"), tabBarIcon: ({ color, size }) => <Ionicons name="paper-plane" color={String(color)} size={size} /> }}
       />
       <Tabs.Screen
+        name="appointments"
+        options={{ title: t("tabs.appointments"), tabBarIcon: ({ color, size }) => <Ionicons name="calendar" color={String(color)} size={size} /> }}
+      />
+      <Tabs.Screen
         name="profile"
         options={{ title: t("tabs.profile"), tabBarIcon: ({ color, size }) => <Ionicons name="person" color={String(color)} size={size} /> }}
       />
       <Tabs.Screen name="listing/[id]" options={{ href: null, headerShown: true, title: "" }} />
+      <Tabs.Screen name="application/[id]" options={{ href: null, headerShown: true, title: "" }} />
+      <Tabs.Screen name="notifications" options={{ href: null, headerShown: true, title: t("notifications.title") }} />
     </Tabs>
   );
 }

@@ -35,6 +35,7 @@ type Form = {
   interests: string;
   hasMopedLicense: boolean;
   doesVolunteering: boolean;
+  shareTrialFeedback: boolean;
 };
 
 const toggle = <T,>(xs: T[], x: T) => (xs.includes(x) ? xs.filter((y) => y !== x) : [...xs, x]);
@@ -71,6 +72,7 @@ export default function Profile() {
         interests: s.interests.join(", "),
         hasMopedLicense: s.has_moped_license,
         doesVolunteering: s.does_volunteering,
+        shareTrialFeedback: s.share_trial_feedback,
       });
     });
     void loadCv();
@@ -98,7 +100,7 @@ export default function Profile() {
     setBusy(true);
     const { error } = await supabase
       .from("students")
-      .update({ ...toStudentRow(parsed.data), ...(f.communeId ? {} : { commune: f.commune }) })
+      .update({ ...toStudentRow(parsed.data), share_trial_feedback: f.shareTrialFeedback, ...(f.communeId ? {} : { commune: f.commune }) })
       .eq("profile_id", session.user.id);
     setBusy(false);
     setStatus(error ? { kind: "error", text: t("common.error") } : { kind: "ok", text: t("common.saved") });
@@ -224,6 +226,10 @@ export default function Profile() {
           <View style={styles.row}>
             <Switch value={f.doesVolunteering} onValueChange={(v) => set("doesVolunteering", v)} accessibilityLabel={t("profile.volunteering")} />
             <Text style={{ flex: 1 }}>{t("profile.volunteering")}</Text>
+          </View>
+          <View style={styles.row}>
+            <Switch value={f.shareTrialFeedback} onValueChange={(v) => set("shareTrialFeedback", v)} accessibilityLabel={t("profileFeedback.label")} />
+            <Text style={{ flex: 1 }}>{t("profileFeedback.label")}</Text>
           </View>
         </Section>
 

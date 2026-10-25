@@ -39,7 +39,7 @@ export default function Applications() {
         ListHeaderComponent={<Text style={styles.title}>{t("applications.title")}</Text>}
         ListEmptyComponent={loading ? undefined : <Text style={styles.muted}>{t("applications.empty")}</Text>}
         renderItem={({ item: r }) => (
-          <Pressable accessibilityRole="button" style={styles.card} onPress={() => r.listing && router.push(`/listing/${r.listing.id}`)}>
+          <Pressable accessibilityRole="button" style={styles.card} onPress={() => router.push(`/application/${r.id}`)}>
             <View style={[styles.row, { justifyContent: "space-between" }]}>
               <Text style={[styles.cardTitle, { flex: 1 }]}>{r.listing?.company_name}</Text>
               <Text style={styles.badge}>{t(`status.${r.status}`)}</Text>

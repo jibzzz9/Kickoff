@@ -6,9 +6,33 @@
     "version": "0.0.1",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
-    "ios": { "bundleIdentifier": "ch.kickoff.app", "supportsTablet": false },
-    "android": { "package": "ch.kickoff.app" },
-    "plugins": ["expo-router", "expo-status-bar", "expo-localization", "expo-secure-store"],
-    "experiments": { "typedRoutes": false }
+    "ios": {
+      "bundleIdentifier": "ch.kickoff.app",
+      "supportsTablet": false
+    },
+    "android": {
+      "package": "ch.kickoff.app"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-status-bar",
+      "expo-localization",
+      "expo-secure-store",
+      [
+        "expo-notifications",
+        {
+          "color": "#7C5CFF"
+        }
+      ],
+      [
+        "expo-calendar",
+        {
+          "calendarPermission": "Kickoff ajoute tes entretiens et stages d'essai à ton agenda."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": false
+    }
   }
 }
