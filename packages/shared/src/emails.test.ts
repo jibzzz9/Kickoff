@@ -1,14 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { guardianInviteEmail, parentConsentEmail } from "./emails";
+import { guardianInviteEmail } from "./emails";
 
 describe("emails", () => {
-  it("email de consentement : prénom, lien, explication IA et humain, FR et DE", () => {
+  it("email d'invitation : prénom, lien et lecture seule, FR et DE", () => {
     for (const lang of ["fr", "de"] as const) {
-      const e = parentConsentEmail(lang, { firstName: "Mia", url: "https://kickoff.ch/c/abc", expiresDays: 7 });
+      const e = guardianInviteEmail(lang, { firstName: "Mia", relation: "parent", url: "https://kickoff.ch/i/abc", expiresDays: 14 });
       expect(e.subject).toContain("Mia");
-      expect(e.text).toContain("https://kickoff.ch/c/abc");
-      expect(e.html).toContain('href="https://kickoff.ch/c/abc"');
-      expect(e.text).toMatch(lang === "fr" ? /une personne qui décide/ : /ein Mensch/);
+      expect(e.text).toContain("https://kickoff.ch/i/abc");
+      expect(e.html).toContain('href="https://kickoff.ch/i/abc"');
     }
   });
   it("échappe le HTML du prénom", () => {

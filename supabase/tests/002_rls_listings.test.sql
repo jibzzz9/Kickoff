@@ -10,7 +10,7 @@ insert into auth.users (id, instance_id, aud, role, email, raw_user_meta_data) v
   ('10000000-0000-4000-8000-0000000000c1', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'lea@test.ch',
    jsonb_build_object('role','student','first_name','Léa','birth_date',(current_date - interval '17 years')::date::text,'commune','sion')),
   ('10000000-0000-4000-8000-0000000000c2', '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated', 'mia@test.ch',
-   jsonb_build_object('role','student','first_name','Mia','birth_date',(current_date - interval '14 years')::date::text,'commune','Brig-Glis','parent_email','p@test.ch'));
+   jsonb_build_object('role','student','first_name','Mia','birth_date',(current_date - interval '14 years')::date::text,'commune','Brig-Glis'));
 
 update public.companies set verified_at = now() where name = 'EMS A';
 
@@ -79,17 +79,17 @@ select throws_ok($$
 $$, '42501', null, 'élève: ne peut pas postuler à une annonce non publique');
 select is((select count(*)::int from public.candidate_cards), 0, 'élève: aucun accès aux cartes candidats');
 
--- Élève mineur, consentement parental en attente
+-- Élève de 14 ans : peut postuler sans accord parental
 select set_config('request.jwt.claims', '{"sub":"10000000-0000-4000-8000-0000000000c2","role":"authenticated"}', true);
-select throws_ok($$
+select lives_ok($$
   insert into public.applications (student_id, listing_id) values (auth.uid(), (select id from ids where name = 'listing_a'))
-$$, '42501', null, 'élève en attente de consentement: ne peut pas postuler');
-select is((select count(*)::int from public.applications), 0, 'élève: ne voit pas les candidatures des autres');
+$$, 'élève de 14 ans: peut postuler dès son inscription');
+select is((select count(*)::int from public.applications where student_id <> auth.uid()), 0, 'élève: ne voit pas les candidatures des autres');
 
 -- Entreprise A reçoit la candidature
 select set_config('request.jwt.claims', '{"sub":"10000000-0000-4000-8000-0000000000a1","role":"authenticated"}', true);
-select is((select first_name from public.candidate_cards), 'Léa', 'entreprise A: voit la carte de la candidate');
-select is((select age from public.candidate_cards), 17, 'entreprise A: voit l''âge, pas la date de naissance');
+select is((select count(*)::int from public.candidate_cards), 2, 'entreprise A: voit les cartes de ses deux candidates');
+select is((select age from public.candidate_cards where first_name = 'Léa'), 17, 'entreprise A: voit l''âge, pas la date de naissance');
 select is((select count(*)::int from public.students), 0, 'entreprise A: aucun accès direct à la table students');
 
 -- Entreprise B ne voit rien

@@ -7,14 +7,12 @@ export default {
     firstName: "Prénom",
     birthDate: "Date de naissance (AAAA-MM-JJ)",
     commune: "Commune",
-    parentEmail: "Email d'un parent",
-    parentHint: "Tu as moins de {{age}} ans : un parent doit valider ton compte. Il recevra un email.",
     acceptTerms: "J'accepte les conditions d'utilisation et la politique de confidentialité (brouillons).",
     acceptAi: "Je comprends que mon dossier est analysé par une IA, mais que c'est toujours un humain qui décide.",
     submit: "Créer mon compte",
     hasAccount: "Déjà un compte ?",
     error: "Impossible de créer le compte. Vérifie les champs.",
-    errors: { invalid_birth_date: "Date de naissance invalide.", parent_email_required: "L'email d'un parent est nécessaire." },
+    errors: { invalid_birth_date: "Date de naissance invalide." },
   },
   communePicker: { placeholder: "Commence à taper ta commune…" },
   places: {
@@ -48,7 +46,6 @@ export default {
     apply: "Envoyer ma candidature",
     applied: "Candidature envoyée le {{date}} ✓",
     appliedHint: "Tu peux suivre son avancement dans l'onglet Candidatures.",
-    consentPending: "Tu pourras postuler dès qu'un parent aura validé ton compte.",
     aiNotice: "Ton dossier sera analysé par une IA pour aider l'entreprise, mais c'est toujours une personne qui décide.",
     notFound: "Cette place n'est plus disponible.",
   },
@@ -284,9 +281,7 @@ export default {
     deleted: "Ton compte a été supprimé.",
   },
   legal: { terms: "Conditions d'utilisation", privacy: "Politique de confidentialité" },
-  consentBanner: { resend: "Renvoyer l'email à mon parent", resent: "Email renvoyé ✓" },
   home: {
     welcome: "Salut {{name}} 👋",
-    consentPending: "Ton compte est limité tant qu'un parent n'a pas validé. Demande-lui de regarder ses emails.",
   },
 };

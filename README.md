@@ -13,7 +13,7 @@ Brief : `docs/brief.md` · Décisions : `docs/decisions.md` · Calcul du score :
 | 3 | Entretiens, stages d'essai, décisions, place pourvue, notifications, rappels | ✅ (messages par gabarits) |
 | 4 | Check-ups périodiques, places suggérées, écran Coach, aide 147 | ✅ partie gratuite — chat IA et simulateur à la fin |
 | 5 | Voix | ⏳ payant, à la fin |
-| 6 | Accord parental par email, accès parent/enseignant, stats, offres, pages légales (brouillons), export et suppression des données, trajets | ✅ partie gratuite — Stripe et publication à la fin |
+| 6 | Accès parent/enseignant, stats, offres, pages légales (brouillons), export et suppression des données, trajets | ✅ partie gratuite — Stripe et publication à la fin |
 
 Tout ce qui est payant est listé dans `docs/decisions.md`, section « À brancher à la fin (payant) ».
 
@@ -34,7 +34,7 @@ pnpm --filter @kickoff/mobile start   # QR code pour Expo Go
 pnpm --filter @kickoff/mobile web     # aperçu de l'app élève dans le navigateur (sans téléphone)
 ```
 
-Les emails (accord parental, invitations) arrivent dans la boîte de test locale : http://127.0.0.1:54324
+Les emails (invitations parent/enseignant) arrivent dans la boîte de test locale : http://127.0.0.1:54324
 
 ## Comptes de démo (données fictives)
 
@@ -48,8 +48,8 @@ Créés par `npx supabase db reset`. Mot de passe : `demo1234`.
 | `logistique@demo.kickoff.ch` | Entreprise Logistique du Simplon SA (Visp) |
 | `boulangerie@demo.kickoff.ch` | Entreprise **non vérifiée** : ses annonces sont invisibles pour les élèves |
 | `lea@demo.kickoff.ch` | Élève, 16 ans, Sion, profil complet |
-| `noah@demo.kickoff.ch` | Élève, 15 ans, accord parental validé, 1 candidature |
-| `mia@demo.kickoff.ch` | Élève, 14 ans, germanophone, accord parental en attente (email dans la boîte de test) |
+| `noah@demo.kickoff.ch` | Élève, 15 ans, Sierre, 1 candidature |
+| `mia@demo.kickoff.ch` | Élève, 14 ans, germanophone (Brig-Glis) |
 | `elias@demo.kickoff.ch`, `sara@demo.kickoff.ch` | Élèves aux profils variés (jauge « incomplet » / « à découvrir ») |
 
 Une entreprise créée depuis le web n'est pas vérifiée. Pour la vérifier en local :

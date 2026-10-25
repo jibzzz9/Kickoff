@@ -28,7 +28,7 @@ const fr: Record<"terms" | "privacy", LegalDoc> = {
         "Une entreprise ne voit le dossier d'un·e jeune qu'après une candidature chez elle, et uniquement les informations utiles (prénom, âge, commune, parcours, documents joints).",
         "Les parents ou enseignants invités par le jeune voient ses candidatures et rendez-vous en lecture seule, jamais ses messages. Le jeune peut retirer cet accès à tout moment.",
       ] },
-      { heading: "Mineurs", body: ["Pour les jeunes de moins de [16] ans, le compte reste limité tant qu'un parent n'a pas donné son accord par email."] },
+      { heading: "Mineurs", body: ["Kickoff s'adresse à des jeunes de 14 à 17 ans. [À valider par un juriste : conditions d'utilisation par les mineurs et information des représentants légaux.] Le jeune peut inviter un parent ou un enseignant à suivre sa recherche en lecture seule."] },
       { heading: "Hébergement et sécurité", body: ["Données hébergées en Suisse ou dans l'Union européenne [préciser le prestataire et la région]. Accès protégé, fichiers privés, liens de téléchargement temporaires."] },
       { heading: "Durée de conservation", body: ["[À définir : par exemple, suppression des comptes inactifs après 24 mois ; candidatures conservées au plus 12 mois après la rentrée concernée.]"] },
       { heading: "Vos droits", body: [
@@ -78,7 +78,7 @@ const de: Record<"terms" | "privacy", LegalDoc> = {
         "Ein Betrieb sieht die Unterlagen erst nach einer Bewerbung bei ihm und nur die nötigen Angaben.",
         "Eingeladene Eltern oder Lehrpersonen sehen Bewerbungen und Termine nur lesend, nie die Nachrichten. Der Zugang kann jederzeit widerrufen werden.",
       ] },
-      { heading: "Minderjährige", body: ["Bei Jugendlichen unter [16] Jahren bleibt das Konto eingeschränkt, bis ein Elternteil per E-Mail zugestimmt hat."] },
+      { heading: "Minderjährige", body: ["Kickoff richtet sich an Jugendliche von 14 bis 17 Jahren. [Von einer juristischen Fachperson zu prüfen: Nutzung durch Minderjährige und Information der gesetzlichen Vertretung.] Die Jugendlichen können einen Elternteil oder eine Lehrperson einladen, ihre Suche nur lesend mitzuverfolgen."] },
       { heading: "Hosting und Sicherheit", body: ["Daten in der Schweiz oder der EU gehostet [Anbieter und Region präzisieren]. Geschützter Zugang, private Dateien, zeitlich begrenzte Download-Links."] },
       { heading: "Aufbewahrungsdauer", body: ["[Festzulegen.]"] },
       { heading: "Ihre Rechte", body: [

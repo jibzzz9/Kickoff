@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { COMPANY_ROLES, DEFAULT_MIN_AGE_WITHOUT_PARENT_CONSENT, LOCALES } from "./constants";
+import { COMPANY_ROLES, LOCALES } from "./constants";
 
 export const localeSchema = z.enum(LOCALES);
 export const companyRoleSchema = z.enum(COMPANY_ROLES);
@@ -14,14 +14,6 @@ export function ageOn(birthDate: Date, today: Date = new Date()): number {
   return age;
 }
 
-export function needsParentConsent(
-  birthDate: Date,
-  minAge: number = DEFAULT_MIN_AGE_WITHOUT_PARENT_CONSENT,
-  today: Date = new Date(),
-): boolean {
-  return ageOn(birthDate, today) < minAge;
-}
-
 export const signupStudentSchema = z
   .object({
     email: z.string().email(),
@@ -32,15 +24,11 @@ export const signupStudentSchema = z
     locale: localeSchema.default("fr"),
     acceptTerms: z.literal(true),
     acceptAiNotice: z.literal(true),
-    parentEmail: z.string().email().optional(),
   })
   .superRefine((v, ctx) => {
     const age = ageOn(v.birthDate);
     if (age < 12 || age > 25) {
       ctx.addIssue({ code: "custom", path: ["birthDate"], message: "invalid_birth_date" });
-    }
-    if (needsParentConsent(v.birthDate) && !v.parentEmail) {
-      ctx.addIssue({ code: "custom", path: ["parentEmail"], message: "parent_email_required" });
     }
   });
 export type SignupStudent = z.infer<typeof signupStudentSchema>;

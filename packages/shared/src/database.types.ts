@@ -425,26 +425,6 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
-                },"parental_consents": {
-                  Row: {
-                    "confirmed_at": string | null,"created_at": string,"expires_at": string,"id": string,"parent_email": string,"student_id": string,"token_hash": string
-                  }
-                  ComputedFields: never
-                  Insert: {
-                    "confirmed_at"?: string | null,"created_at"?: string,"expires_at": string,"id"?: string,"parent_email": string,"student_id": string,"token_hash": string
-                  }
-                  Update: {
-                    "confirmed_at"?: string | null,"created_at"?: string,"expires_at"?: string,"id"?: string,"parent_email"?: string,"student_id"?: string,"token_hash"?: string
-                  }
-                  Relationships: [
-                    {
-      foreignKeyName: "parental_consents_student_id_fkey"
-      columns: ["student_id"]
-isOneToOne: false
-      referencedRelation: "students"
-      referencedColumns: ["profile_id"]
-    }
-                  ]
                 },"plan_features": {
                   Row: {
                     "enabled": boolean,"feature_key": string,"plan": Database["public"]['Enums']["company_plan"]
@@ -619,14 +599,14 @@ isOneToOne: false
                   ]
                 },"students": {
                   Row: {
-                    "ai_notice_accepted_at": string | null,"aptitude_tests": NonNullable<Json>,"birth_date": string,"checkup_frequency_days": number,"commune": string,"commune_id": string | null,"created_at": string,"does_volunteering": boolean,"first_name": string,"grades": NonNullable<Json>,"has_moped_license": boolean,"interests": (string)[],"languages": (string)[],"parent_email": string | null,"parental_consent": Database["public"]['Enums']["consent_status"],"parental_consent_at": string | null,"plan": Database["public"]['Enums']["student_plan"],"profile_id": string,"school_year": string | null,"share_checkups_with_guardians": boolean,"share_trial_feedback": boolean,"soft_skills": (string)[],"target_professions": (string)[],"trial_internships": NonNullable<Json>
+                    "ai_notice_accepted_at": string | null,"aptitude_tests": NonNullable<Json>,"birth_date": string,"checkup_frequency_days": number,"commune": string,"commune_id": string | null,"created_at": string,"does_volunteering": boolean,"first_name": string,"grades": NonNullable<Json>,"has_moped_license": boolean,"interests": (string)[],"languages": (string)[],"plan": Database["public"]['Enums']["student_plan"],"profile_id": string,"school_year": string | null,"share_checkups_with_guardians": boolean,"share_trial_feedback": boolean,"soft_skills": (string)[],"target_professions": (string)[],"trial_internships": NonNullable<Json>
                   }
                   ComputedFields: never
                   Insert: {
-                    "ai_notice_accepted_at"?: string | null,"aptitude_tests"?: NonNullable<Json>,"birth_date": string,"checkup_frequency_days"?: number,"commune": string,"commune_id"?: string | null,"created_at"?: string,"does_volunteering"?: boolean,"first_name": string,"grades"?: NonNullable<Json>,"has_moped_license"?: boolean,"interests"?: (string)[],"languages"?: (string)[],"parent_email"?: string | null,"parental_consent"?: Database["public"]['Enums']["consent_status"],"parental_consent_at"?: string | null,"plan"?: Database["public"]['Enums']["student_plan"],"profile_id": string,"school_year"?: string | null,"share_checkups_with_guardians"?: boolean,"share_trial_feedback"?: boolean,"soft_skills"?: (string)[],"target_professions"?: (string)[],"trial_internships"?: NonNullable<Json>
+                    "ai_notice_accepted_at"?: string | null,"aptitude_tests"?: NonNullable<Json>,"birth_date": string,"checkup_frequency_days"?: number,"commune": string,"commune_id"?: string | null,"created_at"?: string,"does_volunteering"?: boolean,"first_name": string,"grades"?: NonNullable<Json>,"has_moped_license"?: boolean,"interests"?: (string)[],"languages"?: (string)[],"plan"?: Database["public"]['Enums']["student_plan"],"profile_id": string,"school_year"?: string | null,"share_checkups_with_guardians"?: boolean,"share_trial_feedback"?: boolean,"soft_skills"?: (string)[],"target_professions"?: (string)[],"trial_internships"?: NonNullable<Json>
                   }
                   Update: {
-                    "ai_notice_accepted_at"?: string | null,"aptitude_tests"?: NonNullable<Json>,"birth_date"?: string,"checkup_frequency_days"?: number,"commune"?: string,"commune_id"?: string | null,"created_at"?: string,"does_volunteering"?: boolean,"first_name"?: string,"grades"?: NonNullable<Json>,"has_moped_license"?: boolean,"interests"?: (string)[],"languages"?: (string)[],"parent_email"?: string | null,"parental_consent"?: Database["public"]['Enums']["consent_status"],"parental_consent_at"?: string | null,"plan"?: Database["public"]['Enums']["student_plan"],"profile_id"?: string,"school_year"?: string | null,"share_checkups_with_guardians"?: boolean,"share_trial_feedback"?: boolean,"soft_skills"?: (string)[],"target_professions"?: (string)[],"trial_internships"?: NonNullable<Json>
+                    "ai_notice_accepted_at"?: string | null,"aptitude_tests"?: NonNullable<Json>,"birth_date"?: string,"checkup_frequency_days"?: number,"commune"?: string,"commune_id"?: string | null,"created_at"?: string,"does_volunteering"?: boolean,"first_name"?: string,"grades"?: NonNullable<Json>,"has_moped_license"?: boolean,"interests"?: (string)[],"languages"?: (string)[],"plan"?: Database["public"]['Enums']["student_plan"],"profile_id"?: string,"school_year"?: string | null,"share_checkups_with_guardians"?: boolean,"share_trial_feedback"?: boolean,"soft_skills"?: (string)[],"target_professions"?: (string)[],"trial_internships"?: NonNullable<Json>
                   }
                   Relationships: [
                     {
@@ -826,9 +806,6 @@ isOneToOne: false
               "applications": number,"avg_response_hours": number,"invited": number,"offers": number,"unique_viewers": number,"views": number
             }[]
                            },
-"min_parent_consent_age":
-{ Args: Record<PropertyKey, never>; Returns: number
-                           },
 "post_message":
 { Args: { "p_application": string,"p_appointment"?: string,"p_body": string,"p_kind": string,"p_role": string }; Returns: string
                            },
@@ -840,9 +817,6 @@ isOneToOne: false
                            },
 "run_reminders":
 { Args: Record<PropertyKey, never>; Returns: number
-                           },
-"student_can_apply":
-{ Args: Record<PropertyKey, never>; Returns: boolean
                            },
 "student_choose_slot":
 { Args: { "p_appointment": string,"p_slot": string }; Returns: undefined
@@ -868,7 +842,7 @@ isOneToOne: false
                            }
           }
           Enums: {
-            "app_locale": "fr"|"de","application_status": "sent"|"followed_up"|"trial"|"interview"|"offer"|"accepted"|"declined"|"not_this_time"|"waitlist"|"withdrawn","appointment_kind": "interview"|"trial","appointment_status": "proposed"|"scheduled"|"done"|"cancelled","company_plan": "basic"|"pro","company_role": "admin"|"trainer","consent_status": "not_required"|"pending"|"granted","criterion_kind": "required"|"bonus","document_kind": "cv"|"letter"|"video","listing_status": "draft"|"open"|"filled"|"closed","profession_type": "CFC"|"AFP","student_plan": "free"|"plus","user_role": "student"|"company_user"|"parent"|"admin"
+            "app_locale": "fr"|"de","application_status": "sent"|"followed_up"|"trial"|"interview"|"offer"|"accepted"|"declined"|"not_this_time"|"waitlist"|"withdrawn","appointment_kind": "interview"|"trial","appointment_status": "proposed"|"scheduled"|"done"|"cancelled","company_plan": "basic"|"pro","company_role": "admin"|"trainer","criterion_kind": "required"|"bonus","document_kind": "cv"|"letter"|"video","listing_status": "draft"|"open"|"filled"|"closed","profession_type": "CFC"|"AFP","student_plan": "free"|"plus","user_role": "student"|"company_user"|"parent"|"admin"
           }
           CompositeTypes: {
             [_ in never]: never
@@ -988,7 +962,7 @@ export const Constants = {
           }
         },"public": {
           Enums: {
-            "app_locale": ["fr", "de"],"application_status": ["sent", "followed_up", "trial", "interview", "offer", "accepted", "declined", "not_this_time", "waitlist", "withdrawn"],"appointment_kind": ["interview", "trial"],"appointment_status": ["proposed", "scheduled", "done", "cancelled"],"company_plan": ["basic", "pro"],"company_role": ["admin", "trainer"],"consent_status": ["not_required", "pending", "granted"],"criterion_kind": ["required", "bonus"],"document_kind": ["cv", "letter", "video"],"listing_status": ["draft", "open", "filled", "closed"],"profession_type": ["CFC", "AFP"],"student_plan": ["free", "plus"],"user_role": ["student", "company_user", "parent", "admin"]
+            "app_locale": ["fr", "de"],"application_status": ["sent", "followed_up", "trial", "interview", "offer", "accepted", "declined", "not_this_time", "waitlist", "withdrawn"],"appointment_kind": ["interview", "trial"],"appointment_status": ["proposed", "scheduled", "done", "cancelled"],"company_plan": ["basic", "pro"],"company_role": ["admin", "trainer"],"criterion_kind": ["required", "bonus"],"document_kind": ["cv", "letter", "video"],"listing_status": ["draft", "open", "filled", "closed"],"profession_type": ["CFC", "AFP"],"student_plan": ["free", "plus"],"user_role": ["student", "company_user", "parent", "admin"]
           }
         }
 } as const

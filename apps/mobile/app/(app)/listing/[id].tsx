@@ -16,7 +16,6 @@ type State = {
   listing: ListingCard | null;
   criteria: ListingCriterion[];
   appliedAt: string | null;
-  consentPending: boolean;
   cv: { id: string; file_name: string } | null;
   match: StudentMatch | null;
   transit: { minutes: number | null; transfers?: number; sameCommune?: boolean } | null;
@@ -34,11 +33,10 @@ export default function ListingScreen() {
   const load = useCallback(async () => {
     // Vue comptée pour les statistiques de l'entreprise (une par jour).
     void supabase.rpc("record_listing_view", { p_listing: id });
-    const [listing, criteria, application, student, cv, compat, transit] = await Promise.all([
+    const [listing, criteria, application, cv, compat, transit] = await Promise.all([
       supabase.from("listing_cards").select("*").eq("id", id).maybeSingle(),
       supabase.from("listing_criteria").select("kind, key, value").eq("listing_id", id),
       supabase.from("applications").select("created_at").eq("listing_id", id).maybeSingle(),
-      supabase.from("students").select("parental_consent").single(),
       supabase.from("student_documents").select("id, file_name").eq("kind", "cv").order("created_at", { ascending: false }).limit(1).maybeSingle(),
       fetchCompat([id]),
       supabase.functions.invoke<State["transit"]>("transit", { body: { listingId: id } }),
@@ -47,7 +45,6 @@ export default function ListingScreen() {
       listing: listing.data,
       criteria: criteria.data ?? [],
       appliedAt: application.data?.created_at ?? null,
-      consentPending: student.data?.parental_consent === "pending",
       cv: cv.data,
       match: compat[id] ?? null,
       transit: transit.data ?? null,
@@ -143,8 +140,6 @@ export default function ListingScreen() {
             <Text style={{ fontWeight: "800" }}>{t("listing.applied", { date: formatDate(s.appliedAt) })}</Text>
             <Text style={styles.muted}>{t("listing.appliedHint")}</Text>
           </>
-        ) : s.consentPending ? (
-          <Text style={styles.notice}>{t("listing.consentPending")}</Text>
         ) : (
           <>
             <Text style={styles.label}>{t("listing.letter")}</Text>

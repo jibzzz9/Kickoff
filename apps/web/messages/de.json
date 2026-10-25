@@ -281,22 +281,6 @@
     "empty": "Nichts Neues.",
     "markRead": "Alle als gelesen markieren"
   },
-  "consent": {
-    "title": "Zustimmung der Eltern",
-    "loading": "Link wird geprüft…",
-    "invalid": "Dieser Link ist nicht mehr gültig. Ihr Kind kann Ihnen in der App eine neue E-Mail senden.",
-    "intro": "{name} hat sich bei Kickoff angemeldet, um eine Lehrstelle zu finden. Da {name} unter 16 Jahre alt ist, brauchen wir Ihre Zustimmung.",
-    "points": "Was Kickoff macht:",
-    "p1": "Das Profil (Noten, Schnupperlehren, Sprachen, Stärken) dient dazu, passende Lehrstellen vorzuschlagen.",
-    "p2": "Die Unterlagen werden nur an Betriebe weitergegeben, bei denen sich Ihr Kind bewirbt.",
-    "p3": "Eine KI hilft den Betrieben beim Lesen der Unterlagen, aber entscheiden tut immer ein Mensch.",
-    "p4": "Keine Werbung, kein Verkauf von Daten. Das Konto kann jederzeit gelöscht werden.",
-    "privacy": "Datenschutzerklärung lesen (Entwurf)",
-    "confirm": "Ich stimme zu",
-    "refuse": "Wenn Sie nicht zustimmen, schliessen Sie einfach diese Seite: Das Konto bleibt eingeschränkt.",
-    "done": "Danke! Das Konto von {name} ist jetzt aktiv.",
-    "already": "Ihre Zustimmung wurde bereits gespeichert. Danke!"
-  },
   "guardian": {
     "inviteTitle": "Einladung zur Begleitung einer Lehrstellensuche",
     "inviteIntro": "{name} lädt Sie als {relation} ein, die Suche auf Kickoff mitzuverfolgen (nur lesen).",

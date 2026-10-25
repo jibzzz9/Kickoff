@@ -1,5 +1,5 @@
 /**
- * Emails transactionnels FR/DE (consentement parental, invitation parent/enseignant).
+ * Emails transactionnels FR/DE (invitation parent/enseignant).
  * Sans dépendance : utilisé par les Edge Functions (Deno) et testé avec Vitest.
  */
 
@@ -20,32 +20,6 @@ ${paragraphs.map((p) => `<p style="line-height:1.5">${esc(p)}</p>`).join("\n")}
   return { subject, text, html };
 }
 
-export function parentConsentEmail(lang: EmailLang, p: { firstName: string; url: string; expiresDays: number }): Email {
-  if (lang === "de") {
-    return render(
-      `${p.firstName} hat sich bei Kickoff angemeldet`,
-      [
-        "Guten Tag",
-        `${p.firstName} hat sich bei Kickoff angemeldet, einer Walliser App, die Jugendlichen hilft, eine Lehrstelle zu finden. Da ${p.firstName} unter 16 Jahre alt ist, brauchen wir Ihre Zustimmung.`,
-        "Kickoff nutzt die Angaben im Profil (Noten, Schnupperlehren, Sprachen…), um passende Lehrstellen vorzuschlagen. Die Unterlagen werden nur an Betriebe weitergegeben, bei denen sich Ihr Kind bewirbt. Eine KI hilft beim Lesen der Unterlagen, aber entscheiden tut immer ein Mensch. Keine Werbung, kein Verkauf von Daten.",
-        `Solange Sie nicht zustimmen, bleibt das Konto eingeschränkt (keine Bewerbungen). Der Link ist ${p.expiresDays} Tage gültig.`,
-      ],
-      { label: "Ich stimme zu", url: p.url },
-      "Sie haben diese Anmeldung nicht erwartet? Ignorieren Sie diese E-Mail einfach: Das Konto bleibt eingeschränkt.",
-    );
-  }
-  return render(
-    `${p.firstName} s'est inscrit·e sur Kickoff`,
-    [
-      "Bonjour,",
-      `${p.firstName} s'est inscrit·e sur Kickoff, une application valaisanne qui aide les jeunes à trouver une place d'apprentissage. Comme ${p.firstName} a moins de 16 ans, nous avons besoin de votre accord.`,
-      "Kickoff utilise les informations du profil (notes, stages d'essai, langues…) pour proposer des places adaptées. Le dossier n'est transmis qu'aux entreprises auxquelles votre enfant postule. Une IA aide à lire les dossiers, mais c'est toujours une personne qui décide. Pas de publicité, pas de revente de données.",
-      `Tant que vous n'avez pas donné votre accord, le compte reste limité (pas de candidature). Le lien est valable ${p.expiresDays} jours.`,
-    ],
-    { label: "Je donne mon accord", url: p.url },
-    "Vous n'attendiez pas cette inscription ? Ignorez simplement cet email : le compte restera limité.",
-  );
-}
 
 export function guardianInviteEmail(lang: EmailLang, p: { firstName: string; relation: "parent" | "teacher"; url: string; expiresDays: number }): Email {
   if (lang === "de") {

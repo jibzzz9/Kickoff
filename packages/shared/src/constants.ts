@@ -10,8 +10,6 @@ export type CompanyRole = (typeof COMPANY_ROLES)[number];
 
 export const SCHOOL_YEARS = ["10", "11"] as const;
 
-/** Seuil par défaut ; la valeur réelle vit dans la table app_settings (configurable). */
-export const DEFAULT_MIN_AGE_WITHOUT_PARENT_CONSENT = 16;
 
 /** Jauge entreprise : 0-5 segments et badge associé. */
 export type GaugeBadge = "very_interesting" | "interesting" | "to_discover" | "incomplete";

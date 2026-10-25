@@ -7,14 +7,12 @@ export default {
     firstName: "Vorname",
     birthDate: "Geburtsdatum (JJJJ-MM-TT)",
     commune: "Gemeinde",
-    parentEmail: "E-Mail eines Elternteils",
-    parentHint: "Du bist unter {{age}}: Ein Elternteil muss dein Konto bestätigen. Er oder sie erhält eine E-Mail.",
     acceptTerms: "Ich akzeptiere die Nutzungsbedingungen und die Datenschutzerklärung (Entwürfe).",
     acceptAi: "Ich verstehe, dass meine Unterlagen von einer KI analysiert werden, aber immer ein Mensch entscheidet.",
     submit: "Konto erstellen",
     hasAccount: "Schon ein Konto?",
     error: "Konto konnte nicht erstellt werden. Prüfe die Felder.",
-    errors: { invalid_birth_date: "Ungültiges Geburtsdatum.", parent_email_required: "Die E-Mail eines Elternteils ist nötig." },
+    errors: { invalid_birth_date: "Ungültiges Geburtsdatum." },
   },
   communePicker: { placeholder: "Tippe deine Gemeinde ein…" },
   places: {
@@ -48,7 +46,6 @@ export default {
     apply: "Bewerbung senden",
     applied: "Bewerbung gesendet am {{date}} ✓",
     appliedHint: "Den Stand siehst du im Tab Bewerbungen.",
-    consentPending: "Du kannst dich bewerben, sobald ein Elternteil dein Konto bestätigt hat.",
     aiNotice: "Deine Unterlagen werden von einer KI analysiert, um dem Betrieb zu helfen, aber entscheiden tut immer ein Mensch.",
     notFound: "Diese Lehrstelle ist nicht mehr verfügbar.",
   },
@@ -284,9 +281,7 @@ export default {
     deleted: "Dein Konto wurde gelöscht.",
   },
   legal: { terms: "Nutzungsbedingungen", privacy: "Datenschutzerklärung" },
-  consentBanner: { resend: "E-Mail an meinen Elternteil erneut senden", resent: "E-Mail erneut gesendet ✓" },
   home: {
     welcome: "Hallo {{name}} 👋",
-    consentPending: "Dein Konto ist eingeschränkt, bis ein Elternteil bestätigt hat. Bitte ihn oder sie, die E-Mails zu prüfen.",
   },
 };

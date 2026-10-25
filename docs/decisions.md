@@ -32,7 +32,7 @@
 |---|---|---|
 | API Anthropic (Claude) | Explications de score, conseils, coach, rédaction d'annonce, réécriture de lettre, simulateur d'entretien | Textes générés par règles et gabarits FR/DE |
 | Fournisseur voix (STT/TTS) | Coach vocal, simulateur vocal | Interface `VoiceProvider` sans implémentation |
-| Fournisseur d'emails (production) | Email au parent, réponses aux candidats | Mailpit en local (`http://127.0.0.1:54324`) |
+| Fournisseur d'emails (production) | Invitations parent/enseignant | Mailpit en local (`http://127.0.0.1:54324`) |
 | Stripe | Abonnement Pro | Feature flags par plan, Pro offert au pilote |
 | Clé Google Maps (Android, production) | Carte Android publiée | Expo Go sans clé |
 | Comptes Apple Developer / Google Play | Publication | Expo Go / builds de développement |
@@ -71,3 +71,4 @@
 | 50 | Statistiques : vues (1 par élève et par jour), candidatures, invitations, offres, délai moyen de première réponse ; réservées au plan Pro | Brief 5.5 + feature flags |
 | 51 | L'app applique la langue du profil à la connexion (sinon celle de l'appareil) | Un élève germanophone sur un téléphone en français garde l'allemand |
 | 52 | Confirmations via `confirmAsync` (dialogue natif, `window.confirm` dans l'aperçu web) | `Alert` à boutons ne fonctionne pas sur le web |
+| 53 | **Accord parental par email retiré** (demande du porteur) : plus d'email du parent à l'inscription, plus de compte limité pour les moins de 16 ans. Remplace les décisions 3, 11, 14 et 46. L'accès parent/enseignant à l'initiative du jeune est conservé | Choix produit ; la question des mineurs reste à valider par un juriste (signalée dans le brouillon de politique de confidentialité). Réversible via l'historique git |

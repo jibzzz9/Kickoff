@@ -281,22 +281,6 @@
     "empty": "Rien de nouveau.",
     "markRead": "Tout marquer comme lu"
   },
-  "consent": {
-    "title": "Accord parental",
-    "loading": "Vérification du lien…",
-    "invalid": "Ce lien n'est plus valable. Votre enfant peut vous renvoyer un nouvel email depuis l'application.",
-    "intro": "{name} s'est inscrit·e sur Kickoff pour trouver une place d'apprentissage. Comme {name} a moins de 16 ans, nous avons besoin de votre accord.",
-    "points": "Ce que fait Kickoff :",
-    "p1": "Le profil (notes, stages, langues, qualités) sert à proposer des places adaptées.",
-    "p2": "Le dossier n'est transmis qu'aux entreprises auxquelles votre enfant postule.",
-    "p3": "Une IA aide les entreprises à lire les dossiers, mais c'est toujours une personne qui décide.",
-    "p4": "Pas de publicité, pas de revente de données. Le compte peut être supprimé à tout moment.",
-    "privacy": "Lire la politique de confidentialité (brouillon)",
-    "confirm": "Je donne mon accord",
-    "refuse": "Si vous refusez, il suffit de fermer cette page : le compte restera limité.",
-    "done": "Merci ! Le compte de {name} est maintenant actif.",
-    "already": "Votre accord a déjà été enregistré. Merci !"
-  },
   "guardian": {
     "inviteTitle": "Invitation à suivre une recherche d'apprentissage",
     "inviteIntro": "{name} vous invite en tant que {relation} à suivre sa recherche sur Kickoff, en lecture seule.",

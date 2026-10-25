@@ -34,11 +34,9 @@ update public.companies set verified_at = now(), ide_number = 'CHE-000.000.00' |
 
 -- Élèves
 select pg_temp.seed_user('lea@demo.kickoff.ch', jsonb_build_object('role','student','first_name','Léa','birth_date',(current_date - interval '16 years 3 months')::date::text,'commune','Sion'));
-select pg_temp.seed_user('noah@demo.kickoff.ch', jsonb_build_object('role','student','first_name','Noah','birth_date',(current_date - interval '15 years 2 months')::date::text,'commune','Sierre','parent_email','parent.noah@demo.kickoff.ch'));
-select pg_temp.seed_user('mia@demo.kickoff.ch', jsonb_build_object('role','student','locale','de','first_name','Mia','birth_date',(current_date - interval '14 years 6 months')::date::text,'commune','Brig-Glis','parent_email','eltern.mia@demo.kickoff.ch'));
+select pg_temp.seed_user('noah@demo.kickoff.ch', jsonb_build_object('role','student','first_name','Noah','birth_date',(current_date - interval '15 years 2 months')::date::text,'commune','Sierre'));
+select pg_temp.seed_user('mia@demo.kickoff.ch', jsonb_build_object('role','student','locale','de','first_name','Mia','birth_date',(current_date - interval '14 years 6 months')::date::text,'commune','Brig-Glis'));
 
--- Noah : consentement parental déjà validé ; Mia reste en attente (compte limité)
-update public.students set parental_consent = 'granted', parental_consent_at = now() where first_name = 'Noah';
 
 update public.students set school_year = '11', grades = '{"average": 5.1}',
   aptitude_tests = '[{"name":"Multicheck Santé","score":78}]',
