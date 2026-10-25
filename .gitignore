@@ -9,3 +9,6 @@ dist
 supabase/.branches
 supabase/.temp
 *.tsbuildinfo
+supabase/functions/.certs
+supabase/functions/.env*
+!supabase/functions/.env.example

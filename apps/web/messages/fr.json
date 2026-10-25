@@ -1,7 +1,26 @@
 {
-  "common": { "appName": "kickoff", "email": "Email", "password": "Mot de passe", "loading": "Chargement…", "logout": "Se déconnecter", "back": "Retour", "yes": "Oui", "no": "Non" },
-  "home": { "title": "Recrute tes futurs apprentis", "subtitle": "La plateforme qui relie les entreprises formatrices valaisannes aux jeunes en recherche de place.", "signup": "Créer un compte entreprise", "login": "Se connecter" },
-  "login": { "title": "Connexion", "submit": "Se connecter", "noAccount": "Pas encore de compte ?", "error": "Email ou mot de passe incorrect." },
+  "common": {
+    "appName": "kickoff",
+    "email": "Email",
+    "password": "Mot de passe",
+    "loading": "Chargement…",
+    "logout": "Se déconnecter",
+    "back": "Retour",
+    "yes": "Oui",
+    "no": "Non"
+  },
+  "home": {
+    "title": "Recrute tes futurs apprentis",
+    "subtitle": "La plateforme qui relie les entreprises formatrices valaisannes aux jeunes en recherche de place.",
+    "signup": "Créer un compte entreprise",
+    "login": "Se connecter"
+  },
+  "login": {
+    "title": "Connexion",
+    "submit": "Se connecter",
+    "noAccount": "Pas encore de compte ?",
+    "error": "Email ou mot de passe incorrect."
+  },
   "signup": {
     "title": "Créer un compte entreprise",
     "contactName": "Ton nom",
@@ -13,7 +32,9 @@
     "submit": "Créer le compte",
     "hasAccount": "Déjà un compte ?",
     "error": "Impossible de créer le compte. Vérifie les champs.",
-    "errors": { "invalid_ide": "Numéro IDE invalide." }
+    "errors": {
+      "invalid_ide": "Numéro IDE invalide."
+    }
   },
   "dashboard": {
     "welcome": "Bienvenue, {company}",
@@ -25,7 +46,12 @@
     "startDate": "Rentrée : {date}",
     "places": "{count, plural, one {# place} other {# places}}"
   },
-  "listingStatus": { "draft": "Brouillon", "open": "Ouverte", "filled": "Pourvue", "closed": "Fermée" },
+  "listingStatus": {
+    "draft": "Brouillon",
+    "open": "Ouverte",
+    "filled": "Pourvue",
+    "closed": "Fermée"
+  },
   "listingForm": {
     "title": "Nouvelle annonce",
     "sectionInfo": "L'essentiel",
@@ -66,16 +92,32 @@
     "volunteering": "Bénévolat ou engagement associatif"
   },
   "weights": {
+    "1": "Un peu",
+    "2": "Moyen",
+    "3": "Beaucoup",
     "motivation": "Motivation",
     "grades": "Notes",
     "soft_skills": "Savoir-être",
-    "practical_experience": "Expérience pratique",
-    "1": "Un peu",
-    "2": "Moyen",
-    "3": "Beaucoup"
+    "practical_experience": "Expérience pratique"
   },
-  "languages": { "fr": "Français", "de": "Allemand", "it": "Italien", "en": "Anglais", "es": "Espagnol", "pt": "Portugais" },
-  "softSkills": { "punctual": "Ponctuel·le", "team_player": "Esprit d'équipe", "curious": "Curieux·se", "careful": "Soigneux·se", "friendly": "Souriant·e", "autonomous": "Autonome", "organized": "Organisé·e", "patient": "Patient·e" },
+  "languages": {
+    "fr": "Français",
+    "de": "Allemand",
+    "it": "Italien",
+    "en": "Anglais",
+    "es": "Espagnol",
+    "pt": "Portugais"
+  },
+  "softSkills": {
+    "punctual": "Ponctuel·le",
+    "team_player": "Esprit d'équipe",
+    "curious": "Curieux·se",
+    "careful": "Soigneux·se",
+    "friendly": "Souriant·e",
+    "autonomous": "Autonome",
+    "organized": "Organisé·e",
+    "patient": "Patient·e"
+  },
   "listingPage": {
     "applications": "Candidatures",
     "applicationsHint": "Par ordre d'arrivée. Elles s'affichent ici en direct.",
@@ -99,5 +141,44 @@
     "cv": "Voir le CV",
     "noCv": "Pas de CV joint.",
     "receivedOn": "Reçue le {date}"
+  },
+  "gauge": {
+    "badge": {
+      "very_interesting": "Très intéressant",
+      "interesting": "Intéressant",
+      "to_discover": "À découvrir",
+      "incomplete": "Profil incomplet"
+    },
+    "segments": "{count} segments sur 5",
+    "detail": "Voir le détail",
+    "hideDetail": "Masquer le détail",
+    "criteriaTitle": "Critères de l'annonce",
+    "status": {
+      "met": "Rempli",
+      "not_met": "Pas encore",
+      "unknown": "Information manquante"
+    },
+    "missingTitle": "Informations manquantes",
+    "missing": {
+      "grades": "Notes ou test d'aptitudes",
+      "languages": "Langues",
+      "soft_skills": "Savoir-être",
+      "cv": "CV"
+    },
+    "noStrength": "Profil à découvrir lors d'un échange.",
+    "filter": "Afficher d'abord les très intéressants",
+    "humanDecides": "Indication calculée à partir de tes critères pour t'aider à lire les dossiers. C'est toujours toi qui décides.",
+    "strengths": {
+      "trials_in_profession": "{count, plural, one {# stage d'essai} other {# stages d'essai}} dans le métier",
+      "trials_other": "{count, plural, one {# stage d'essai} other {# stages d'essai}} dans un autre métier",
+      "good_average": "Bonne moyenne ({value})",
+      "test_result": "Bon résultat au test {name} ({score})",
+      "test_done": "Test d'aptitudes passé",
+      "motivated_letter": "Lettre de motivation soignée",
+      "volunteering": "Engagement bénévole",
+      "languages_match": "Parle {languages}",
+      "moped_license": "Permis vélomoteur",
+      "soft_skills": "{count} qualités de savoir-être"
+    }
   }
 }

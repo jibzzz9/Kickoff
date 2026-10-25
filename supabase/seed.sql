@@ -91,3 +91,21 @@ select pg_temp.seed_listing('Boulangerie Test (non vérifiée)', 'logisticien', 
 insert into public.applications (student_id, listing_id, cover_letter)
 select s.profile_id, l.id, 'Bonjour, j''ai fait un stage chez Migros et j''ai adoré organiser le stock. Je serais très motivé à rejoindre votre équipe !'
 from public.students s, public.listings l where s.first_name = 'Noah' and l.title like 'Logisticien·ne CFC%';
+
+-- Profils variés pour la démo de la jauge (annonce ASSC de l'EMS Les Tilleuls)
+select pg_temp.seed_user('elias@demo.kickoff.ch', jsonb_build_object('role','student','first_name','Elias','birth_date',(current_date - interval '16 years 8 months')::date::text,'commune','Monthey'));
+select pg_temp.seed_user('sara@demo.kickoff.ch', jsonb_build_object('role','student','first_name','Sara','birth_date',(current_date - interval '17 years 1 month')::date::text,'commune','Sierre'));
+update public.students set school_year = '11', grades = '{"average": 4.2}',
+  trial_internships = '[{"professionCode":"logisticien","company":"Coop Valais","year":2026}]',
+  languages = '{fr,pt}', soft_skills = '{patient,friendly,careful}', does_volunteering = true
+where first_name = 'Sara';
+
+insert into public.applications (student_id, listing_id, cover_letter, created_at)
+select s.profile_id, l.id, x.letter, now() - x.ago
+from (values
+  ('Léa', 'Bonjour, j''ai fait mon stage d''essai à l''Hôpital du Valais et j''ai adoré le contact avec les patients. Prendre soin des autres, c''est ce qui me motive depuis toute petite, et votre EMS a une super réputation à Sion. Je suis ponctuelle, souriante et j''aime travailler en équipe. J''aimerais beaucoup venir faire un stage chez vous pour vous montrer ma motivation.', interval '3 days'),
+  ('Elias', 'Bonjour, je cherche une place.', interval '2 days'),
+  ('Sara', 'Bonjour ! Je fais du bénévolat à la Croix-Rouge le samedi et j''aime aider les personnes âgées. J''ai fait un stage en logistique mais je veux travailler avec les gens. Je parle aussi portugais, ce qui peut aider avec certains résidents.', interval '1 day')
+) as x(first_name, letter, ago)
+join public.students s on s.first_name = x.first_name
+join public.listings l on l.title = 'Apprentissage ASSC dans une équipe bienveillante';

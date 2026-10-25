@@ -231,6 +231,32 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"match_scores": {
+                  Row: {
+                    "algo_version": string,"application_id": string,"badge": string,"computed_at": string,"details": NonNullable<Json>,"inputs_hash": string,"score": number,"segments": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "algo_version": string,"application_id": string,"badge": string,"computed_at"?: string,"details": NonNullable<Json>,"inputs_hash": string,"score": number,"segments": number
+                  }
+                  Update: {
+                    "algo_version"?: string,"application_id"?: string,"badge"?: string,"computed_at"?: string,"details"?: NonNullable<Json>,"inputs_hash"?: string,"score"?: number,"segments"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "match_scores_application_id_fkey"
+      columns: ["application_id"]
+isOneToOne: true
+      referencedRelation: "applications"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "match_scores_application_id_fkey"
+      columns: ["application_id"]
+isOneToOne: true
+      referencedRelation: "candidate_cards"
+      referencedColumns: ["application_id"]
+    }
+                  ]
                 },"parental_consents": {
                   Row: {
                     "confirmed_at": string | null,"created_at": string,"expires_at": string,"id": string,"parent_email": string,"student_id": string,"token_hash": string
@@ -292,6 +318,32 @@ isOneToOne: false
                   }
                   Relationships: [
                     
+                  ]
+                },"score_audit_log": {
+                  Row: {
+                    "algo_version": string,"application_id": string,"badge": string,"created_at": string,"id": number,"inputs_hash": string,"score": number,"segments": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "algo_version": string,"application_id": string,"badge": string,"created_at"?: string,"id"?: never,"inputs_hash": string,"score": number,"segments": number
+                  }
+                  Update: {
+                    "algo_version"?: string,"application_id"?: string,"badge"?: string,"created_at"?: string,"id"?: never,"inputs_hash"?: string,"score"?: number,"segments"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "score_audit_log_application_id_fkey"
+      columns: ["application_id"]
+isOneToOne: false
+      referencedRelation: "applications"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "score_audit_log_application_id_fkey"
+      columns: ["application_id"]
+isOneToOne: false
+      referencedRelation: "candidate_cards"
+      referencedColumns: ["application_id"]
+    }
                   ]
                 },"student_documents": {
                   Row: {
@@ -370,7 +422,7 @@ isOneToOne: false
                   ]
                 },"listing_cards": {
                   Row: {
-                    "address": string | null,"commune_id": string,"commune_name": string,"company_name": string,"contact_name": string | null,"created_at": string,"description": string,"id": string,"lat": number,"lng": number,"places_count": number,"profession_code": string,"profession_id": string,"profession_name_de": string,"profession_name_fr": string,"start_date": string,"status": Database["public"]['Enums']["listing_status"],"title": string,"trial_dates": (string)[]
+                    "address": string | null,"commune_id": string,"commune_name": string,"company_name": string,"contact_name": string | null,"created_at": string,"description": string,"id": string,"lat": number,"lng": number,"places_count": number,"profession_code": string,"profession_id": string,"profession_name_de": string,"profession_name_fr": string,"start_date": string,"status": Database["public"]['Enums']["listing_status"],"title": string,"trial_dates": (string)[],"weights": NonNullable<Json>
                   }
                   ComputedFields: never
                   Relationships: [
@@ -382,11 +434,17 @@ isOneToOne: false
             "company_can_read_document":
 { Args: { "p_path": string }; Returns: boolean
                            },
+"company_has_feature":
+{ Args: { "p_company": string,"p_feature": string }; Returns: boolean
+                           },
 "create_listing":
 { Args: { "p": Json }; Returns: string
                            },
 "is_admin":
 { Args: Record<PropertyKey, never>; Returns: boolean
+                           },
+"is_application_company_member":
+{ Args: { "p_application": string }; Returns: boolean
                            },
 "is_company_admin":
 { Args: { "p_company": string }; Returns: boolean

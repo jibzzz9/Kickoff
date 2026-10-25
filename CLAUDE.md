@@ -33,6 +33,7 @@ dockerd &                                   # si Docker n'est pas démarré (ses
 npx supabase start -x studio,logflare,vector,imgproxy
 npx supabase db reset                       # migrations + seed de démo (mot de passe demo1234)
 npx supabase test db                        # tests RLS
+npx supabase functions serve                # Edge Functions (dans la session cloud : voir « Pièges »)
 pnpm lint && pnpm typecheck && pnpm test    # JS/TS
 pnpm --filter @kickoff/web build
 ```
@@ -50,3 +51,8 @@ pnpm --filter @kickoff/web build
 - `node-linker=hoisted` (Metro) : une seule version de React imposée par `pnpm.overrides` dans `package.json`.
 - Ne pas tuer un processus avec `pkill -f "<texte>"` : le motif correspond au shell lui-même. Utiliser `lsof -ti :PORT`.
 - Les tests pgTAP doivent filtrer sur leurs propres données (le seed de démo est chargé en CI).
+- Session cloud uniquement : le conteneur des Edge Functions ne fait pas confiance au proxy TLS. Copier
+  `/root/.ccr/ca-bundle.crt` dans `supabase/functions/.certs/ca.crt` (ignoré par git) et lancer
+  `npx supabase functions serve --env-file supabase/functions/.env.sandbox` avec dans ce fichier
+  `SSL_CERT_FILE`, `DENO_CERT` (chemin du certificat) et `DENO_TLS_CA_STORE=mozilla,system`.
+  Un seul `functions serve` à la fois (sinon le conteneur est tué, code 137).

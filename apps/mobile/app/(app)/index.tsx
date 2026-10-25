@@ -9,6 +9,7 @@ import { supabase } from "../../src/lib/supabase";
 import { formatDate, professionName } from "../../src/lib/format";
 import type { ListingCard } from "../../src/lib/types";
 import { Chip, styles } from "../../src/ui";
+import { fetchCompat, type StudentMatch } from "../../src/lib/match";
 
 const VALAIS = { latitude: 46.22, longitude: 7.5, latitudeDelta: 0.9, longitudeDelta: 1.3 };
 
@@ -16,6 +17,7 @@ export default function Places() {
   const { t } = useTranslation();
   const router = useRouter();
   const [listings, setListings] = useState<ListingCard[]>([]);
+  const [compat, setCompat] = useState<Record<string, StudentMatch>>({});
   const [loading, setLoading] = useState(false);
   const [mode, setMode] = useState<"list" | "map">("list");
   const [profession, setProfession] = useState<string | null>(null);
@@ -27,6 +29,7 @@ export default function Places() {
     const { data } = await supabase.from("listing_cards").select("*").eq("status", "open").order("created_at", { ascending: false });
     setListings(data ?? []);
     setLoading(false);
+    setCompat(await fetchCompat((data ?? []).map((l) => l.id!)));
   }, []);
   useFocusEffect(useCallback(() => void load(), [load]));
 
@@ -91,7 +94,12 @@ export default function Places() {
           ListEmptyComponent={loading ? undefined : <Text style={styles.muted}>{t("places.empty")}</Text>}
           renderItem={({ item: l }) => (
             <Pressable accessibilityRole="button" onPress={() => router.push(`/listing/${l.id}`)} style={styles.card}>
-              <Text style={styles.badge}>{professionName(l)}</Text>
+              <View style={[styles.row, { justifyContent: "space-between" }]}>
+                <Text style={styles.badge}>{professionName(l)}</Text>
+                {compat[l.id!] && (
+                  <Text style={{ fontWeight: "800", color: colors.violet }}>{t("compat.ring", { score: compat[l.id!]!.score })}</Text>
+                )}
+              </View>
               <Text style={styles.cardTitle}>{l.title}</Text>
               <Text style={styles.muted}>{l.company_name} · {l.commune_name}</Text>
               <Text style={styles.muted}>

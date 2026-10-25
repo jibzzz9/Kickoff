@@ -37,3 +37,14 @@
 | Clé Google Maps (Android, production) | Carte Android publiée | Expo Go sans clé |
 | Comptes Apple Developer / Google Play | Publication | Expo Go / builds de développement |
 | Projet Supabase cloud (offre payante si dépassement) | Hébergement | Supabase local ; l'offre gratuite suffit au pilote |
+
+## Décisions (suite)
+
+| # | Décision | Raison |
+|---|---|---|
+| 24 | Moteur de score dans `packages/shared/src/scoring.ts`, sans dépendance, importé tel quel par l'Edge Function `match` | Un seul calcul, testé par Vitest, exécuté côté serveur |
+| 25 | Scores calculés à la demande (ouverture de la page entreprise, nouvelle candidature) et enregistrés seulement s'ils changent | Toujours à jour avec le profil actuel, sans tâche planifiée ni appel base → fonction |
+| 26 | Explications par règles (atouts et actions traduits FR/DE) | Version gratuite ; Claude les reformulera à la fin |
+| 27 | La jauge (badge, segments) n'existe que dans la réponse « entreprise » et la table `match_scores` (aucune policy élève) | Exigence du brief, vérifiée par tests pgTAP |
+| 28 | Pondérations visibles par l'élève (`listing_cards.weights`) | Transparence ; nécessaires au calcul de compatibilité |
+| 29 | Fonctionnalité « jauge » soumise au plan (`company_has_feature(…, 'ai_gauge')`) | Feature flags par plan dès maintenant ; pilote en Pro |

@@ -9,6 +9,8 @@ import { useAuth } from "../../../src/auth/AuthProvider";
 import { formatDate, professionName } from "../../../src/lib/format";
 import type { ListingCard, ListingCriterion } from "../../../src/lib/types";
 import { Button, Section, styles } from "../../../src/ui";
+import { CompatSection } from "../../../src/ui/CompatSection";
+import { fetchCompat, type StudentMatch } from "../../../src/lib/match";
 
 type State = {
   listing: ListingCard | null;
@@ -16,6 +18,7 @@ type State = {
   appliedAt: string | null;
   consentPending: boolean;
   cv: { id: string; file_name: string } | null;
+  match: StudentMatch | null;
 };
 
 export default function ListingScreen() {
@@ -28,12 +31,13 @@ export default function ListingScreen() {
   const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
-    const [listing, criteria, application, student, cv] = await Promise.all([
+    const [listing, criteria, application, student, cv, compat] = await Promise.all([
       supabase.from("listing_cards").select("*").eq("id", id).maybeSingle(),
       supabase.from("listing_criteria").select("kind, key, value").eq("listing_id", id),
       supabase.from("applications").select("created_at").eq("listing_id", id).maybeSingle(),
       supabase.from("students").select("parental_consent").single(),
       supabase.from("student_documents").select("id, file_name").eq("kind", "cv").order("created_at", { ascending: false }).limit(1).maybeSingle(),
+      fetchCompat([id]),
     ]);
     setS({
       listing: listing.data,
@@ -41,6 +45,7 @@ export default function ListingScreen() {
       appliedAt: application.data?.created_at ?? null,
       consentPending: student.data?.parental_consent === "pending",
       cv: cv.data,
+      match: compat[id] ?? null,
     });
   }, [id]);
   useFocusEffect(useCallback(() => void load(), [load]));
@@ -82,6 +87,16 @@ export default function ListingScreen() {
       <Text style={styles.muted}>
         {t("places.startDate", { date: formatDate(l.start_date!) })} · {t("places.places", { count: l.places_count ?? 1 })}
       </Text>
+
+      {s.match && (
+        <CompatSection
+          match={s.match}
+          criterionLabel={(key, kind) => {
+            const c = s.criteria.find((x) => x.key === key && x.kind === kind);
+            return c ? criterionText(c) : key;
+          }}
+        />
+      )}
 
       <Section title={t("listing.about")}>
         <Text>{l.description}</Text>

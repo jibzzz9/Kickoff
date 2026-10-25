@@ -1,7 +1,26 @@
 {
-  "common": { "appName": "kickoff", "email": "E-Mail", "password": "Passwort", "loading": "Lädt…", "logout": "Abmelden", "back": "Zurück", "yes": "Ja", "no": "Nein" },
-  "home": { "title": "Finde deine zukünftigen Lernenden", "subtitle": "Die Plattform, die Walliser Lehrbetriebe mit Jugendlichen auf Lehrstellensuche verbindet.", "signup": "Firmenkonto erstellen", "login": "Anmelden" },
-  "login": { "title": "Anmeldung", "submit": "Anmelden", "noAccount": "Noch kein Konto?", "error": "E-Mail oder Passwort falsch." },
+  "common": {
+    "appName": "kickoff",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "loading": "Lädt…",
+    "logout": "Abmelden",
+    "back": "Zurück",
+    "yes": "Ja",
+    "no": "Nein"
+  },
+  "home": {
+    "title": "Finde deine zukünftigen Lernenden",
+    "subtitle": "Die Plattform, die Walliser Lehrbetriebe mit Jugendlichen auf Lehrstellensuche verbindet.",
+    "signup": "Firmenkonto erstellen",
+    "login": "Anmelden"
+  },
+  "login": {
+    "title": "Anmeldung",
+    "submit": "Anmelden",
+    "noAccount": "Noch kein Konto?",
+    "error": "E-Mail oder Passwort falsch."
+  },
   "signup": {
     "title": "Firmenkonto erstellen",
     "contactName": "Dein Name",
@@ -13,7 +32,9 @@
     "submit": "Konto erstellen",
     "hasAccount": "Schon ein Konto?",
     "error": "Konto konnte nicht erstellt werden. Prüfe die Felder.",
-    "errors": { "invalid_ide": "Ungültige UID-Nummer." }
+    "errors": {
+      "invalid_ide": "Ungültige UID-Nummer."
+    }
   },
   "dashboard": {
     "welcome": "Willkommen, {company}",
@@ -25,7 +46,12 @@
     "startDate": "Lehrbeginn: {date}",
     "places": "{count, plural, one {# Platz} other {# Plätze}}"
   },
-  "listingStatus": { "draft": "Entwurf", "open": "Offen", "filled": "Besetzt", "closed": "Geschlossen" },
+  "listingStatus": {
+    "draft": "Entwurf",
+    "open": "Offen",
+    "filled": "Besetzt",
+    "closed": "Geschlossen"
+  },
   "listingForm": {
     "title": "Neues Inserat",
     "sectionInfo": "Das Wichtigste",
@@ -66,16 +92,32 @@
     "volunteering": "Freiwilligenarbeit oder Vereinsengagement"
   },
   "weights": {
+    "1": "Etwas",
+    "2": "Mittel",
+    "3": "Sehr",
     "motivation": "Motivation",
     "grades": "Noten",
     "soft_skills": "Sozialkompetenz",
-    "practical_experience": "Praktische Erfahrung",
-    "1": "Etwas",
-    "2": "Mittel",
-    "3": "Sehr"
+    "practical_experience": "Praktische Erfahrung"
   },
-  "languages": { "fr": "Französisch", "de": "Deutsch", "it": "Italienisch", "en": "Englisch", "es": "Spanisch", "pt": "Portugiesisch" },
-  "softSkills": { "punctual": "Pünktlich", "team_player": "Teamfähig", "curious": "Neugierig", "careful": "Sorgfältig", "friendly": "Freundlich", "autonomous": "Selbstständig", "organized": "Organisiert", "patient": "Geduldig" },
+  "languages": {
+    "fr": "Französisch",
+    "de": "Deutsch",
+    "it": "Italienisch",
+    "en": "Englisch",
+    "es": "Spanisch",
+    "pt": "Portugiesisch"
+  },
+  "softSkills": {
+    "punctual": "Pünktlich",
+    "team_player": "Teamfähig",
+    "curious": "Neugierig",
+    "careful": "Sorgfältig",
+    "friendly": "Freundlich",
+    "autonomous": "Selbstständig",
+    "organized": "Organisiert",
+    "patient": "Geduldig"
+  },
   "listingPage": {
     "applications": "Bewerbungen",
     "applicationsHint": "In Eingangsreihenfolge. Sie erscheinen hier live.",
@@ -99,5 +141,44 @@
     "cv": "Lebenslauf ansehen",
     "noCv": "Kein Lebenslauf beigelegt.",
     "receivedOn": "Erhalten am {date}"
+  },
+  "gauge": {
+    "badge": {
+      "very_interesting": "Sehr interessant",
+      "interesting": "Interessant",
+      "to_discover": "Zu entdecken",
+      "incomplete": "Profil unvollständig"
+    },
+    "segments": "{count} von 5 Segmenten",
+    "detail": "Details ansehen",
+    "hideDetail": "Details ausblenden",
+    "criteriaTitle": "Kriterien des Inserats",
+    "status": {
+      "met": "Erfüllt",
+      "not_met": "Noch nicht",
+      "unknown": "Angabe fehlt"
+    },
+    "missingTitle": "Fehlende Angaben",
+    "missing": {
+      "grades": "Noten oder Eignungstest",
+      "languages": "Sprachen",
+      "soft_skills": "Sozialkompetenz",
+      "cv": "Lebenslauf"
+    },
+    "noStrength": "Profil, das man im Gespräch entdecken kann.",
+    "filter": "Sehr interessante zuerst anzeigen",
+    "humanDecides": "Hinweis, berechnet aus deinen Kriterien, um die Unterlagen zu lesen. Entscheiden tust immer du.",
+    "strengths": {
+      "trials_in_profession": "{count, plural, one {# Schnupperlehre} other {# Schnupperlehren}} im Beruf",
+      "trials_other": "{count, plural, one {# Schnupperlehre} other {# Schnupperlehren}} in einem anderen Beruf",
+      "good_average": "Guter Durchschnitt ({value})",
+      "test_result": "Gutes Resultat im Test {name} ({score})",
+      "test_done": "Eignungstest absolviert",
+      "motivated_letter": "Sorgfältiges Motivationsschreiben",
+      "volunteering": "Freiwilliges Engagement",
+      "languages_match": "Spricht {languages}",
+      "moped_license": "Mofaprüfung",
+      "soft_skills": "{count} Stärken in Sozialkompetenz"
+    }
   }
 }
