@@ -35,7 +35,10 @@ export default function NotificationsScreen() {
           <Pressable
             accessibilityRole="button"
             style={[styles.card, !item.read_at && { borderLeftWidth: 4, borderLeftColor: colors.violet }]}
-            onPress={() => item.params.application_id && router.push(`/application/${item.params.application_id}`)}
+            onPress={() => {
+              if (item.type === "checkup_ready") router.push("/coach");
+              else if (item.params.application_id) router.push(`/application/${item.params.application_id}`);
+            }}
           >
             <View style={[styles.row, { justifyContent: "space-between" }]}>
               <Text style={[styles.cardTitle, { fontSize: 16, flex: 1 }]}>{n.title}</Text>

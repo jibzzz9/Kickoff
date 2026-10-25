@@ -1,5 +1,5 @@
 export default {
-  common: { email: "Email", password: "Mot de passe", loading: "Chargement…", logout: "Se déconnecter", save: "Enregistrer", cancel: "Annuler", saved: "Enregistré ✓", error: "Oups, quelque chose n'a pas marché. Réessaie.", add: "Ajouter", remove: "Retirer" },
+  common: { email: "Email", password: "Mot de passe", loading: "Chargement…", logout: "Se déconnecter", save: "Enregistrer", back: "Retour", cancel: "Annuler", saved: "Enregistré ✓", error: "Oups, quelque chose n'a pas marché. Réessaie.", add: "Ajouter", remove: "Retirer" },
   tabs: { places: "Places", applications: "Candidatures", profile: "Profil", appointments: "Entretiens", coach: "Coach" },
   login: { title: "Content de te revoir", submit: "Se connecter", noAccount: "Pas encore de compte ?", error: "Email ou mot de passe incorrect." },
   signup: {
@@ -28,6 +28,9 @@ export default {
     empty: "Aucune place ne correspond à ces filtres pour le moment. Essaie d'en enlever un.",
     places: "{{count}} place",
     places_other: "{{count}} places",
+    filters: "Filtres",
+    filtersActive: "Filtres ({{count}})",
+    mapWeb: "La carte interactive est disponible dans l'app sur téléphone. Aperçu par commune :",
     startDate: "Rentrée le {{date}}",
   },
   listing: {
@@ -103,6 +106,7 @@ export default {
   softSkills: { punctual: "Ponctuel·le", team_player: "Esprit d'équipe", curious: "Curieux·se", careful: "Soigneux·se", friendly: "Souriant·e", autonomous: "Autonome", organized: "Organisé·e", patient: "Patient·e" },
   compat: {
     title: "Ta compatibilité",
+    short: "{{score}} %",
     ring: "{{score}} % compatible",
     matches: "Ce qui correspond",
     missing: "Ce qu'il te manque",
@@ -158,6 +162,7 @@ export default {
     eventTitle: "{{kind}} – {{company}}",
   },
   application: {
+    viewListing: "Voir la place",
     title: "Ma candidature",
     thread: "Échanges",
     placeholder: "Écrire un message à l'entreprise…",

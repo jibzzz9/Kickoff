@@ -1,20 +1,18 @@
 import { useCallback, useMemo, useState } from "react";
 import { FlatList, Pressable, RefreshControl, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import MapView, { Marker } from "react-native-maps";
 import { useFocusEffect, useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { colors, spacing } from "@kickoff/ui-tokens";
-import { supabase } from "../../src/lib/supabase";
-import { formatDate, professionName } from "../../src/lib/format";
-import type { ListingCard } from "../../src/lib/types";
-import { Chip, styles } from "../../src/ui";
-import { fetchCompat, type StudentMatch } from "../../src/lib/match";
-import { useUnreadCount } from "../../src/lib/notifications";
-import { useAuth } from "../../src/auth/AuthProvider";
+import { supabase } from "../../../src/lib/supabase";
+import { formatDate, professionName } from "../../../src/lib/format";
+import type { ListingCard } from "../../../src/lib/types";
+import { Chip, styles } from "../../../src/ui";
+import { PlacesMap } from "../../../src/ui/PlacesMap";
+import { fetchCompat, type StudentMatch } from "../../../src/lib/match";
+import { useUnreadCount } from "../../../src/lib/notifications";
+import { useAuth } from "../../../src/auth/AuthProvider";
 import { Ionicons } from "@expo/vector-icons";
-
-const VALAIS = { latitude: 46.22, longitude: 7.5, latitudeDelta: 0.9, longitudeDelta: 1.3 };
 
 export default function Places() {
   const { t } = useTranslation();
@@ -28,6 +26,8 @@ export default function Places() {
   const [profession, setProfession] = useState<string | null>(null);
   const [commune, setCommune] = useState<string | null>(null);
   const [year, setYear] = useState<string | null>(null);
+  const [showFilters, setShowFilters] = useState(false);
+  const activeFilters = [profession, commune, year].filter(Boolean).length;
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -86,25 +86,23 @@ export default function Places() {
         <View style={styles.row}>
           <Chip label={t("places.list")} selected={mode === "list"} onPress={() => setMode("list")} />
           <Chip label={t("places.map")} selected={mode === "map"} onPress={() => setMode("map")} />
+          <Chip
+            label={activeFilters ? t("places.filtersActive", { count: activeFilters }) : t("places.filters")}
+            selected={showFilters || activeFilters > 0}
+            onPress={() => setShowFilters((v) => !v)}
+          />
         </View>
-        {filterRow(t("places.profession"), options.professions, profession, setProfession)}
-        {filterRow(t("places.commune"), options.communes, commune, setCommune)}
-        {filterRow(t("places.startYear"), options.years.map((y) => ({ id: y, name: y })), year, setYear)}
+        {showFilters && (
+          <>
+            {filterRow(t("places.profession"), options.professions, profession, setProfession)}
+            {filterRow(t("places.commune"), options.communes, commune, setCommune)}
+            {filterRow(t("places.startYear"), options.years.map((y) => ({ id: y, name: y })), year, setYear)}
+          </>
+        )}
       </View>
 
       {mode === "map" ? (
-        <MapView style={{ flex: 1, marginTop: spacing.md }} initialRegion={VALAIS}>
-          {filtered.map((l) => (
-            <Marker
-              key={l.id}
-              coordinate={{ latitude: l.lat!, longitude: l.lng! }}
-              title={l.title ?? ""}
-              description={`${l.company_name} · ${l.commune_name}`}
-              pinColor={colors.violet}
-              onCalloutPress={() => router.push(`/listing/${l.id}`)}
-            />
-          ))}
-        </MapView>
+        <PlacesMap listings={filtered} onOpen={(id) => router.push(`/listing/${id}`)} />
       ) : (
         <FlatList
           data={filtered}
@@ -114,10 +112,12 @@ export default function Places() {
           ListEmptyComponent={loading ? undefined : <Text style={styles.muted}>{t("places.empty")}</Text>}
           renderItem={({ item: l }) => (
             <Pressable accessibilityRole="button" onPress={() => router.push(`/listing/${l.id}`)} style={styles.card}>
-              <View style={[styles.row, { justifyContent: "space-between" }]}>
-                <Text style={styles.badge}>{professionName(l)}</Text>
+              <View style={[styles.row, { justifyContent: "space-between", flexWrap: "nowrap", alignItems: "flex-start" }]}>
+                <Text style={[styles.badge, { flexShrink: 1 }]} numberOfLines={1}>{professionName(l)}</Text>
                 {compat[l.id!] && (
-                  <Text style={{ fontWeight: "800", color: colors.violet }}>{t("compat.ring", { score: compat[l.id!]!.score })}</Text>
+                  <Text accessibilityLabel={t("compat.ring", { score: compat[l.id!]!.score })} style={{ fontWeight: "800", color: colors.violet }}>
+                    {t("compat.short", { score: compat[l.id!]!.score })}
+                  </Text>
                 )}
               </View>
               <Text style={styles.cardTitle}>{l.title}</Text>

@@ -14,6 +14,7 @@ cp apps/mobile/.env.example apps/mobile/.env        # idem
 npx supabase functions serve         # score de compatibilité (Edge Function match), dans un autre terminal
 pnpm --filter @kickoff/web dev        # http://localhost:3000
 pnpm --filter @kickoff/mobile start   # QR code pour Expo Go
+pnpm --filter @kickoff/mobile web     # aperçu de l'app élève dans le navigateur (sans téléphone)
 ```
 
 ## Comptes de démo (données fictives)

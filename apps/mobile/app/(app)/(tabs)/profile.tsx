@@ -15,10 +15,10 @@ import {
   type Locale,
 } from "@kickoff/shared";
 import { colors } from "@kickoff/ui-tokens";
-import { supabase } from "../../src/lib/supabase";
-import { useAuth } from "../../src/auth/AuthProvider";
-import { Button, Chip, Field, Section, styles } from "../../src/ui";
-import { CommunePicker } from "../../src/ui/CommunePicker";
+import { supabase } from "../../../src/lib/supabase";
+import { useAuth } from "../../../src/auth/AuthProvider";
+import { Button, Chip, Field, Section, styles } from "../../../src/ui";
+import { CommunePicker } from "../../../src/ui/CommunePicker";
 
 type Test = { name: string; score?: number };
 type Trial = { professionCode: string; company: string; year: number };

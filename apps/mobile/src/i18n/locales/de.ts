@@ -1,5 +1,5 @@
 export default {
-  common: { email: "E-Mail", password: "Passwort", loading: "Lädt…", logout: "Abmelden", save: "Speichern", cancel: "Abbrechen", saved: "Gespeichert ✓", error: "Ups, etwas hat nicht geklappt. Versuche es nochmals.", add: "Hinzufügen", remove: "Entfernen" },
+  common: { email: "E-Mail", password: "Passwort", loading: "Lädt…", logout: "Abmelden", save: "Speichern", back: "Zurück", cancel: "Abbrechen", saved: "Gespeichert ✓", error: "Ups, etwas hat nicht geklappt. Versuche es nochmals.", add: "Hinzufügen", remove: "Entfernen" },
   tabs: { places: "Lehrstellen", applications: "Bewerbungen", profile: "Profil", appointments: "Termine", coach: "Coach" },
   login: { title: "Schön, dich wiederzusehen", submit: "Anmelden", noAccount: "Noch kein Konto?", error: "E-Mail oder Passwort falsch." },
   signup: {
@@ -28,6 +28,9 @@ export default {
     empty: "Im Moment passt keine Lehrstelle zu diesen Filtern. Entferne einen davon.",
     places: "{{count}} Platz",
     places_other: "{{count}} Plätze",
+    filters: "Filter",
+    filtersActive: "Filter ({{count}})",
+    mapWeb: "Die interaktive Karte gibt es in der App auf dem Handy. Übersicht nach Gemeinde:",
     startDate: "Lehrbeginn am {{date}}",
   },
   listing: {
@@ -103,6 +106,7 @@ export default {
   softSkills: { punctual: "Pünktlich", team_player: "Teamfähig", curious: "Neugierig", careful: "Sorgfältig", friendly: "Freundlich", autonomous: "Selbstständig", organized: "Organisiert", patient: "Geduldig" },
   compat: {
     title: "Deine Übereinstimmung",
+    short: "{{score}} %",
     ring: "{{score}} % passend",
     matches: "Was passt",
     missing: "Was dir noch fehlt",
@@ -158,6 +162,7 @@ export default {
     eventTitle: "{{kind}} – {{company}}",
   },
   application: {
+    viewListing: "Lehrstelle ansehen",
     title: "Meine Bewerbung",
     thread: "Austausch",
     placeholder: "Nachricht an den Betrieb schreiben…",

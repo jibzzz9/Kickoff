@@ -4,10 +4,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect, useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { colors, spacing } from "@kickoff/ui-tokens";
-import { supabase } from "../../src/lib/supabase";
-import { formatDate } from "../../src/lib/format";
-import type { ListingCard } from "../../src/lib/types";
-import { styles } from "../../src/ui";
+import { supabase } from "../../../src/lib/supabase";
+import { formatDate } from "../../../src/lib/format";
+import type { ListingCard } from "../../../src/lib/types";
+import { styles } from "../../../src/ui";
 
 type Row = { id: string; status: string; created_at: string; listing: ListingCard | undefined };
 

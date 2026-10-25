@@ -4,11 +4,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { colors } from "@kickoff/ui-tokens";
-import { supabase } from "../../src/lib/supabase";
-import { useAuth } from "../../src/auth/AuthProvider";
-import { formatDate } from "../../src/lib/format";
-import { Button, Chip, Section, styles } from "../../src/ui";
-import { SuggestedListings } from "../../src/ui/SuggestedListings";
+import { supabase } from "../../../src/lib/supabase";
+import { useAuth } from "../../../src/auth/AuthProvider";
+import { formatDate } from "../../../src/lib/format";
+import { Button, Chip, Section, styles } from "../../../src/ui";
+import { SuggestedListings } from "../../../src/ui/SuggestedListings";
 
 type Item = { key: string; [k: string]: string | number | null };
 type Report = {

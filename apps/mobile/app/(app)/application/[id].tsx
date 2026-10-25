@@ -130,9 +130,11 @@ export default function ApplicationScreen() {
         })}
         {canWrite(s.status) && (
           <View style={[styles.row, { flexWrap: "nowrap" }]}>
-            <TextInput value={body} onChangeText={setBody} placeholder={t("application.placeholder")} placeholderTextColor="#8A8FA3"
-              accessibilityLabel={t("application.placeholder")} style={[styles.input, { flex: 1 }]} maxLength={5000} />
-            <Button title={t("application.send")} onPress={() => void send()} disabled={!body.trim() || busy} />
+            <View style={{ flex: 1, minWidth: 0 }}>
+              <TextInput value={body} onChangeText={setBody} placeholder={t("application.placeholder")} placeholderTextColor="#8A8FA3"
+                accessibilityLabel={t("application.placeholder")} style={[styles.input, { width: "100%" }]} maxLength={5000} />
+            </View>
+            <Button compact title={t("application.send")} onPress={() => void send()} disabled={!body.trim() || busy} />
           </View>
         )}
       </Section>
@@ -147,7 +149,7 @@ export default function ApplicationScreen() {
         <Button variant="ghost" title={t("application.withdraw")} disabled={busy}
           onPress={() => confirm(t("application.withdrawConfirm"), () => void run(() => supabase.rpc("student_withdraw", { p_application: id })))} />
       )}
-      <Button variant="ghost" title={t("listing.about")} onPress={() => router.push(`/listing/${s.listingId}`)} />
+      <Button variant="ghost" title={t("application.viewListing")} onPress={() => router.push(`/listing/${s.listingId}`)} />
     </ScrollView>
   );
 }

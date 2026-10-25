@@ -61,3 +61,5 @@
 | 40 | Ajout des « métiers visés » au profil élève | Présent dans le brief (4.1), oublié en Phase 1 |
 | 41 | Écran Coach : ressource d'aide 147 (Pro Juventute) toujours visible | Garde-fou détresse disponible avant même le chat IA |
 | 42 | Reportés à la fin (payant) : chat du coach, simulateur d'entretien, récit IA des check-ups | Nécessitent l'API Claude |
+| 43 | Navigation mobile : pile (Stack) contenant les onglets ; fiches de détail par-dessus | Bouton Retour natif ; les onglets cachés cassaient la navigation |
+| 44 | Aperçu web de l'app élève (`react-native-web`), carte remplacée par une liste par commune sur le web | Tester sans téléphone et faire des captures automatiques |

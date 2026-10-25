@@ -11,14 +11,14 @@ export function Field({ label, ...props }: TextInputProps & { label: string }) {
   );
 }
 
-export function Button({ title, onPress, busy, disabled, variant = "primary" }: { title: string; onPress: () => void; busy?: boolean; disabled?: boolean; variant?: "primary" | "ghost" }) {
+export function Button({ title, onPress, busy, disabled, variant = "primary", compact }: { title: string; onPress: () => void; busy?: boolean; disabled?: boolean; variant?: "primary" | "ghost"; compact?: boolean }) {
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityState={{ disabled: busy || disabled }}
       disabled={busy || disabled}
       onPress={onPress}
-      style={[styles.button, variant === "ghost" && styles.ghost, (busy || disabled) && { opacity: 0.5 }]}
+      style={[styles.button, variant === "ghost" && styles.ghost, compact && { marginTop: 0, paddingHorizontal: spacing.md }, (busy || disabled) && { opacity: 0.5 }]}
     >
       {busy ? <ActivityIndicator color={colors.ink} /> : <Text style={styles.buttonText}>{title}</Text>}
     </Pressable>

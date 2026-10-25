@@ -5,9 +5,9 @@ import { useFocusEffect } from "expo-router";
 import * as Calendar from "expo-calendar";
 import { useTranslation } from "react-i18next";
 import { colors, spacing } from "@kickoff/ui-tokens";
-import { supabase } from "../../src/lib/supabase";
-import { formatDate } from "../../src/lib/format";
-import { Button, Chip, Section, styles } from "../../src/ui";
+import { supabase } from "../../../src/lib/supabase";
+import { formatDate } from "../../../src/lib/format";
+import { Button, Chip, Section, styles } from "../../../src/ui";
 
 type Slot = { id: string; starts_at: string };
 type Appt = {

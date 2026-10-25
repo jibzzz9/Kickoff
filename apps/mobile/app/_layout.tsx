@@ -25,8 +25,9 @@ function Guard() {
   // Toucher une notification push ouvre la candidature concernée.
   useEffect(() => {
     const sub = Notifications.addNotificationResponseReceivedListener((r) => {
-      const params = (r.notification.request.content.data?.params ?? {}) as { application_id?: string };
-      if (params.application_id) router.push(`/application/${params.application_id}`);
+      const data = r.notification.request.content.data as { type?: string; params?: { application_id?: string } };
+      if (data?.type === "checkup_ready") router.push("/coach");
+      else if (data?.params?.application_id) router.push(`/application/${data.params.application_id}`);
     });
     return () => sub.remove();
   }, [router]);

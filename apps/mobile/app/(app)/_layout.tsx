@@ -1,35 +1,16 @@
-import { Tabs } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
+import { Stack } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { colors } from "@kickoff/ui-tokens";
 
+/** Pile de navigation : les onglets, puis les écrans de détail par-dessus (avec bouton Retour). */
 export default function AppLayout() {
   const { t } = useTranslation();
   return (
-    <Tabs screenOptions={{ headerShown: false, tabBarActiveTintColor: colors.violet, tabBarLabelStyle: { fontWeight: "700" } }}>
-      <Tabs.Screen
-        name="index"
-        options={{ title: t("tabs.places"), tabBarIcon: ({ color, size }) => <Ionicons name="compass" color={String(color)} size={size} /> }}
-      />
-      <Tabs.Screen
-        name="applications"
-        options={{ title: t("tabs.applications"), tabBarIcon: ({ color, size }) => <Ionicons name="paper-plane" color={String(color)} size={size} /> }}
-      />
-      <Tabs.Screen
-        name="appointments"
-        options={{ title: t("tabs.appointments"), tabBarIcon: ({ color, size }) => <Ionicons name="calendar" color={String(color)} size={size} /> }}
-      />
-      <Tabs.Screen
-        name="coach"
-        options={{ title: t("tabs.coach"), tabBarIcon: ({ color, size }) => <Ionicons name="sparkles" color={String(color)} size={size} /> }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{ title: t("tabs.profile"), tabBarIcon: ({ color, size }) => <Ionicons name="person" color={String(color)} size={size} /> }}
-      />
-      <Tabs.Screen name="listing/[id]" options={{ href: null, headerShown: true, title: "" }} />
-      <Tabs.Screen name="application/[id]" options={{ href: null, headerShown: true, title: "" }} />
-      <Tabs.Screen name="notifications" options={{ href: null, headerShown: true, title: t("notifications.title") }} />
-    </Tabs>
+    <Stack screenOptions={{ headerTintColor: colors.ink, headerBackTitle: t("common.back"), contentStyle: { backgroundColor: colors.surface } }}>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="listing/[id]" options={{ title: "" }} />
+      <Stack.Screen name="application/[id]" options={{ title: "" }} />
+      <Stack.Screen name="notifications" options={{ title: t("notifications.title") }} />
+    </Stack>
   );
 }
