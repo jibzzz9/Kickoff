@@ -77,7 +77,8 @@ async function score(req: Request, listingId: string) {
     const profile = toScoringProfile(card);
     const r = computeMatch(profile, scoringListing);
     const details = { complete: r.complete, missingInfo: r.missingInfo, criteria: r.criteria, strengths: r.strengths };
-    results[card.application_id] = { score: r.score, segments: r.segments, badge: r.badge, ...details };
+    // tip : action la plus utile pour le jeune, proposée comme conseil dans le message « Pas cette fois ».
+    results[card.application_id] = { score: r.score, segments: r.segments, badge: r.badge, ...details, tip: r.improvements[0]?.action ?? null };
 
     const hash = await sha256(JSON.stringify({ profile, listing: scoringListing }));
     if (known.get(card.application_id) === `${r.algoVersion}:${hash}`) continue; // déjà à jour

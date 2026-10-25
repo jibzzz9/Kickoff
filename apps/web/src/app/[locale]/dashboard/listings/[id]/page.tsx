@@ -3,6 +3,8 @@ import { getFormatter, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { ApplicationsLive } from "./applications-live";
+import { FillButton } from "./fill-button";
+import { getCurrentCompany } from "@/lib/company";
 
 export default async function ListingPage({ params }: { params: Promise<{ locale: string; id: string }> }) {
   const { locale, id } = await params;
@@ -18,6 +20,7 @@ export default async function ListingPage({ params }: { params: Promise<{ locale
     .maybeSingle();
   if (!listing) notFound();
 
+  const company = await getCurrentCompany(supabase);
   const [{ data: cards }, { data: professions }] = await Promise.all([
     supabase.from("candidate_cards").select("*").eq("listing_id", id).order("created_at", { ascending: true }),
     supabase.from("professions").select("code, name_fr, name_de"),
@@ -30,7 +33,10 @@ export default async function ListingPage({ params }: { params: Promise<{ locale
       <Link href="/dashboard" className="text-sm font-bold underline">{t("common.back")}</Link>
       <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
         <h1 className="text-3xl">{listing.title}</h1>
-        <span className="rounded-full bg-white px-3 py-1 text-sm">{t(`listingStatus.${listing.status}`)}</span>
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="rounded-full bg-white px-3 py-1 text-sm">{t(`listingStatus.${listing.status}`)}</span>
+          {listing.status === "open" && <FillButton listingId={listing.id} />}
+        </div>
       </div>
       <p className="mt-2 text-ink/70">
         {professionName} · {listing.communes?.name} ·{" "}
@@ -51,7 +57,13 @@ export default async function ListingPage({ params }: { params: Promise<{ locale
 
       <h2 className="mt-10 text-2xl">{t("listingPage.applications")}</h2>
       <p className="text-sm text-ink/70">{t("listingPage.applicationsHint")}</p>
-      <ApplicationsLive listingId={listing.id} initial={cards ?? []} professionNames={professionNames} />
+      <ApplicationsLive
+        listingId={listing.id}
+        initial={cards ?? []}
+        professionNames={professionNames}
+        listingOpen={listing.status === "open"}
+        ctx={{ company: company?.name ?? "", listing: listing.title, sender: company?.contactName ?? company?.name ?? "" }}
+      />
     </main>
   );
 }

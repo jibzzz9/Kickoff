@@ -6,8 +6,8 @@ type Client = Awaited<ReturnType<typeof createClient>>;
 export async function getCurrentCompany(supabase: Client) {
   const { data } = await supabase
     .from("company_members")
-    .select("role, companies(id, name, verified_at, plan)")
+    .select("role, contact_name, companies(id, name, verified_at, plan)")
     .limit(1)
     .maybeSingle();
-  return data?.companies ? { ...data.companies, memberRole: data.role } : null;
+  return data?.companies ? { ...data.companies, memberRole: data.role, contactName: data.contact_name } : null;
 }

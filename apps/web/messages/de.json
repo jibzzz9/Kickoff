@@ -180,5 +180,105 @@
       "moped_license": "Mofaprüfung",
       "soft_skills": "{count} Stärken in Sozialkompetenz"
     }
+  },
+  "applicationStatus": {
+    "sent": "Neu",
+    "followed_up": "Nachgefragt",
+    "trial": "Schnupperlehre",
+    "interview": "Vorstellungsgespräch",
+    "offer": "Stelle angeboten",
+    "accepted": "Stelle angenommen 🎉",
+    "declined": "Stelle abgelehnt",
+    "not_this_time": "Diesmal nicht",
+    "waitlist": "Warteliste",
+    "withdrawn": "Zurückgezogen"
+  },
+  "actions": {
+    "select": "Für eine Sammeleinladung auswählen",
+    "inviteInterview": "Zum Gespräch einladen",
+    "inviteTrial": "Schnupperlehre anbieten",
+    "offer": "Stelle anbieten",
+    "notThisTime": "Diesmal nicht",
+    "waitlist": "Warteliste",
+    "notes": "Private Notizen",
+    "evaluate": "Schnupperlehre bewerten",
+    "message": "Nachricht (anpassbar)",
+    "slots": "Vorgeschlagene Termine (1 bis 3)",
+    "location": "Ort",
+    "contactPerson": "Ansprechperson",
+    "whatToBring": "Mitbringen",
+    "duration": "Dauer (Minuten)",
+    "send": "Einladung senden",
+    "sendOffer": "Angebot senden",
+    "sendNotThisTime": "Antwort senden",
+    "sendWaitlist": "Auf Warteliste setzen",
+    "cancel": "Abbrechen",
+    "done": "Gesendet ✓",
+    "error": "Die Aktion konnte nicht gesendet werden. Prüfe die Felder.",
+    "planDisabled": "Diese Aktion gehört zum Pro-Angebot.",
+    "groupInvite": "Auswahl einladen ({count})",
+    "groupTitle": "Sammeleinladung ({count} Personen)",
+    "humanNote": "Nichts wird ohne deinen Klick gesendet. Die Person erhält sofort eine Benachrichtigung.",
+    "filled": "Stelle besetzt",
+    "filledConfirm": "Bestätigen? Das Inserat wird geschlossen und alle noch wartenden Personen erhalten eine freundliche Antwort.",
+    "filledYes": "Ja, die Stelle ist besetzt"
+  },
+  "appointment": {
+    "interview": "Vorstellungsgespräch",
+    "trial": "Schnupperlehre",
+    "waiting": "Wartet auf die Terminwahl",
+    "chosen": "Gewählter Termin: {date}",
+    "proposed": "Vorgeschlagene Termine: {slots}",
+    "status": {
+      "proposed": "Vorgeschlagen",
+      "scheduled": "Geplant",
+      "done": "Abgeschlossen",
+      "cancelled": "Abgesagt"
+    }
+  },
+  "evaluation": {
+    "title": "Bewertung der Schnupperlehre",
+    "punctuality": "Pünktlichkeit",
+    "interest": "Interesse am Beruf",
+    "team": "Kontakt zum Team",
+    "scale": {
+      "1": "Zu verbessern",
+      "2": "Korrekt",
+      "3": "Gut",
+      "4": "Ausgezeichnet"
+    },
+    "comment": "Kommentar",
+    "share": "Rückmeldung mit der Person teilen (sie sieht sie nur, wenn sie Rückmeldungen erlaubt hat)",
+    "save": "Bewertung speichern",
+    "saved": "Bewertung gespeichert ✓"
+  },
+  "notes": {
+    "placeholder": "2-3 Eindrücke (nur für dein Team sichtbar)",
+    "add": "Notiz hinzufügen",
+    "empty": "Noch keine Notiz."
+  },
+  "thread": {
+    "title": "Austausch",
+    "empty": "Noch kein Austausch.",
+    "placeholder": "Nachricht an die Person schreiben…",
+    "send": "Senden",
+    "events": {
+      "invitation": "Einladung gesendet",
+      "slot_chosen": "{name} hat einen Termin gewählt",
+      "offer": "Stelle angeboten",
+      "offer_accepted": "{name} hat die Stelle angenommen 🎉",
+      "offer_declined": "{name} hat die Stelle abgelehnt",
+      "not_this_time": "Antwort «Diesmal nicht» gesendet",
+      "waitlist": "Auf die Warteliste gesetzt",
+      "filled": "Automatische Antwort gesendet: Stelle besetzt",
+      "follow_up": "{name} hat nachgefragt",
+      "withdrawn": "{name} hat die Bewerbung zurückgezogen",
+      "trial_feedback": "Rückmeldung zur Schnupperlehre geteilt"
+    }
+  },
+  "notifications": {
+    "title": "Neuigkeiten",
+    "empty": "Nichts Neues.",
+    "markRead": "Alle als gelesen markieren"
   }
 }

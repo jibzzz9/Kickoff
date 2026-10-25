@@ -39,14 +39,14 @@ export type Database = {
                   ]
                 },"applications": {
                   Row: {
-                    "cover_letter": string | null,"created_at": string,"cv_document_id": string | null,"id": string,"listing_id": string,"status": Database["public"]['Enums']["application_status"],"student_id": string,"updated_at": string
+                    "cover_letter": string | null,"created_at": string,"cv_document_id": string | null,"decided_at": string | null,"first_response_at": string | null,"id": string,"listing_id": string,"status": Database["public"]['Enums']["application_status"],"student_id": string,"updated_at": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "cover_letter"?: string | null,"created_at"?: string,"cv_document_id"?: string | null,"id"?: string,"listing_id": string,"status"?: Database["public"]['Enums']["application_status"],"student_id": string,"updated_at"?: string
+                    "cover_letter"?: string | null,"created_at"?: string,"cv_document_id"?: string | null,"decided_at"?: string | null,"first_response_at"?: string | null,"id"?: string,"listing_id": string,"status"?: Database["public"]['Enums']["application_status"],"student_id": string,"updated_at"?: string
                   }
                   Update: {
-                    "cover_letter"?: string | null,"created_at"?: string,"cv_document_id"?: string | null,"id"?: string,"listing_id"?: string,"status"?: Database["public"]['Enums']["application_status"],"student_id"?: string,"updated_at"?: string
+                    "cover_letter"?: string | null,"created_at"?: string,"cv_document_id"?: string | null,"decided_at"?: string | null,"first_response_at"?: string | null,"id"?: string,"listing_id"?: string,"status"?: Database["public"]['Enums']["application_status"],"student_id"?: string,"updated_at"?: string
                   }
                   Relationships: [
                     {
@@ -73,6 +73,64 @@ isOneToOne: false
 isOneToOne: false
       referencedRelation: "students"
       referencedColumns: ["profile_id"]
+    }
+                  ]
+                },"appointment_slots": {
+                  Row: {
+                    "appointment_id": string,"id": string,"starts_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "appointment_id": string,"id"?: string,"starts_at": string
+                  }
+                  Update: {
+                    "appointment_id"?: string,"id"?: string,"starts_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "appointment_slots_appointment_id_fkey"
+      columns: ["appointment_id"]
+isOneToOne: false
+      referencedRelation: "appointments"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"appointments": {
+                  Row: {
+                    "application_id": string,"chosen_slot_id": string | null,"contact_person": string | null,"created_at": string,"created_by": string | null,"duration_minutes": number,"id": string,"kind": Database["public"]['Enums']["appointment_kind"],"location": string | null,"status": Database["public"]['Enums']["appointment_status"],"updated_at": string,"what_to_bring": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "application_id": string,"chosen_slot_id"?: string | null,"contact_person"?: string | null,"created_at"?: string,"created_by"?: string | null,"duration_minutes"?: number,"id"?: string,"kind": Database["public"]['Enums']["appointment_kind"],"location"?: string | null,"status"?: Database["public"]['Enums']["appointment_status"],"updated_at"?: string,"what_to_bring"?: string | null
+                  }
+                  Update: {
+                    "application_id"?: string,"chosen_slot_id"?: string | null,"contact_person"?: string | null,"created_at"?: string,"created_by"?: string | null,"duration_minutes"?: number,"id"?: string,"kind"?: Database["public"]['Enums']["appointment_kind"],"location"?: string | null,"status"?: Database["public"]['Enums']["appointment_status"],"updated_at"?: string,"what_to_bring"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "appointments_application_id_fkey"
+      columns: ["application_id"]
+isOneToOne: false
+      referencedRelation: "applications"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "appointments_application_id_fkey"
+      columns: ["application_id"]
+isOneToOne: false
+      referencedRelation: "candidate_cards"
+      referencedColumns: ["application_id"]
+    },{
+      foreignKeyName: "appointments_chosen_slot_fk"
+      columns: ["chosen_slot_id"]
+isOneToOne: false
+      referencedRelation: "appointment_slots"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "appointments_created_by_fkey"
+      columns: ["created_by"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
     }
                   ]
                 },"communes": {
@@ -257,6 +315,64 @@ isOneToOne: true
       referencedColumns: ["application_id"]
     }
                   ]
+                },"messages": {
+                  Row: {
+                    "application_id": string,"appointment_id": string | null,"body": string | null,"created_at": string,"id": string,"kind": string,"sender_id": string | null,"sender_role": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "application_id": string,"appointment_id"?: string | null,"body"?: string | null,"created_at"?: string,"id"?: string,"kind"?: string,"sender_id"?: string | null,"sender_role": string
+                  }
+                  Update: {
+                    "application_id"?: string,"appointment_id"?: string | null,"body"?: string | null,"created_at"?: string,"id"?: string,"kind"?: string,"sender_id"?: string | null,"sender_role"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "messages_application_id_fkey"
+      columns: ["application_id"]
+isOneToOne: false
+      referencedRelation: "applications"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "messages_application_id_fkey"
+      columns: ["application_id"]
+isOneToOne: false
+      referencedRelation: "candidate_cards"
+      referencedColumns: ["application_id"]
+    },{
+      foreignKeyName: "messages_appointment_id_fkey"
+      columns: ["appointment_id"]
+isOneToOne: false
+      referencedRelation: "appointments"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "messages_sender_id_fkey"
+      columns: ["sender_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"notifications": {
+                  Row: {
+                    "created_at": string,"id": string,"params": NonNullable<Json>,"profile_id": string,"pushed_at": string | null,"read_at": string | null,"type": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"id"?: string,"params"?: NonNullable<Json>,"profile_id": string,"pushed_at"?: string | null,"read_at"?: string | null,"type": string
+                  }
+                  Update: {
+                    "created_at"?: string,"id"?: string,"params"?: NonNullable<Json>,"profile_id"?: string,"pushed_at"?: string | null,"read_at"?: string | null,"type"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "notifications_profile_id_fkey"
+      columns: ["profile_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"parental_consents": {
                   Row: {
                     "confirmed_at": string | null,"created_at": string,"expires_at": string,"id": string,"parent_email": string,"student_id": string,"token_hash": string
@@ -319,6 +435,90 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"push_tokens": {
+                  Row: {
+                    "created_at": string,"id": string,"platform": string | null,"profile_id": string,"token": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"id"?: string,"platform"?: string | null,"profile_id": string,"token": string
+                  }
+                  Update: {
+                    "created_at"?: string,"id"?: string,"platform"?: string | null,"profile_id"?: string,"token"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "push_tokens_profile_id_fkey"
+      columns: ["profile_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"recruiter_notes": {
+                  Row: {
+                    "application_id": string,"author_id": string,"body": string,"created_at": string,"id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "application_id": string,"author_id"?: string,"body": string,"created_at"?: string,"id"?: string
+                  }
+                  Update: {
+                    "application_id"?: string,"author_id"?: string,"body"?: string,"created_at"?: string,"id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "recruiter_notes_application_id_fkey"
+      columns: ["application_id"]
+isOneToOne: false
+      referencedRelation: "applications"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "recruiter_notes_application_id_fkey"
+      columns: ["application_id"]
+isOneToOne: false
+      referencedRelation: "candidate_cards"
+      referencedColumns: ["application_id"]
+    },{
+      foreignKeyName: "recruiter_notes_author_id_fkey"
+      columns: ["author_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"reminders": {
+                  Row: {
+                    "application_id": string | null,"appointment_id": string | null,"id": number,"kind": string,"sent_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "application_id"?: string | null,"appointment_id"?: string | null,"id"?: never,"kind": string,"sent_at"?: string
+                  }
+                  Update: {
+                    "application_id"?: string | null,"appointment_id"?: string | null,"id"?: never,"kind"?: string,"sent_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "reminders_application_id_fkey"
+      columns: ["application_id"]
+isOneToOne: false
+      referencedRelation: "applications"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "reminders_application_id_fkey"
+      columns: ["application_id"]
+isOneToOne: false
+      referencedRelation: "candidate_cards"
+      referencedColumns: ["application_id"]
+    },{
+      foreignKeyName: "reminders_appointment_id_fkey"
+      columns: ["appointment_id"]
+isOneToOne: false
+      referencedRelation: "appointments"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"score_audit_log": {
                   Row: {
                     "algo_version": string,"application_id": string,"badge": string,"created_at": string,"id": number,"inputs_hash": string,"score": number,"segments": number
@@ -367,14 +567,14 @@ isOneToOne: false
                   ]
                 },"students": {
                   Row: {
-                    "ai_notice_accepted_at": string | null,"aptitude_tests": NonNullable<Json>,"birth_date": string,"checkup_frequency_days": number,"commune": string,"commune_id": string | null,"created_at": string,"does_volunteering": boolean,"first_name": string,"grades": NonNullable<Json>,"has_moped_license": boolean,"interests": (string)[],"languages": (string)[],"parent_email": string | null,"parental_consent": Database["public"]['Enums']["consent_status"],"parental_consent_at": string | null,"plan": Database["public"]['Enums']["student_plan"],"profile_id": string,"school_year": string | null,"soft_skills": (string)[],"trial_internships": NonNullable<Json>
+                    "ai_notice_accepted_at": string | null,"aptitude_tests": NonNullable<Json>,"birth_date": string,"checkup_frequency_days": number,"commune": string,"commune_id": string | null,"created_at": string,"does_volunteering": boolean,"first_name": string,"grades": NonNullable<Json>,"has_moped_license": boolean,"interests": (string)[],"languages": (string)[],"parent_email": string | null,"parental_consent": Database["public"]['Enums']["consent_status"],"parental_consent_at": string | null,"plan": Database["public"]['Enums']["student_plan"],"profile_id": string,"school_year": string | null,"share_trial_feedback": boolean,"soft_skills": (string)[],"trial_internships": NonNullable<Json>
                   }
                   ComputedFields: never
                   Insert: {
-                    "ai_notice_accepted_at"?: string | null,"aptitude_tests"?: NonNullable<Json>,"birth_date": string,"checkup_frequency_days"?: number,"commune": string,"commune_id"?: string | null,"created_at"?: string,"does_volunteering"?: boolean,"first_name": string,"grades"?: NonNullable<Json>,"has_moped_license"?: boolean,"interests"?: (string)[],"languages"?: (string)[],"parent_email"?: string | null,"parental_consent"?: Database["public"]['Enums']["consent_status"],"parental_consent_at"?: string | null,"plan"?: Database["public"]['Enums']["student_plan"],"profile_id": string,"school_year"?: string | null,"soft_skills"?: (string)[],"trial_internships"?: NonNullable<Json>
+                    "ai_notice_accepted_at"?: string | null,"aptitude_tests"?: NonNullable<Json>,"birth_date": string,"checkup_frequency_days"?: number,"commune": string,"commune_id"?: string | null,"created_at"?: string,"does_volunteering"?: boolean,"first_name": string,"grades"?: NonNullable<Json>,"has_moped_license"?: boolean,"interests"?: (string)[],"languages"?: (string)[],"parent_email"?: string | null,"parental_consent"?: Database["public"]['Enums']["consent_status"],"parental_consent_at"?: string | null,"plan"?: Database["public"]['Enums']["student_plan"],"profile_id": string,"school_year"?: string | null,"share_trial_feedback"?: boolean,"soft_skills"?: (string)[],"trial_internships"?: NonNullable<Json>
                   }
                   Update: {
-                    "ai_notice_accepted_at"?: string | null,"aptitude_tests"?: NonNullable<Json>,"birth_date"?: string,"checkup_frequency_days"?: number,"commune"?: string,"commune_id"?: string | null,"created_at"?: string,"does_volunteering"?: boolean,"first_name"?: string,"grades"?: NonNullable<Json>,"has_moped_license"?: boolean,"interests"?: (string)[],"languages"?: (string)[],"parent_email"?: string | null,"parental_consent"?: Database["public"]['Enums']["consent_status"],"parental_consent_at"?: string | null,"plan"?: Database["public"]['Enums']["student_plan"],"profile_id"?: string,"school_year"?: string | null,"soft_skills"?: (string)[],"trial_internships"?: NonNullable<Json>
+                    "ai_notice_accepted_at"?: string | null,"aptitude_tests"?: NonNullable<Json>,"birth_date"?: string,"checkup_frequency_days"?: number,"commune"?: string,"commune_id"?: string | null,"created_at"?: string,"does_volunteering"?: boolean,"first_name"?: string,"grades"?: NonNullable<Json>,"has_moped_license"?: boolean,"interests"?: (string)[],"languages"?: (string)[],"parent_email"?: string | null,"parental_consent"?: Database["public"]['Enums']["consent_status"],"parental_consent_at"?: string | null,"plan"?: Database["public"]['Enums']["student_plan"],"profile_id"?: string,"school_year"?: string | null,"share_trial_feedback"?: boolean,"soft_skills"?: (string)[],"trial_internships"?: NonNullable<Json>
                   }
                   Relationships: [
                     {
@@ -393,6 +593,32 @@ isOneToOne: false
       foreignKeyName: "students_profile_id_fkey"
       columns: ["profile_id"]
 isOneToOne: true
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"trial_evaluations": {
+                  Row: {
+                    "appointment_id": string,"comment": string | null,"created_at": string,"created_by": string | null,"interest": number,"punctuality": number,"share_with_student": boolean,"team_contact": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "appointment_id": string,"comment"?: string | null,"created_at"?: string,"created_by"?: string | null,"interest": number,"punctuality": number,"share_with_student"?: boolean,"team_contact": number
+                  }
+                  Update: {
+                    "appointment_id"?: string,"comment"?: string | null,"created_at"?: string,"created_by"?: string | null,"interest"?: number,"punctuality"?: number,"share_with_student"?: boolean,"team_contact"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "trial_evaluations_appointment_id_fkey"
+      columns: ["appointment_id"]
+isOneToOne: true
+      referencedRelation: "appointments"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "trial_evaluations_created_by_fkey"
+      columns: ["created_by"]
+isOneToOne: false
       referencedRelation: "profiles"
       referencedColumns: ["id"]
     }
@@ -431,14 +657,43 @@ isOneToOne: false
                 }
           }
           Functions: {
-            "company_can_read_document":
+            "application_context":
+{ Args: { "p_application": string }; Returns: {
+              "company_id": string,"company_name": string,"first_name": string,"listing_id": string,"listing_title": string,"places_count": number,"status": Database["public"]['Enums']["application_status"],"student_id": string
+            }[]
+                           },
+"assert_company_action":
+{ Args: { "p_application": string,"p_feature": string }; Returns: undefined
+                           },
+"assert_student_owns":
+{ Args: { "p_application": string }; Returns: undefined
+                           },
+"can_see_application":
+{ Args: { "p_application": string }; Returns: boolean
+                           },
+"company_can_read_document":
 { Args: { "p_path": string }; Returns: boolean
+                           },
+"company_decide":
+{ Args: { "p_application": string,"p_decision": string,"p_message": string }; Returns: undefined
+                           },
+"company_evaluate_trial":
+{ Args: { "p_appointment": string,"p_comment": string,"p_interest": number,"p_punctuality": number,"p_share": boolean,"p_team_contact": number }; Returns: undefined
                            },
 "company_has_feature":
 { Args: { "p_company": string,"p_feature": string }; Returns: boolean
                            },
+"company_invite":
+{ Args: { "p_application_ids": (string)[],"p_contact_person"?: string,"p_duration_minutes"?: number,"p_kind": Database["public"]['Enums']["appointment_kind"],"p_location"?: string,"p_message": string,"p_slots": (string)[],"p_what_to_bring"?: string }; Returns: number
+                           },
+"company_mark_filled":
+{ Args: { "p_listing": string }; Returns: undefined
+                           },
 "create_listing":
 { Args: { "p": Json }; Returns: string
+                           },
+"fill_listing":
+{ Args: { "p_listing": string }; Returns: undefined
                            },
 "is_admin":
 { Args: Record<PropertyKey, never>; Returns: boolean
@@ -461,12 +716,30 @@ isOneToOne: false
 "min_parent_consent_age":
 { Args: Record<PropertyKey, never>; Returns: number
                            },
+"post_message":
+{ Args: { "p_application": string,"p_appointment"?: string,"p_body": string,"p_kind": string,"p_role": string }; Returns: string
+                           },
+"run_reminders":
+{ Args: Record<PropertyKey, never>; Returns: number
+                           },
 "student_can_apply":
 { Args: Record<PropertyKey, never>; Returns: boolean
+                           },
+"student_choose_slot":
+{ Args: { "p_appointment": string,"p_slot": string }; Returns: undefined
+                           },
+"student_follow_up":
+{ Args: { "p_application": string,"p_message": string }; Returns: undefined
+                           },
+"student_respond_offer":
+{ Args: { "p_accept": boolean,"p_application": string }; Returns: undefined
+                           },
+"student_withdraw":
+{ Args: { "p_application": string }; Returns: undefined
                            }
           }
           Enums: {
-            "app_locale": "fr"|"de","application_status": "sent"|"followed_up"|"trial"|"interview"|"offer"|"accepted"|"declined"|"not_this_time"|"waitlist"|"withdrawn","company_plan": "basic"|"pro","company_role": "admin"|"trainer","consent_status": "not_required"|"pending"|"granted","criterion_kind": "required"|"bonus","document_kind": "cv"|"letter"|"video","listing_status": "draft"|"open"|"filled"|"closed","profession_type": "CFC"|"AFP","student_plan": "free"|"plus","user_role": "student"|"company_user"|"parent"|"admin"
+            "app_locale": "fr"|"de","application_status": "sent"|"followed_up"|"trial"|"interview"|"offer"|"accepted"|"declined"|"not_this_time"|"waitlist"|"withdrawn","appointment_kind": "interview"|"trial","appointment_status": "proposed"|"scheduled"|"done"|"cancelled","company_plan": "basic"|"pro","company_role": "admin"|"trainer","consent_status": "not_required"|"pending"|"granted","criterion_kind": "required"|"bonus","document_kind": "cv"|"letter"|"video","listing_status": "draft"|"open"|"filled"|"closed","profession_type": "CFC"|"AFP","student_plan": "free"|"plus","user_role": "student"|"company_user"|"parent"|"admin"
           }
           CompositeTypes: {
             [_ in never]: never
@@ -586,7 +859,7 @@ export const Constants = {
           }
         },"public": {
           Enums: {
-            "app_locale": ["fr", "de"],"application_status": ["sent", "followed_up", "trial", "interview", "offer", "accepted", "declined", "not_this_time", "waitlist", "withdrawn"],"company_plan": ["basic", "pro"],"company_role": ["admin", "trainer"],"consent_status": ["not_required", "pending", "granted"],"criterion_kind": ["required", "bonus"],"document_kind": ["cv", "letter", "video"],"listing_status": ["draft", "open", "filled", "closed"],"profession_type": ["CFC", "AFP"],"student_plan": ["free", "plus"],"user_role": ["student", "company_user", "parent", "admin"]
+            "app_locale": ["fr", "de"],"application_status": ["sent", "followed_up", "trial", "interview", "offer", "accepted", "declined", "not_this_time", "waitlist", "withdrawn"],"appointment_kind": ["interview", "trial"],"appointment_status": ["proposed", "scheduled", "done", "cancelled"],"company_plan": ["basic", "pro"],"company_role": ["admin", "trainer"],"consent_status": ["not_required", "pending", "granted"],"criterion_kind": ["required", "bonus"],"document_kind": ["cv", "letter", "video"],"listing_status": ["draft", "open", "filled", "closed"],"profession_type": ["CFC", "AFP"],"student_plan": ["free", "plus"],"user_role": ["student", "company_user", "parent", "admin"]
           }
         }
 } as const

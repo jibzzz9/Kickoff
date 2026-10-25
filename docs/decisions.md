@@ -48,3 +48,11 @@
 | 27 | La jauge (badge, segments) n'existe que dans la réponse « entreprise » et la table `match_scores` (aucune policy élève) | Exigence du brief, vérifiée par tests pgTAP |
 | 28 | Pondérations visibles par l'élève (`listing_cards.weights`) | Transparence ; nécessaires au calcul de compatibilité |
 | 29 | Fonctionnalité « jauge » soumise au plan (`company_has_feature(…, 'ai_gauge')`) | Feature flags par plan dès maintenant ; pilote en Pro |
+| 30 | Toutes les actions entreprise/élève passent par des fonctions SQL (`company_invite`, `company_decide`, `student_choose_slot`…) | Vérification des droits + statut + message + notification en une seule transaction |
+| 31 | Chaque événement est un message du fil de la candidature ; un trigger crée les notifications | Historique unique pour le jeune et l'entreprise, rien n'est oublié |
+| 32 | Push : trigger → `pg_net` → Edge Function `push` → API Expo (gratuite). URL + clé serveur dans le coffre (vault) | Notification immédiate ; sans appareil enregistré, notification in-app seulement |
+| 33 | Rappels (relance après 10 jours, veille à 17 h, matin à 7 h, heure suisse) par `pg_cron` toutes les 15 min | Gratuit, inclus dans Supabase ; table `reminders` contre les doublons |
+| 34 | « Place pourvue » : fermeture + réponse polie aux autres, déclenchée uniquement par une action humaine (acceptation de l'offre qui remplit les places, ou clic confirmé) | Exigence du brief sans décision automatique |
+| 35 | Messages pré-rédigés par gabarits FR/DE (`packages/shared/src/texts.ts`), conseil « Pas cette fois » tiré du moteur de score | Gratuit ; Claude personnalisera à la fin |
+| 36 | Web : fuseau `Europe/Zurich` pour toutes les dates ; rafraîchissement de rattrapage quand l'abonnement temps réel devient actif | Heures justes ; aucun événement perdu après une coupure |
+| 37 | En production, créer une fois dans le coffre : `select vault.create_secret('https://<projet>.supabase.co', 'project_url'); select vault.create_secret('<clé service_role>', 'service_role_key');` | Nécessaire aux notifications push |

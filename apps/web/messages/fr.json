@@ -180,5 +180,105 @@
       "moped_license": "Permis vélomoteur",
       "soft_skills": "{count} qualités de savoir-être"
     }
+  },
+  "applicationStatus": {
+    "sent": "Nouvelle",
+    "followed_up": "Relancée",
+    "trial": "Stage d'essai",
+    "interview": "Entretien",
+    "offer": "Place proposée",
+    "accepted": "Place acceptée 🎉",
+    "declined": "Place déclinée",
+    "not_this_time": "Pas cette fois",
+    "waitlist": "Liste d'attente",
+    "withdrawn": "Retirée"
+  },
+  "actions": {
+    "select": "Sélectionner pour une invitation groupée",
+    "inviteInterview": "Inviter à un entretien",
+    "inviteTrial": "Proposer un stage d'essai",
+    "offer": "Proposer la place",
+    "notThisTime": "Pas cette fois",
+    "waitlist": "Liste d'attente",
+    "notes": "Notes privées",
+    "evaluate": "Évaluer le stage",
+    "message": "Message (modifiable)",
+    "slots": "Créneaux proposés (1 à 3)",
+    "location": "Lieu",
+    "contactPerson": "Personne à demander",
+    "whatToBring": "À apporter",
+    "duration": "Durée (minutes)",
+    "send": "Envoyer l'invitation",
+    "sendOffer": "Envoyer la proposition",
+    "sendNotThisTime": "Envoyer la réponse",
+    "sendWaitlist": "Mettre sur liste d'attente",
+    "cancel": "Annuler",
+    "done": "Envoyé ✓",
+    "error": "L'action n'a pas pu être envoyée. Vérifie les champs.",
+    "planDisabled": "Cette action fait partie de l'offre Pro.",
+    "groupInvite": "Inviter la sélection ({count})",
+    "groupTitle": "Invitation groupée ({count} candidat·e·s)",
+    "humanNote": "Rien n'est envoyé sans ton clic. Le jeune reçoit une notification immédiatement.",
+    "filled": "Place pourvue",
+    "filledConfirm": "Confirmer ? L'annonce sera fermée et chaque candidat·e encore en attente recevra une réponse polie.",
+    "filledYes": "Oui, la place est pourvue"
+  },
+  "appointment": {
+    "interview": "Entretien",
+    "trial": "Stage d'essai",
+    "waiting": "En attente du choix du jeune",
+    "chosen": "Créneau choisi : {date}",
+    "proposed": "Créneaux proposés : {slots}",
+    "status": {
+      "proposed": "Proposé",
+      "scheduled": "Planifié",
+      "done": "Terminé",
+      "cancelled": "Annulé"
+    }
+  },
+  "evaluation": {
+    "title": "Fiche d'évaluation du stage",
+    "punctuality": "Ponctualité",
+    "interest": "Intérêt pour le métier",
+    "team": "Contact avec l'équipe",
+    "scale": {
+      "1": "À améliorer",
+      "2": "Correct",
+      "3": "Bien",
+      "4": "Excellent"
+    },
+    "comment": "Commentaire",
+    "share": "Partager ce retour avec le jeune (il ne le verra que s'il a accepté de recevoir les retours)",
+    "save": "Enregistrer l'évaluation",
+    "saved": "Évaluation enregistrée ✓"
+  },
+  "notes": {
+    "placeholder": "2-3 impressions (visibles uniquement par ton équipe)",
+    "add": "Ajouter la note",
+    "empty": "Aucune note pour l'instant."
+  },
+  "thread": {
+    "title": "Échanges",
+    "empty": "Aucun échange pour l'instant.",
+    "placeholder": "Écrire un message au jeune…",
+    "send": "Envoyer",
+    "events": {
+      "invitation": "Invitation envoyée",
+      "slot_chosen": "{name} a choisi un créneau",
+      "offer": "Place proposée",
+      "offer_accepted": "{name} a accepté la place 🎉",
+      "offer_declined": "{name} a décliné la place",
+      "not_this_time": "Réponse « Pas cette fois » envoyée",
+      "waitlist": "Mis·e sur liste d'attente",
+      "filled": "Réponse automatique envoyée : place pourvue",
+      "follow_up": "{name} a relancé sa candidature",
+      "withdrawn": "{name} a retiré sa candidature",
+      "trial_feedback": "Retour de stage partagé avec le jeune"
+    }
+  },
+  "notifications": {
+    "title": "Nouveautés",
+    "empty": "Rien de nouveau.",
+    "markRead": "Tout marquer comme lu"
   }
 }
