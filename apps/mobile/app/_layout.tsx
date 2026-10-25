@@ -5,6 +5,7 @@ import { StatusBar } from "expo-status-bar";
 import * as Notifications from "expo-notifications";
 import { AuthProvider, useAuth } from "../src/auth/AuthProvider";
 import { registerForPush } from "../src/lib/notifications";
+import { DemoBanner } from "../src/ui/DemoBanner";
 import { supabase } from "../src/lib/supabase";
 import i18n from "../src/i18n";
 
@@ -46,6 +47,7 @@ export default function RootLayout() {
   return (
     <AuthProvider>
       <StatusBar style="dark" />
+      {process.env.EXPO_PUBLIC_DEMO === "1" && <DemoBanner />}
       <Guard />
     </AuthProvider>
   );

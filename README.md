@@ -36,6 +36,17 @@ pnpm --filter @kickoff/mobile web     # aperçu de l'app élève dans le navigat
 
 Les emails (invitations parent/enseignant) arrivent dans la boîte de test locale : http://127.0.0.1:54324
 
+## Aperçu en ligne (mode démo)
+
+Une version autonome de l'app élève, avec des données fictives et des réponses d'entreprise simulées, tient dans une
+seule page HTML publiable (aucun serveur, aucune requête réseau) :
+
+```bash
+pnpm --filter @kickoff/mobile demo:build ../../dist-demo   # crée dist-demo/kickoff-app-eleve.html
+```
+
+Le faux backend est dans `apps/mobile/src/lib/demo/` ; il n'est inclus que dans cette version (voir `metro.config.js`).
+
 ## Comptes de démo (données fictives)
 
 Créés par `npx supabase db reset`. Mot de passe : `demo1234`.

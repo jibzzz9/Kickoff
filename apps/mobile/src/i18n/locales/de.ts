@@ -281,6 +281,7 @@ export default {
     deleted: "Dein Konto wurde gelöscht.",
   },
   legal: { terms: "Nutzungsbedingungen", privacy: "Datenschutzerklärung" },
+  demo: { banner: "Demo · fiktive Daten · nichts wird gesendet oder gespeichert" },
   home: {
     welcome: "Hallo {{name}} 👋",
   },

@@ -12,3 +12,4 @@ supabase/.temp
 supabase/functions/.certs
 supabase/functions/.env*
 !supabase/functions/.env.example
+dist-demo

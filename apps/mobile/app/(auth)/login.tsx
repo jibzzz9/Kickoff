@@ -8,8 +8,10 @@ import { Button, Field, styles } from "../../src/ui";
 
 export default function Login() {
   const { t } = useTranslation();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  // Version démo : le compte fictif de Léa est pré-rempli.
+  const demo = process.env.EXPO_PUBLIC_DEMO === "1";
+  const [email, setEmail] = useState(demo ? "lea@demo.kickoff.ch" : "");
+  const [password, setPassword] = useState(demo ? "demo1234" : "");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 

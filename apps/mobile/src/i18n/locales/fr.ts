@@ -281,6 +281,7 @@ export default {
     deleted: "Ton compte a été supprimé.",
   },
   legal: { terms: "Conditions d'utilisation", privacy: "Politique de confidentialité" },
+  demo: { banner: "Démo · données fictives · rien n'est envoyé ni enregistré" },
   home: {
     welcome: "Salut {{name}} 👋",
   },
