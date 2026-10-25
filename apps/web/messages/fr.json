@@ -280,5 +280,88 @@
     "title": "Nouveautés",
     "empty": "Rien de nouveau.",
     "markRead": "Tout marquer comme lu"
+  },
+  "consent": {
+    "title": "Accord parental",
+    "loading": "Vérification du lien…",
+    "invalid": "Ce lien n'est plus valable. Votre enfant peut vous renvoyer un nouvel email depuis l'application.",
+    "intro": "{name} s'est inscrit·e sur Kickoff pour trouver une place d'apprentissage. Comme {name} a moins de 16 ans, nous avons besoin de votre accord.",
+    "points": "Ce que fait Kickoff :",
+    "p1": "Le profil (notes, stages, langues, qualités) sert à proposer des places adaptées.",
+    "p2": "Le dossier n'est transmis qu'aux entreprises auxquelles votre enfant postule.",
+    "p3": "Une IA aide les entreprises à lire les dossiers, mais c'est toujours une personne qui décide.",
+    "p4": "Pas de publicité, pas de revente de données. Le compte peut être supprimé à tout moment.",
+    "privacy": "Lire la politique de confidentialité (brouillon)",
+    "confirm": "Je donne mon accord",
+    "refuse": "Si vous refusez, il suffit de fermer cette page : le compte restera limité.",
+    "done": "Merci ! Le compte de {name} est maintenant actif.",
+    "already": "Votre accord a déjà été enregistré. Merci !"
+  },
+  "guardian": {
+    "inviteTitle": "Invitation à suivre une recherche d'apprentissage",
+    "inviteIntro": "{name} vous invite en tant que {relation} à suivre sa recherche sur Kickoff, en lecture seule.",
+    "relation": {
+      "parent": "parent",
+      "teacher": "enseignant·e"
+    },
+    "inviteInvalid": "Cette invitation n'est plus valable.",
+    "needAccount": "Pour accepter, connectez-vous avec un compte parent/enseignant ou créez-en un.",
+    "createAccount": "Créer un compte parent / enseignant",
+    "login": "J'ai déjà un compte",
+    "accept": "Accepter l'invitation",
+    "wrongAccount": "Ce compte n'est pas un compte parent/enseignant. Déconnectez-vous et créez un compte parent.",
+    "accepted": "C'est fait ! Vous pouvez maintenant suivre {name}.",
+    "dashboardTitle": "Suivi des recherches",
+    "none": "Aucun élève ne vous a encore invité·e. Demandez-lui de vous inviter depuis son profil dans l'app Kickoff.",
+    "readOnly": "Lecture seule : vous voyez les candidatures, les rendez-vous et, s'ils sont partagés, les check-ups. Les échanges avec les entreprises restent privés.",
+    "applications": "Candidatures",
+    "noApplications": "Pas encore de candidature.",
+    "appointments": "Rendez-vous à venir",
+    "noAppointments": "Aucun rendez-vous prévu.",
+    "checkup": "Dernier check-up",
+    "noCheckup": "Pas de check-up partagé.",
+    "checkupStats": "Candidatures envoyées : {applications} · Invitations : {invitations} · Places proposées : {offers}",
+    "status": {
+      "sent": "Envoyée",
+      "followed_up": "Relancée",
+      "trial": "Stage d'essai",
+      "interview": "Entretien",
+      "offer": "Place proposée 🎉",
+      "accepted": "Contrat 🎉",
+      "declined": "Place déclinée",
+      "not_this_time": "Pas cette fois",
+      "waitlist": "Liste d'attente",
+      "withdrawn": "Retirée"
+    }
+  },
+  "parentSignup": {
+    "title": "Créer un compte parent / enseignant",
+    "submit": "Créer le compte"
+  },
+  "legal": {
+    "draft": "BROUILLON — texte à valider par un juriste avant toute mise en service.",
+    "terms": "Conditions d'utilisation",
+    "privacy": "Politique de confidentialité",
+    "updated": "Version brouillon du {date}"
+  },
+  "plan": {
+    "pro": "Offre Pro",
+    "basic": "Offre Basique",
+    "pilot": "offerte pendant le pilote"
+  },
+  "stats": {
+    "title": "Statistiques",
+    "views": "Vues",
+    "uniqueViewers": "Jeunes différents",
+    "applications": "Candidatures",
+    "invited": "Invité·e·s",
+    "offers": "Places proposées",
+    "avgResponse": "Délai moyen de 1re réponse",
+    "hours": "{value} h",
+    "none": "—"
+  },
+  "footer": {
+    "terms": "Conditions d'utilisation",
+    "privacy": "Confidentialité"
   }
 }

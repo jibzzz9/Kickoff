@@ -5,10 +5,13 @@ import { useTranslations } from "next-intl";
 import { loginSchema } from "@kickoff/shared";
 import { Link, useRouter } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { safeNext } from "@/lib/next-path";
+import { useSearchParams } from "next/navigation";
 
 export default function LoginPage() {
   const t = useTranslations();
   const router = useRouter();
+  const next = safeNext(useSearchParams().get("next"), "/dashboard");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -21,7 +24,7 @@ export default function LoginPage() {
     const { error } = await createClient().auth.signInWithPassword(parsed.data);
     setBusy(false);
     if (error) return setError(t("login.error"));
-    router.push("/dashboard");
+    router.push(next);
     router.refresh();
   }
 

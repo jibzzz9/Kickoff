@@ -22,7 +22,7 @@ export async function middleware(request: NextRequest) {
   const { data } = await supabase.auth.getUser();
 
   const path = request.nextUrl.pathname;
-  const isProtected = /^\/(fr|de)\/dashboard/.test(path);
+  const isProtected = /^\/(fr|de)\/(dashboard|guardian(?!\/invite))/.test(path);
   if (isProtected && !data.user) {
     const locale = path.split("/")[1];
     return NextResponse.redirect(new URL(`/${locale}/login`, request.url));

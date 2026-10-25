@@ -12,6 +12,9 @@ export default async function Dashboard({ params }: { params: Promise<{ locale: 
   const { data: auth } = await supabase.auth.getUser();
   if (!auth.user) return redirect({ href: "/login", locale });
 
+  const { data: profile } = await supabase.from("profiles").select("role").eq("id", auth.user.id).single();
+  if (profile?.role === "parent") return redirect({ href: "/guardian", locale });
+
   const company = await getCurrentCompany(supabase);
   // RLS : seules les annonces de l'entreprise de l'utilisateur sont renvoyées.
   const { data: listings } = await supabase
@@ -25,6 +28,12 @@ export default async function Dashboard({ params }: { params: Promise<{ locale: 
         <h1 className="text-3xl">{t("dashboard.welcome", { company: company?.name ?? "" })}</h1>
         <LogoutButton />
       </div>
+      {company && (
+        <p className="mt-2 text-sm">
+          <span className="rounded-full bg-violet/15 px-3 py-1 font-bold">{t(`plan.${company.plan}`)}</span>
+          {company.plan === "pro" && <span className="ml-2 text-ink/60">{t("plan.pilot")}</span>}
+        </p>
+      )}
       {!company?.verified_at && <p className="mt-4 rounded-card bg-amber/30 p-4">{t("dashboard.pending")}</p>}
 
       <div className="mt-10 flex items-center justify-between gap-4">

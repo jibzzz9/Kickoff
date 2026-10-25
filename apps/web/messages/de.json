@@ -280,5 +280,88 @@
     "title": "Neuigkeiten",
     "empty": "Nichts Neues.",
     "markRead": "Alle als gelesen markieren"
+  },
+  "consent": {
+    "title": "Zustimmung der Eltern",
+    "loading": "Link wird geprüft…",
+    "invalid": "Dieser Link ist nicht mehr gültig. Ihr Kind kann Ihnen in der App eine neue E-Mail senden.",
+    "intro": "{name} hat sich bei Kickoff angemeldet, um eine Lehrstelle zu finden. Da {name} unter 16 Jahre alt ist, brauchen wir Ihre Zustimmung.",
+    "points": "Was Kickoff macht:",
+    "p1": "Das Profil (Noten, Schnupperlehren, Sprachen, Stärken) dient dazu, passende Lehrstellen vorzuschlagen.",
+    "p2": "Die Unterlagen werden nur an Betriebe weitergegeben, bei denen sich Ihr Kind bewirbt.",
+    "p3": "Eine KI hilft den Betrieben beim Lesen der Unterlagen, aber entscheiden tut immer ein Mensch.",
+    "p4": "Keine Werbung, kein Verkauf von Daten. Das Konto kann jederzeit gelöscht werden.",
+    "privacy": "Datenschutzerklärung lesen (Entwurf)",
+    "confirm": "Ich stimme zu",
+    "refuse": "Wenn Sie nicht zustimmen, schliessen Sie einfach diese Seite: Das Konto bleibt eingeschränkt.",
+    "done": "Danke! Das Konto von {name} ist jetzt aktiv.",
+    "already": "Ihre Zustimmung wurde bereits gespeichert. Danke!"
+  },
+  "guardian": {
+    "inviteTitle": "Einladung zur Begleitung einer Lehrstellensuche",
+    "inviteIntro": "{name} lädt Sie als {relation} ein, die Suche auf Kickoff mitzuverfolgen (nur lesen).",
+    "relation": {
+      "parent": "Elternteil",
+      "teacher": "Lehrperson"
+    },
+    "inviteInvalid": "Diese Einladung ist nicht mehr gültig.",
+    "needAccount": "Melden Sie sich zum Annehmen mit einem Eltern-/Lehrpersonenkonto an oder erstellen Sie eines.",
+    "createAccount": "Eltern-/Lehrpersonenkonto erstellen",
+    "login": "Ich habe schon ein Konto",
+    "accept": "Einladung annehmen",
+    "wrongAccount": "Dieses Konto ist kein Eltern-/Lehrpersonenkonto. Melden Sie sich ab und erstellen Sie ein Elternkonto.",
+    "accepted": "Erledigt! Sie können {name} jetzt begleiten.",
+    "dashboardTitle": "Begleitung der Suche",
+    "none": "Noch niemand hat Sie eingeladen. Bitten Sie die Person, Sie in ihrem Profil in der Kickoff-App einzuladen.",
+    "readOnly": "Nur lesen: Sie sehen die Bewerbungen, die Termine und, falls geteilt, die Check-ups. Der Austausch mit den Betrieben bleibt privat.",
+    "applications": "Bewerbungen",
+    "noApplications": "Noch keine Bewerbung.",
+    "appointments": "Bevorstehende Termine",
+    "noAppointments": "Kein Termin geplant.",
+    "checkup": "Letzter Check-up",
+    "noCheckup": "Kein geteilter Check-up.",
+    "checkupStats": "Gesendete Bewerbungen: {applications} · Einladungen: {invitations} · Angebotene Stellen: {offers}",
+    "status": {
+      "sent": "Gesendet",
+      "followed_up": "Nachgefragt",
+      "trial": "Schnupperlehre",
+      "interview": "Vorstellungsgespräch",
+      "offer": "Stelle angeboten 🎉",
+      "accepted": "Vertrag 🎉",
+      "declined": "Stelle abgelehnt",
+      "not_this_time": "Diesmal nicht",
+      "waitlist": "Warteliste",
+      "withdrawn": "Zurückgezogen"
+    }
+  },
+  "parentSignup": {
+    "title": "Eltern-/Lehrpersonenkonto erstellen",
+    "submit": "Konto erstellen"
+  },
+  "legal": {
+    "draft": "ENTWURF — Text vor der Inbetriebnahme von einer juristischen Fachperson zu prüfen.",
+    "terms": "Nutzungsbedingungen",
+    "privacy": "Datenschutzerklärung",
+    "updated": "Entwurfsfassung vom {date}"
+  },
+  "plan": {
+    "pro": "Pro-Angebot",
+    "basic": "Basis-Angebot",
+    "pilot": "während des Pilotprojekts offeriert"
+  },
+  "stats": {
+    "title": "Statistiken",
+    "views": "Aufrufe",
+    "uniqueViewers": "Verschiedene Jugendliche",
+    "applications": "Bewerbungen",
+    "invited": "Eingeladen",
+    "offers": "Angebotene Stellen",
+    "avgResponse": "Durchschnittliche Zeit bis zur 1. Antwort",
+    "hours": "{value} Std.",
+    "none": "—"
+  },
+  "footer": {
+    "terms": "Nutzungsbedingungen",
+    "privacy": "Datenschutz"
   }
 }

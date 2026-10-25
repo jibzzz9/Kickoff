@@ -5,10 +5,19 @@ import { useLocale, useTranslations } from "next-intl";
 import { signupCompanySchema } from "@kickoff/shared";
 import { Link, useRouter } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { safeNext } from "@/lib/next-path";
+import { useSearchParams } from "next/navigation";
+import { ParentSignup } from "./parent-signup";
 
 const input = "mt-1 min-h-11 w-full rounded-card border border-ink/20 bg-white px-3";
 
 export default function SignupPage() {
+  const params = useSearchParams();
+  if (params.get("role") === "parent") return <ParentSignup next={safeNext(params.get("next"), "/guardian")} />;
+  return <CompanySignup />;
+}
+
+function CompanySignup() {
   const t = useTranslations("signup");
   const tc = useTranslations("common");
   const locale = useLocale();
@@ -64,6 +73,7 @@ export default function SignupPage() {
         <label className="block"><span className="text-sm font-semibold">{tc("email")}</span><input name="email" type="email" required autoComplete="email" className={input} /></label>
         <label className="block"><span className="text-sm font-semibold">{tc("password")}</span><input name="password" type="password" required minLength={8} autoComplete="new-password" className={input} /></label>
         <label className="flex items-start gap-2 text-sm"><input name="acceptTerms" type="checkbox" required className="mt-1 size-5" /><span>{t("acceptTerms")}</span></label>
+        <p className="text-sm"><Link href="/legal/terms" className="underline">{useTranslations("footer")("terms")}</Link> · <Link href="/legal/privacy" className="underline">{useTranslations("footer")("privacy")}</Link></p>
         {error && <p role="alert" className="text-coral">{error}</p>}
         <button disabled={busy} className="min-h-11 w-full rounded-card bg-lime px-6 py-3 font-bold text-ink disabled:opacity-60">
           {busy ? tc("loading") : t("submit")}

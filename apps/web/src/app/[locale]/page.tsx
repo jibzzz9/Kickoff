@@ -11,6 +11,10 @@ export default function Home() {
         <Link href="/signup" className="min-h-11 rounded-card bg-lime px-6 py-3 font-bold text-ink">{t("signup")}</Link>
         <Link href="/login" className="min-h-11 rounded-card border border-ink px-6 py-3 font-bold">{t("login")}</Link>
       </div>
+      <footer className="mt-16 flex gap-4 text-sm text-ink/60">
+        <Link href="/legal/terms" className="underline">{useTranslations("footer")("terms")}</Link>
+        <Link href="/legal/privacy" className="underline">{useTranslations("footer")("privacy")}</Link>
+      </footer>
     </main>
   );
 }
