@@ -63,3 +63,9 @@
 | 42 | Reportés à la fin (payant) : chat du coach, simulateur d'entretien, récit IA des check-ups | Nécessitent l'API Claude |
 | 43 | Navigation mobile : pile (Stack) contenant les onglets ; fiches de détail par-dessus | Bouton Retour natif ; les onglets cachés cassaient la navigation |
 | 44 | Aperçu web de l'app élève (`react-native-web`), carte remplacée par une liste par commune sur le web | Tester sans téléphone et faire des captures automatiques |
+| 45 | Emails derrière une interface `EmailProvider` : Mailpit en local, aucun envoi sans fournisseur ; fournisseur de production branché à la fin | Gratuit d'abord |
+| 46 | Consentement parental : email automatique à l'inscription (trigger → Edge Function), lien valable 7 jours, confirmation par un clic explicite (pas à l'ouverture du lien, que les antivirus de messagerie visitent) | Exigence du brief, robuste |
+| 47 | Accès parent/enseignant : invitation par l'élève (max 5), compte « parent », lecture seule des candidatures, rendez-vous et check-ups (si partagés) ; jamais les messages ni les scores ; révocable | Brief 4.1 et 4.3, minimisation |
+| 48 | Suppression de compte : fichiers + entreprise orpheline + compte (cascade) ; export JSON de toutes les données | Droits nLPD d'accès et d'effacement |
+| 49 | Temps de trajet : gare de référence par commune (identifiants officiels vérifiés), connexion du prochain jour ouvrable à 7 h, cache 30 jours | API gratuite transport.opendata.ch, peu d'appels |
+| 50 | Statistiques : vues (1 par élève et par jour), candidatures, invitations, offres, délai moyen de première réponse ; réservées au plan Pro | Brief 5.5 + feature flags |

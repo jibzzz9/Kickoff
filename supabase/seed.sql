@@ -1,6 +1,12 @@
 -- Données de démo FICTIVES (Valais). Mot de passe de tous les comptes : demo1234
 -- Rechargées par : npx supabase db reset
 
+-- Appels base -> Edge Functions en local (push, emails) : URL interne du projet et clé serveur de DÉVELOPPEMENT (clé de démo publique de la CLI Supabase,
+-- identique pour tous les projets locaux). En production, ces deux secrets sont créés à la main dans le coffre.
+select vault.create_secret('http://kong:8000', 'project_url');
+select vault.create_secret('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU', 'service_role_key');
+
+
 create function pg_temp.seed_user(p_email text, p_meta jsonb) returns uuid language plpgsql as $$
 declare v_id uuid := gen_random_uuid();
 begin
@@ -110,7 +116,3 @@ from (values
 join public.students s on s.first_name = x.first_name
 join public.listings l on l.title = 'Apprentissage ASSC dans une équipe bienveillante';
 
--- Push en local : URL interne du projet et clé serveur de DÉVELOPPEMENT (clé de démo publique de la CLI Supabase,
--- identique pour tous les projets locaux). En production, ces deux secrets sont créés à la main dans le coffre.
-select vault.create_secret('http://kong:8000', 'project_url');
-select vault.create_secret('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU', 'service_role_key');

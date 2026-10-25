@@ -155,14 +155,14 @@ isOneToOne: false
                   ]
                 },"communes": {
                   Row: {
-                    "canton": string,"code": string,"id": string,"language": Database["public"]['Enums']["app_locale"],"lat": number,"lng": number,"name": string
+                    "canton": string,"code": string,"id": string,"language": Database["public"]['Enums']["app_locale"],"lat": number,"lng": number,"name": string,"station_id": string | null,"station_name": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "canton"?: string,"code": string,"id"?: string,"language": Database["public"]['Enums']["app_locale"],"lat": number,"lng": number,"name": string
+                    "canton"?: string,"code": string,"id"?: string,"language": Database["public"]['Enums']["app_locale"],"lat": number,"lng": number,"name": string,"station_id"?: string | null,"station_name"?: string | null
                   }
                   Update: {
-                    "canton"?: string,"code"?: string,"id"?: string,"language"?: Database["public"]['Enums']["app_locale"],"lat"?: number,"lng"?: number,"name"?: string
+                    "canton"?: string,"code"?: string,"id"?: string,"language"?: Database["public"]['Enums']["app_locale"],"lat"?: number,"lng"?: number,"name"?: string,"station_id"?: string | null,"station_name"?: string | null
                   }
                   Relationships: [
                     
@@ -209,14 +209,14 @@ isOneToOne: false
                   ]
                 },"guardians_access": {
                   Row: {
-                    "created_at": string,"guardian_email": string,"guardian_profile_id": string | null,"id": string,"revoked_at": string | null,"student_id": string,"token_hash": string | null
+                    "accepted_at": string | null,"created_at": string,"expires_at": string,"guardian_email": string,"guardian_profile_id": string | null,"id": string,"relation": string,"revoked_at": string | null,"student_id": string,"token_hash": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "created_at"?: string,"guardian_email": string,"guardian_profile_id"?: string | null,"id"?: string,"revoked_at"?: string | null,"student_id": string,"token_hash"?: string | null
+                    "accepted_at"?: string | null,"created_at"?: string,"expires_at"?: string,"guardian_email": string,"guardian_profile_id"?: string | null,"id"?: string,"relation"?: string,"revoked_at"?: string | null,"student_id": string,"token_hash"?: string | null
                   }
                   Update: {
-                    "created_at"?: string,"guardian_email"?: string,"guardian_profile_id"?: string | null,"id"?: string,"revoked_at"?: string | null,"student_id"?: string,"token_hash"?: string | null
+                    "accepted_at"?: string | null,"created_at"?: string,"expires_at"?: string,"guardian_email"?: string,"guardian_profile_id"?: string | null,"id"?: string,"relation"?: string,"revoked_at"?: string | null,"student_id"?: string,"token_hash"?: string | null
                   }
                   Relationships: [
                     {
@@ -256,6 +256,38 @@ isOneToOne: false
       columns: ["listing_id"]
 isOneToOne: false
       referencedRelation: "listings"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"listing_views": {
+                  Row: {
+                    "day": string,"listing_id": string,"viewer_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "day"?: string,"listing_id": string,"viewer_id": string
+                  }
+                  Update: {
+                    "day"?: string,"listing_id"?: string,"viewer_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "listing_views_listing_id_fkey"
+      columns: ["listing_id"]
+isOneToOne: false
+      referencedRelation: "listing_cards"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "listing_views_listing_id_fkey"
+      columns: ["listing_id"]
+isOneToOne: false
+      referencedRelation: "listings"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "listing_views_viewer_id_fkey"
+      columns: ["viewer_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
       referencedColumns: ["id"]
     }
                   ]
@@ -617,6 +649,44 @@ isOneToOne: true
       referencedColumns: ["id"]
     }
                   ]
+                },"transit_cache": {
+                  Row: {
+                    "fetched_at": string,"from_commune_id": string,"minutes": number | null,"to_commune_id": string,"transfers": number | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "fetched_at"?: string,"from_commune_id": string,"minutes"?: number | null,"to_commune_id": string,"transfers"?: number | null
+                  }
+                  Update: {
+                    "fetched_at"?: string,"from_commune_id"?: string,"minutes"?: number | null,"to_commune_id"?: string,"transfers"?: number | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "transit_cache_from_commune_id_fkey"
+      columns: ["from_commune_id"]
+isOneToOne: false
+      referencedRelation: "communes"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "transit_cache_from_commune_id_fkey"
+      columns: ["from_commune_id"]
+isOneToOne: false
+      referencedRelation: "listing_cards"
+      referencedColumns: ["commune_id"]
+    },{
+      foreignKeyName: "transit_cache_to_commune_id_fkey"
+      columns: ["to_commune_id"]
+isOneToOne: false
+      referencedRelation: "communes"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "transit_cache_to_commune_id_fkey"
+      columns: ["to_commune_id"]
+isOneToOne: false
+      referencedRelation: "listing_cards"
+      referencedColumns: ["commune_id"]
+    }
+                  ]
                 },"trial_evaluations": {
                   Row: {
                     "appointment_id": string,"comment": string | null,"created_at": string,"created_by": string | null,"interest": number,"punctuality": number,"share_with_student": boolean,"team_contact": number
@@ -691,6 +761,9 @@ isOneToOne: false
 "build_checkup":
 { Args: { "p_end": string,"p_start": string,"p_student": string }; Returns: Json
                            },
+"call_edge_function":
+{ Args: { "p_body": Json,"p_name": string }; Returns: undefined
+                           },
 "can_see_application":
 { Args: { "p_application": string }; Returns: boolean
                            },
@@ -739,17 +812,28 @@ isOneToOne: false
 "is_company_member":
 { Args: { "p_company": string }; Returns: boolean
                            },
+"is_guardian_of":
+{ Args: { "p_student": string }; Returns: boolean
+                           },
 "is_listing_company_member":
 { Args: { "p_listing": string }; Returns: boolean
                            },
 "listing_is_public":
 { Args: { "p_listing": string }; Returns: boolean
                            },
+"listing_stats":
+{ Args: { "p_listing": string }; Returns: {
+              "applications": number,"avg_response_hours": number,"invited": number,"offers": number,"unique_viewers": number,"views": number
+            }[]
+                           },
 "min_parent_consent_age":
 { Args: Record<PropertyKey, never>; Returns: number
                            },
 "post_message":
 { Args: { "p_application": string,"p_appointment"?: string,"p_body": string,"p_kind": string,"p_role": string }; Returns: string
+                           },
+"record_listing_view":
+{ Args: { "p_listing": string }; Returns: undefined
                            },
 "request_checkup":
 { Args: Record<PropertyKey, never>; Returns: string
