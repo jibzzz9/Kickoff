@@ -7,6 +7,7 @@ import { supabase } from "../../../src/lib/supabase";
 import { useAuth } from "../../../src/auth/AuthProvider";
 import { formatDate } from "../../../src/lib/format";
 import { Button, Section, styles } from "../../../src/ui";
+import { SuggestedListings } from "../../../src/ui/SuggestedListings";
 
 type Message = { id: string; sender_role: string; kind: string; body: string | null; created_at: string; appointment_id: string | null };
 type Evaluation = { appointment_id: string; punctuality: number; interest: number; team_contact: number; comment: string | null };
@@ -135,6 +136,8 @@ export default function ApplicationScreen() {
           </View>
         )}
       </Section>
+
+      {(s.status === "not_this_time" || s.status === "declined") && <SuggestedListings title={t("coach.alternatives")} />}
 
       {s.status === "sent" && (
         <Button variant="ghost" title={t("application.followUp")} busy={busy}

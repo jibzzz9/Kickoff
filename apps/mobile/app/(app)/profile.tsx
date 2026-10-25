@@ -36,6 +36,7 @@ type Form = {
   hasMopedLicense: boolean;
   doesVolunteering: boolean;
   shareTrialFeedback: boolean;
+  targetProfessions: string[];
 };
 
 const toggle = <T,>(xs: T[], x: T) => (xs.includes(x) ? xs.filter((y) => y !== x) : [...xs, x]);
@@ -73,6 +74,7 @@ export default function Profile() {
         hasMopedLicense: s.has_moped_license,
         doesVolunteering: s.does_volunteering,
         shareTrialFeedback: s.share_trial_feedback,
+        targetProfessions: s.target_professions,
       });
     });
     void loadCv();
@@ -100,7 +102,7 @@ export default function Profile() {
     setBusy(true);
     const { error } = await supabase
       .from("students")
-      .update({ ...toStudentRow(parsed.data), share_trial_feedback: f.shareTrialFeedback, ...(f.communeId ? {} : { commune: f.commune }) })
+      .update({ ...toStudentRow(parsed.data), share_trial_feedback: f.shareTrialFeedback, target_professions: f.targetProfessions, ...(f.communeId ? {} : { commune: f.commune }) })
       .eq("profile_id", session.user.id);
     setBusy(false);
     setStatus(error ? { kind: "error", text: t("common.error") } : { kind: "ok", text: t("common.saved") });
@@ -157,6 +159,15 @@ export default function Profile() {
             ))}
           </View>
           <Field label={t("profile.average")} value={f.average} onChangeText={(v) => set("average", v)} keyboardType="decimal-pad" />
+        </Section>
+
+        <Section title={t("targetProfessions.label")}>
+          <View style={styles.row}>
+            {PILOT_PROFESSIONS.map((p) => (
+              <Chip key={p.code} label={professionLabel(p.code)} selected={f.targetProfessions.includes(p.code)}
+                onPress={() => set("targetProfessions", toggle(f.targetProfessions, p.code))} />
+            ))}
+          </View>
         </Section>
 
         <Section title={t("profile.tests")}>

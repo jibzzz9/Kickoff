@@ -133,6 +133,26 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"checkup_reports": {
+                  Row: {
+                    "content": NonNullable<Json>,"created_at": string,"id": string,"period_end": string,"period_start": string,"read_at": string | null,"student_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "content": NonNullable<Json>,"created_at"?: string,"id"?: string,"period_end": string,"period_start": string,"read_at"?: string | null,"student_id": string
+                  }
+                  Update: {
+                    "content"?: NonNullable<Json>,"created_at"?: string,"id"?: string,"period_end"?: string,"period_start"?: string,"read_at"?: string | null,"student_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "checkup_reports_student_id_fkey"
+      columns: ["student_id"]
+isOneToOne: false
+      referencedRelation: "students"
+      referencedColumns: ["profile_id"]
+    }
+                  ]
                 },"communes": {
                   Row: {
                     "canton": string,"code": string,"id": string,"language": Database["public"]['Enums']["app_locale"],"lat": number,"lng": number,"name": string
@@ -567,14 +587,14 @@ isOneToOne: false
                   ]
                 },"students": {
                   Row: {
-                    "ai_notice_accepted_at": string | null,"aptitude_tests": NonNullable<Json>,"birth_date": string,"checkup_frequency_days": number,"commune": string,"commune_id": string | null,"created_at": string,"does_volunteering": boolean,"first_name": string,"grades": NonNullable<Json>,"has_moped_license": boolean,"interests": (string)[],"languages": (string)[],"parent_email": string | null,"parental_consent": Database["public"]['Enums']["consent_status"],"parental_consent_at": string | null,"plan": Database["public"]['Enums']["student_plan"],"profile_id": string,"school_year": string | null,"share_trial_feedback": boolean,"soft_skills": (string)[],"trial_internships": NonNullable<Json>
+                    "ai_notice_accepted_at": string | null,"aptitude_tests": NonNullable<Json>,"birth_date": string,"checkup_frequency_days": number,"commune": string,"commune_id": string | null,"created_at": string,"does_volunteering": boolean,"first_name": string,"grades": NonNullable<Json>,"has_moped_license": boolean,"interests": (string)[],"languages": (string)[],"parent_email": string | null,"parental_consent": Database["public"]['Enums']["consent_status"],"parental_consent_at": string | null,"plan": Database["public"]['Enums']["student_plan"],"profile_id": string,"school_year": string | null,"share_checkups_with_guardians": boolean,"share_trial_feedback": boolean,"soft_skills": (string)[],"target_professions": (string)[],"trial_internships": NonNullable<Json>
                   }
                   ComputedFields: never
                   Insert: {
-                    "ai_notice_accepted_at"?: string | null,"aptitude_tests"?: NonNullable<Json>,"birth_date": string,"checkup_frequency_days"?: number,"commune": string,"commune_id"?: string | null,"created_at"?: string,"does_volunteering"?: boolean,"first_name": string,"grades"?: NonNullable<Json>,"has_moped_license"?: boolean,"interests"?: (string)[],"languages"?: (string)[],"parent_email"?: string | null,"parental_consent"?: Database["public"]['Enums']["consent_status"],"parental_consent_at"?: string | null,"plan"?: Database["public"]['Enums']["student_plan"],"profile_id": string,"school_year"?: string | null,"share_trial_feedback"?: boolean,"soft_skills"?: (string)[],"trial_internships"?: NonNullable<Json>
+                    "ai_notice_accepted_at"?: string | null,"aptitude_tests"?: NonNullable<Json>,"birth_date": string,"checkup_frequency_days"?: number,"commune": string,"commune_id"?: string | null,"created_at"?: string,"does_volunteering"?: boolean,"first_name": string,"grades"?: NonNullable<Json>,"has_moped_license"?: boolean,"interests"?: (string)[],"languages"?: (string)[],"parent_email"?: string | null,"parental_consent"?: Database["public"]['Enums']["consent_status"],"parental_consent_at"?: string | null,"plan"?: Database["public"]['Enums']["student_plan"],"profile_id": string,"school_year"?: string | null,"share_checkups_with_guardians"?: boolean,"share_trial_feedback"?: boolean,"soft_skills"?: (string)[],"target_professions"?: (string)[],"trial_internships"?: NonNullable<Json>
                   }
                   Update: {
-                    "ai_notice_accepted_at"?: string | null,"aptitude_tests"?: NonNullable<Json>,"birth_date"?: string,"checkup_frequency_days"?: number,"commune"?: string,"commune_id"?: string | null,"created_at"?: string,"does_volunteering"?: boolean,"first_name"?: string,"grades"?: NonNullable<Json>,"has_moped_license"?: boolean,"interests"?: (string)[],"languages"?: (string)[],"parent_email"?: string | null,"parental_consent"?: Database["public"]['Enums']["consent_status"],"parental_consent_at"?: string | null,"plan"?: Database["public"]['Enums']["student_plan"],"profile_id"?: string,"school_year"?: string | null,"share_trial_feedback"?: boolean,"soft_skills"?: (string)[],"trial_internships"?: NonNullable<Json>
+                    "ai_notice_accepted_at"?: string | null,"aptitude_tests"?: NonNullable<Json>,"birth_date"?: string,"checkup_frequency_days"?: number,"commune"?: string,"commune_id"?: string | null,"created_at"?: string,"does_volunteering"?: boolean,"first_name"?: string,"grades"?: NonNullable<Json>,"has_moped_license"?: boolean,"interests"?: (string)[],"languages"?: (string)[],"parent_email"?: string | null,"parental_consent"?: Database["public"]['Enums']["consent_status"],"parental_consent_at"?: string | null,"plan"?: Database["public"]['Enums']["student_plan"],"profile_id"?: string,"school_year"?: string | null,"share_checkups_with_guardians"?: boolean,"share_trial_feedback"?: boolean,"soft_skills"?: (string)[],"target_professions"?: (string)[],"trial_internships"?: NonNullable<Json>
                   }
                   Relationships: [
                     {
@@ -668,6 +688,9 @@ isOneToOne: false
 "assert_student_owns":
 { Args: { "p_application": string }; Returns: undefined
                            },
+"build_checkup":
+{ Args: { "p_end": string,"p_start": string,"p_student": string }; Returns: Json
+                           },
 "can_see_application":
 { Args: { "p_application": string }; Returns: boolean
                            },
@@ -692,8 +715,17 @@ isOneToOne: false
 "create_listing":
 { Args: { "p": Json }; Returns: string
                            },
+"distance_km":
+{ Args: { "lat1": number,"lat2": number,"lng1": number,"lng2": number }; Returns: number
+                           },
 "fill_listing":
 { Args: { "p_listing": string }; Returns: undefined
+                           },
+"generate_checkup":
+{ Args: { "p_student": string }; Returns: string
+                           },
+"generate_due_checkups":
+{ Args: Record<PropertyKey, never>; Returns: number
                            },
 "is_admin":
 { Args: Record<PropertyKey, never>; Returns: boolean
@@ -719,6 +751,9 @@ isOneToOne: false
 "post_message":
 { Args: { "p_application": string,"p_appointment"?: string,"p_body": string,"p_kind": string,"p_role": string }; Returns: string
                            },
+"request_checkup":
+{ Args: Record<PropertyKey, never>; Returns: string
+                           },
 "run_reminders":
 { Args: Record<PropertyKey, never>; Returns: number
                            },
@@ -736,6 +771,16 @@ isOneToOne: false
                            },
 "student_withdraw":
 { Args: { "p_application": string }; Returns: undefined
+                           },
+"suggest_listings":
+{ Args: { "p_limit"?: number }; Returns: {
+              "distance_km": number,"listing_id": string,"reason": string
+            }[]
+                           },
+"suggest_listings_for":
+{ Args: { "p_limit"?: number,"p_student": string }; Returns: {
+              "distance_km": number,"listing_id": string,"reason": string
+            }[]
                            }
           }
           Enums: {

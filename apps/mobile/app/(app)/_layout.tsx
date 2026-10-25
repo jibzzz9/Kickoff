@@ -20,6 +20,10 @@ export default function AppLayout() {
         options={{ title: t("tabs.appointments"), tabBarIcon: ({ color, size }) => <Ionicons name="calendar" color={String(color)} size={size} /> }}
       />
       <Tabs.Screen
+        name="coach"
+        options={{ title: t("tabs.coach"), tabBarIcon: ({ color, size }) => <Ionicons name="sparkles" color={String(color)} size={size} /> }}
+      />
+      <Tabs.Screen
         name="profile"
         options={{ title: t("tabs.profile"), tabBarIcon: ({ color, size }) => <Ionicons name="person" color={String(color)} size={size} /> }}
       />

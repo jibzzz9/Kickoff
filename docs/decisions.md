@@ -56,3 +56,8 @@
 | 35 | Messages pré-rédigés par gabarits FR/DE (`packages/shared/src/texts.ts`), conseil « Pas cette fois » tiré du moteur de score | Gratuit ; Claude personnalisera à la fin |
 | 36 | Web : fuseau `Europe/Zurich` pour toutes les dates ; rafraîchissement de rattrapage quand l'abonnement temps réel devient actif | Heures justes ; aucun événement perdu après une coupure |
 | 37 | En production, créer une fois dans le coffre : `select vault.create_secret('https://<projet>.supabase.co', 'project_url'); select vault.create_secret('<clé service_role>', 'service_role_key');` | Nécessaire aux notifications push |
+| 38 | Check-ups construits par règles en SQL (`build_checkup`), générés chaque jour à 16 h UTC par `pg_cron` selon la fréquence choisie (7/14/21/30 jours) ; bilan à la demande limité à 1 par jour | Gratuit et explicable ; Claude écrira un récit à partir des mêmes données à la fin |
+| 39 | Suggestions de places (`suggest_listings`) : métiers visés, puis métiers déjà tentés, puis distance (centre des communes) | Alternatives proposées sans IA ; réutilisées dans le check-up et après « Pas cette fois » |
+| 40 | Ajout des « métiers visés » au profil élève | Présent dans le brief (4.1), oublié en Phase 1 |
+| 41 | Écran Coach : ressource d'aide 147 (Pro Juventute) toujours visible | Garde-fou détresse disponible avant même le chat IA |
+| 42 | Reportés à la fin (payant) : chat du coach, simulateur d'entretien, récit IA des check-ups | Nécessitent l'API Claude |
