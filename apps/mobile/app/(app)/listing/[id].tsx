@@ -19,6 +19,7 @@ type State = {
   consentPending: boolean;
   cv: { id: string; file_name: string } | null;
   match: StudentMatch | null;
+  transit: { minutes: number | null; transfers?: number; sameCommune?: boolean } | null;
 };
 
 export default function ListingScreen() {
@@ -31,13 +32,16 @@ export default function ListingScreen() {
   const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
-    const [listing, criteria, application, student, cv, compat] = await Promise.all([
+    // Vue comptée pour les statistiques de l'entreprise (une par jour).
+    void supabase.rpc("record_listing_view", { p_listing: id });
+    const [listing, criteria, application, student, cv, compat, transit] = await Promise.all([
       supabase.from("listing_cards").select("*").eq("id", id).maybeSingle(),
       supabase.from("listing_criteria").select("kind, key, value").eq("listing_id", id),
       supabase.from("applications").select("created_at").eq("listing_id", id).maybeSingle(),
       supabase.from("students").select("parental_consent").single(),
       supabase.from("student_documents").select("id, file_name").eq("kind", "cv").order("created_at", { ascending: false }).limit(1).maybeSingle(),
       fetchCompat([id]),
+      supabase.functions.invoke<State["transit"]>("transit", { body: { listingId: id } }),
     ]);
     setS({
       listing: listing.data,
@@ -46,6 +50,7 @@ export default function ListingScreen() {
       consentPending: student.data?.parental_consent === "pending",
       cv: cv.data,
       match: compat[id] ?? null,
+      transit: transit.data ?? null,
     });
   }, [id]);
   useFocusEffect(useCallback(() => void load(), [load]));
@@ -87,6 +92,14 @@ export default function ListingScreen() {
       <Text style={styles.muted}>
         {t("places.startDate", { date: formatDate(l.start_date!) })} · {t("places.places", { count: l.places_count ?? 1 })}
       </Text>
+      {s.transit?.sameCommune ? (
+        <Text style={{ fontWeight: "700" }}>{t("transit.sameCommune")}</Text>
+      ) : s.transit?.minutes ? (
+        <Text style={{ fontWeight: "700" }}>
+          {t("transit.minutes", { minutes: s.transit.minutes })}
+          {s.transit.transfers ? ` · ${t("transit.transfers", { count: s.transit.transfers })}` : ""}
+        </Text>
+      ) : null}
 
       {s.match && (
         <CompatSection

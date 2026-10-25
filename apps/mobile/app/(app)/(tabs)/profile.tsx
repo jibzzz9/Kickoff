@@ -19,6 +19,10 @@ import { supabase } from "../../../src/lib/supabase";
 import { useAuth } from "../../../src/auth/AuthProvider";
 import { Button, Chip, Field, Section, styles } from "../../../src/ui";
 import { CommunePicker } from "../../../src/ui/CommunePicker";
+import { GuardiansSection } from "../../../src/ui/GuardiansSection";
+import { LegalLinks } from "../../../src/ui/LegalLinks";
+import { confirmAsync, notify } from "../../../src/lib/confirm";
+import { Share } from "react-native";
 
 type Test = { name: string; score?: number };
 type Trial = { professionCode: string; company: string; year: number };
@@ -37,6 +41,7 @@ type Form = {
   doesVolunteering: boolean;
   shareTrialFeedback: boolean;
   targetProfessions: string[];
+  shareCheckups: boolean;
 };
 
 const toggle = <T,>(xs: T[], x: T) => (xs.includes(x) ? xs.filter((y) => y !== x) : [...xs, x]);
@@ -75,6 +80,7 @@ export default function Profile() {
         doesVolunteering: s.does_volunteering,
         shareTrialFeedback: s.share_trial_feedback,
         targetProfessions: s.target_professions,
+        shareCheckups: s.share_checkups_with_guardians,
       });
     });
     void loadCv();
@@ -133,6 +139,26 @@ export default function Profile() {
     setUploading(false);
     if (dbErr) return setStatus({ kind: "error", text: t("common.error") });
     await loadCv();
+  }
+
+  async function setShareCheckups(v: boolean) {
+    if (!session) return;
+    set("shareCheckups", v);
+    await supabase.from("students").update({ share_checkups_with_guardians: v }).eq("profile_id", session.user.id);
+  }
+
+  async function exportData() {
+    const { data } = await supabase.functions.invoke("account", { body: { action: "export" } });
+    if (data) await Share.share({ title: t("myData.export"), message: JSON.stringify(data, null, 2) });
+  }
+
+  async function deleteAccount() {
+    const labels = { cancel: t("common.cancel"), ok: t("myData.deleteOk") };
+    if (!(await confirmAsync(t("myData.deleteConfirm"), t("myData.deleteConfirm2"), labels))) return;
+    const { error } = await supabase.functions.invoke("account", { body: { action: "delete", confirm: "DELETE" } });
+    if (error) return notify(t("common.error"));
+    notify(t("myData.deleted"));
+    await supabase.auth.signOut();
   }
 
   async function changeLanguage(locale: Locale) {
@@ -262,6 +288,14 @@ export default function Profile() {
               <Chip key={l} label={l.toUpperCase()} selected={i18n.language === l} onPress={() => void changeLanguage(l)} />
             ))}
           </View>
+        </Section>
+
+        {session && <GuardiansSection studentId={session.user.id} shareCheckups={f.shareCheckups} onShareChange={(v) => void setShareCheckups(v)} />}
+
+        <Section title={t("myData.title")}>
+          <Button variant="ghost" title={t("myData.export")} onPress={() => void exportData()} />
+          <Button variant="ghost" title={t("myData.delete")} onPress={() => void deleteAccount()} />
+          <LegalLinks />
         </Section>
 
         <Button title={t("common.logout")} variant="ghost" onPress={() => void supabase.auth.signOut()} />

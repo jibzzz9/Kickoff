@@ -5,6 +5,8 @@ import { StatusBar } from "expo-status-bar";
 import * as Notifications from "expo-notifications";
 import { AuthProvider, useAuth } from "../src/auth/AuthProvider";
 import { registerForPush } from "../src/lib/notifications";
+import { supabase } from "../src/lib/supabase";
+import i18n from "../src/i18n";
 
 function Guard() {
   const { session, loading } = useAuth();
@@ -19,7 +21,12 @@ function Guard() {
   }, [session, loading, segments, router]);
 
   useEffect(() => {
-    if (session) void registerForPush(session.user.id);
+    if (!session) return;
+    void registerForPush(session.user.id);
+    // La langue choisie dans le profil l'emporte sur celle de l'appareil.
+    void supabase.from("profiles").select("locale").eq("id", session.user.id).single().then(({ data }) => {
+      if (data?.locale && data.locale !== i18n.language) void i18n.changeLanguage(data.locale);
+    });
   }, [session]);
 
   // Toucher une notification push ouvre la candidature concernée.

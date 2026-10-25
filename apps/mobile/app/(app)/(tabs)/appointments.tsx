@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { Alert, Linking, Platform, RefreshControl, ScrollView, Text, View } from "react-native";
+import { Linking, Platform, RefreshControl, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "expo-router";
 import * as Calendar from "expo-calendar";
@@ -8,6 +8,7 @@ import { colors, spacing } from "@kickoff/ui-tokens";
 import { supabase } from "../../../src/lib/supabase";
 import { formatDate } from "../../../src/lib/format";
 import { Button, Chip, Section, styles } from "../../../src/ui";
+import { notify } from "../../../src/lib/confirm";
 
 type Slot = { id: string; starts_at: string };
 type Appt = {
@@ -49,7 +50,7 @@ export default function Appointments() {
 
   async function addToCalendar(a: Appt & { company: string }, slot: Slot) {
     const { status } = await Calendar.requestCalendarPermissionsAsync();
-    if (status !== "granted") return Alert.alert(t("appointments.calendarDenied"));
+    if (status !== "granted") return notify(t("appointments.calendarDenied"));
     const calendar = Platform.OS === "ios"
       ? await Calendar.getDefaultCalendarAsync()
       : (await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT)).find((c) => c.allowsModifications);
@@ -63,7 +64,7 @@ export default function Appointments() {
       notes: [a.contact_person && t("appointments.contact", { name: a.contact_person }), a.what_to_bring && t("appointments.bring", { items: a.what_to_bring })].filter(Boolean).join("\n"),
       alarms: [{ relativeOffset: -24 * 60 }, { relativeOffset: -60 }],
     });
-    Alert.alert(t("appointments.addedToCalendar"));
+    notify(t("appointments.addedToCalendar"));
   }
 
   const openDirections = (address: string) => {

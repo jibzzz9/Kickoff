@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { ActivityIndicator, Alert, ScrollView, Text, TextInput, View } from "react-native";
+import { ActivityIndicator, ScrollView, Text, TextInput, View } from "react-native";
 import { Stack, useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { colors, spacing } from "@kickoff/ui-tokens";
@@ -7,6 +7,7 @@ import { supabase } from "../../../src/lib/supabase";
 import { useAuth } from "../../../src/auth/AuthProvider";
 import { formatDate } from "../../../src/lib/format";
 import { Button, Section, styles } from "../../../src/ui";
+import { confirmAsync, notify } from "../../../src/lib/confirm";
 import { SuggestedListings } from "../../../src/ui/SuggestedListings";
 
 type Message = { id: string; sender_role: string; kind: string; body: string | null; created_at: string; appointment_id: string | null };
@@ -63,7 +64,7 @@ export default function ApplicationScreen() {
     setBusy(true);
     const { error } = await fn();
     setBusy(false);
-    if (error) Alert.alert(t("common.error"));
+    if (error) notify(t("common.error"));
     await load();
   };
 
@@ -73,8 +74,9 @@ export default function ApplicationScreen() {
     setBody("");
   }
 
-  const confirm = (text: string, action: () => void) =>
-    Alert.alert(text, undefined, [{ text: t("common.cancel"), style: "cancel" }, { text: "OK", onPress: action }]);
+  const confirm = async (text: string, action: () => void) => {
+    if (await confirmAsync(text, undefined, { cancel: t("common.cancel"), ok: "OK" })) action();
+  };
 
   if (!s) return <ActivityIndicator style={{ marginTop: 48 }} color={colors.violet} />;
   const kindLabel = (m: Message) => (m.appointment_id ? t(`appointments.${s.kinds[m.appointment_id] ?? "interview"}`).toLowerCase() : "");

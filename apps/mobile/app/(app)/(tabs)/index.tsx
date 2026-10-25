@@ -21,6 +21,8 @@ export default function Places() {
   const [compat, setCompat] = useState<Record<string, StudentMatch>>({});
   const { session } = useAuth();
   const unread = useUnreadCount(session?.user.id);
+  const [consentPending, setConsentPending] = useState(false);
+  const [resent, setResent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [mode, setMode] = useState<"list" | "map">("list");
   const [profession, setProfession] = useState<string | null>(null);
@@ -35,6 +37,8 @@ export default function Places() {
     setListings(data ?? []);
     setLoading(false);
     setCompat(await fetchCompat((data ?? []).map((l) => l.id!)));
+    const { data: me } = await supabase.from("students").select("parental_consent").maybeSingle();
+    setConsentPending(me?.parental_consent === "pending");
   }, []);
   useFocusEffect(useCallback(() => void load(), [load]));
 
@@ -83,6 +87,15 @@ export default function Places() {
             )}
           </Pressable>
         </View>
+        {consentPending && (
+          <View style={[styles.notice, { gap: 8 }]}>
+            <Text>{t("home.consentPending")}</Text>
+            <Chip
+              label={resent ? t("consentBanner.resent") : t("consentBanner.resend")}
+              onPress={() => void supabase.functions.invoke("parent-consent", { body: { action: "send" } }).then(() => setResent(true))}
+            />
+          </View>
+        )}
         <View style={styles.row}>
           <Chip label={t("places.list")} selected={mode === "list"} onPress={() => setMode("list")} />
           <Chip label={t("places.map")} selected={mode === "map"} onPress={() => setMode("map")} />

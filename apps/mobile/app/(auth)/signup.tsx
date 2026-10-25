@@ -6,6 +6,7 @@ import { DEFAULT_MIN_AGE_WITHOUT_PARENT_CONSENT, needsParentConsent, signupStude
 import { supabase } from "../../src/lib/supabase";
 import { Button, Field, styles } from "../../src/ui";
 import { CommunePicker } from "../../src/ui/CommunePicker";
+import { LegalLinks } from "../../src/ui/LegalLinks";
 
 export default function Signup() {
   const { t, i18n } = useTranslation();
@@ -75,6 +76,7 @@ export default function Signup() {
         <Switch value={acceptAi} onValueChange={setAi} />
         <Text style={{ flex: 1 }}>{t("signup.acceptAi")}</Text>
       </View>
+      <LegalLinks />
       {error && <Text accessibilityRole="alert" style={styles.error}>{error}</Text>}
       <Button title={t("signup.submit")} onPress={submit} busy={busy} />
       <Link href="/login" style={styles.link}>{t("signup.hasAccount")}</Link>

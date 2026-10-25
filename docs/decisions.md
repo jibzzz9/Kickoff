@@ -69,3 +69,5 @@
 | 48 | Suppression de compte : fichiers + entreprise orpheline + compte (cascade) ; export JSON de toutes les données | Droits nLPD d'accès et d'effacement |
 | 49 | Temps de trajet : gare de référence par commune (identifiants officiels vérifiés), connexion du prochain jour ouvrable à 7 h, cache 30 jours | API gratuite transport.opendata.ch, peu d'appels |
 | 50 | Statistiques : vues (1 par élève et par jour), candidatures, invitations, offres, délai moyen de première réponse ; réservées au plan Pro | Brief 5.5 + feature flags |
+| 51 | L'app applique la langue du profil à la connexion (sinon celle de l'appareil) | Un élève germanophone sur un téléphone en français garde l'allemand |
+| 52 | Confirmations via `confirmAsync` (dialogue natif, `window.confirm` dans l'aperçu web) | `Alert` à boutons ne fonctionne pas sur le web |
