@@ -15,6 +15,11 @@ Le brief produit complet est dans `docs/brief.md` ; les décisions techniques da
 3. Une phase à la fois, petits commits clairs. À la fin de chaque phase : ce qui marche, comment tester, ce qui reste.
 4. Jamais de clé secrète dans le code. Toute décision technique va dans `docs/decisions.md`.
 
+## Avancement
+
+Phases 0 à 4 et 6 faites pour la partie gratuite (voir README). Restent, à la fin : branchement de Claude
+(explications, coach, simulateur, rédaction), voix (Phase 5), Stripe, fournisseur d'emails, publication sur les stores.
+
 ## Règles techniques
 
 - TypeScript strict, Zod (schémas partagés dans `packages/shared`).
@@ -34,6 +39,7 @@ npx supabase start -x studio,logflare,vector,imgproxy
 npx supabase db reset                       # migrations + seed de démo (mot de passe demo1234)
 npx supabase test db                        # tests RLS
 npx supabase functions serve                # Edge Functions (dans la session cloud : voir « Pièges »)
+pnpm --filter @kickoff/mobile web           # aperçu web de l'app élève (captures Playwright possibles)
 pnpm lint && pnpm typecheck && pnpm test    # JS/TS
 pnpm --filter @kickoff/web build
 ```
