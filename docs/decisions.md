@@ -24,3 +24,16 @@
 | 20 | Nom de famille non collecté | Minimisation des données ; rien à masquer côté entreprise |
 | 21 | Entreprises : accès aux CV uniquement via URL signée de 5 min, et seulement pour un CV joint à une candidature reçue | Bucket privé + politique de stockage |
 | 22 | Reportés : rédaction d'annonce par IA, réécriture de lettre par IA (Phase 2, clé Anthropic), temps de trajet (API à valider) | Services externes, à valider avant |
+| 23 | **Mode d'opération : gratuit d'abord, payant à la fin** (demande du porteur) | Chaque service payant est caché derrière une interface avec une version gratuite par défaut |
+
+## À brancher à la fin (payant)
+
+| Service | Utilisé pour | Version gratuite en attendant |
+|---|---|---|
+| API Anthropic (Claude) | Explications de score, conseils, coach, rédaction d'annonce, réécriture de lettre, simulateur d'entretien | Textes générés par règles et gabarits FR/DE |
+| Fournisseur voix (STT/TTS) | Coach vocal, simulateur vocal | Interface `VoiceProvider` sans implémentation |
+| Fournisseur d'emails (production) | Email au parent, réponses aux candidats | Mailpit en local (`http://127.0.0.1:54324`) |
+| Stripe | Abonnement Pro | Feature flags par plan, Pro offert au pilote |
+| Clé Google Maps (Android, production) | Carte Android publiée | Expo Go sans clé |
+| Comptes Apple Developer / Google Play | Publication | Expo Go / builds de développement |
+| Projet Supabase cloud (offre payante si dépassement) | Hébergement | Supabase local ; l'offre gratuite suffit au pilote |
