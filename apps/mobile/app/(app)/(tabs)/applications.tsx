@@ -1,13 +1,13 @@
 import { useCallback, useState } from "react";
-import { FlatList, Pressable, RefreshControl, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { FlatList, Pressable, RefreshControl, View } from "react-native";
 import { useFocusEffect, useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { colors, spacing } from "@kickoff/ui-tokens";
+import { Ionicons } from "@expo/vector-icons";
+import { palette as c } from "@kickoff/ui-tokens";
 import { supabase } from "../../../src/lib/supabase";
 import { formatDate } from "../../../src/lib/format";
 import type { ListingCard } from "../../../src/lib/types";
-import { styles } from "../../../src/ui";
+import { Divider, GUTTER, Monogram, Pill, Screen, SkyHeader, statusTone, Txt } from "../../../src/ui";
 
 type Row = { id: string; status: string; created_at: string; listing: ListingCard | undefined };
 
@@ -30,25 +30,40 @@ export default function Applications() {
   useFocusEffect(useCallback(() => void load(), [load]));
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface }} edges={["top"]}>
+    <Screen>
       <FlatList
         data={rows}
         keyExtractor={(r) => r.id}
-        contentContainerStyle={{ padding: spacing.lg, gap: spacing.md }}
-        refreshControl={<RefreshControl refreshing={loading} onRefresh={load} />}
-        ListHeaderComponent={<Text style={styles.title}>{t("applications.title")}</Text>}
-        ListEmptyComponent={loading ? undefined : <Text style={styles.muted}>{t("applications.empty")}</Text>}
+        contentContainerStyle={{ paddingBottom: 32 }}
+        refreshControl={<RefreshControl refreshing={loading} onRefresh={load} tintColor={c.rhone} />}
+        ListHeaderComponent={
+          <View style={{ marginBottom: 8 }}>
+            <SkyHeader>
+              <Txt variant="display" accessibilityRole="header">{t("applications.title")}</Txt>
+            </SkyHeader>
+          </View>
+        }
+        ItemSeparatorComponent={() => <Divider inset={GUTTER + 60} />}
+        ListEmptyComponent={loading ? undefined : <Txt variant="small" style={{ paddingHorizontal: GUTTER }}>{t("applications.empty")}</Txt>}
         renderItem={({ item: r }) => (
-          <Pressable accessibilityRole="button" style={styles.card} onPress={() => router.push(`/application/${r.id}`)}>
-            <View style={[styles.row, { justifyContent: "space-between" }]}>
-              <Text style={[styles.cardTitle, { flex: 1 }]}>{r.listing?.company_name}</Text>
-              <Text style={styles.badge}>{t(`status.${r.status}`)}</Text>
+          <Pressable
+            accessibilityRole="button"
+            onPress={() => router.push(`/application/${r.id}`)}
+            style={({ pressed }) => ({ flexDirection: "row", gap: 16, alignItems: "center", paddingHorizontal: GUTTER, paddingVertical: 16, backgroundColor: pressed ? c.mist : c.snow })}
+          >
+            <Monogram name={r.listing?.company_name ?? ""} />
+            <View style={{ flex: 1, gap: 4 }}>
+              <Txt variant="subheading" numberOfLines={1}>{r.listing?.company_name}</Txt>
+              <Txt variant="small" numberOfLines={1}>{r.listing?.title}</Txt>
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 10, marginTop: 4, flexWrap: "wrap" }}>
+                <Pill label={t(`status.${r.status}`)} tone={statusTone(r.status)} />
+                <Txt variant="micro">{t("applications.sentOn", { date: formatDate(r.created_at, { day: "numeric", month: "short" }) })}</Txt>
+              </View>
             </View>
-            <Text>{r.listing?.title}</Text>
-            <Text style={styles.muted}>{t("applications.sentOn", { date: formatDate(r.created_at) })}</Text>
+            <Ionicons name="chevron-forward" size={18} color={c.stone} />
           </Pressable>
         )}
       />
-    </SafeAreaView>
+    </Screen>
   );
 }

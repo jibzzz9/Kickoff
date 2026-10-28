@@ -1,24 +1,24 @@
 import { useCallback, useMemo, useState } from "react";
-import { FlatList, Pressable, RefreshControl, ScrollView, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { FlatList, RefreshControl, ScrollView, View } from "react-native";
 import { useFocusEffect, useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
-import { colors, spacing } from "@kickoff/ui-tokens";
+import { palette as c } from "@kickoff/ui-tokens";
 import { supabase } from "../../../src/lib/supabase";
-import { formatDate, professionName } from "../../../src/lib/format";
+import { professionName } from "../../../src/lib/format";
 import type { ListingCard } from "../../../src/lib/types";
-import { Chip, styles } from "../../../src/ui";
+import { Chip, Divider, GUTTER, IconButton, Screen, Segmented, SkyHeader, Txt } from "../../../src/ui";
+import { ListingRow } from "../../../src/ui/ListingRow";
 import { PlacesMap } from "../../../src/ui/PlacesMap";
 import { fetchCompat, type StudentMatch } from "../../../src/lib/match";
 import { useUnreadCount } from "../../../src/lib/notifications";
 import { useAuth } from "../../../src/auth/AuthProvider";
-import { Ionicons } from "@expo/vector-icons";
 
 export default function Places() {
   const { t } = useTranslation();
   const router = useRouter();
   const [listings, setListings] = useState<ListingCard[]>([]);
   const [compat, setCompat] = useState<Record<string, StudentMatch>>({});
+  const [firstName, setFirstName] = useState("");
   const { session } = useAuth();
   const unread = useUnreadCount(session?.user.id);
   const [loading, setLoading] = useState(false);
@@ -31,8 +31,12 @@ export default function Places() {
 
   const load = useCallback(async () => {
     setLoading(true);
-    const { data } = await supabase.from("listing_cards").select("*").eq("status", "open").order("created_at", { ascending: false });
+    const [{ data }, { data: me }] = await Promise.all([
+      supabase.from("listing_cards").select("*").eq("status", "open").order("created_at", { ascending: false }),
+      supabase.from("students").select("first_name").maybeSingle(),
+    ]);
     setListings(data ?? []);
+    setFirstName(me?.first_name ?? "");
     setLoading(false);
     setCompat(await fetchCompat((data ?? []).map((l) => l.id!)));
   }, []);
@@ -53,9 +57,9 @@ export default function Places() {
   );
 
   const filterRow = (label: string, items: { id: string; name: string }[], value: string | null, set: (v: string | null) => void) => (
-    <View style={{ gap: 4 }}>
-      <Text style={styles.label}>{label}</Text>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: spacing.sm }}>
+    <View style={{ gap: 8 }}>
+      <Txt variant="smallStrong" style={{ paddingHorizontal: GUTTER }}>{label}</Txt>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8, paddingHorizontal: GUTTER }}>
         <Chip label={t("places.all")} selected={!value} onPress={() => set(null)} />
         {items.map((i) => (
           <Chip key={i.id} label={i.name} selected={value === i.id} onPress={() => set(value === i.id ? null : i.id)} />
@@ -64,71 +68,72 @@ export default function Places() {
     </View>
   );
 
-  return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface }} edges={["top"]}>
-      <View style={{ paddingHorizontal: spacing.lg, paddingTop: spacing.md, gap: spacing.sm }}>
-        <View style={[styles.row, { justifyContent: "space-between", flexWrap: "nowrap" }]}>
-          <Text style={[styles.title, { marginBottom: 0, flex: 1 }]}>{t("places.title")}</Text>
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={t("notifications.open", { count: unread.count })}
+  const header = (
+    <>
+      <SkyHeader
+        right={
+          <IconButton
+            icon="notifications-outline"
+            label={t("notifications.open", { count: unread.count })}
+            badge={unread.count}
             onPress={() => router.push("/notifications")}
-            style={{ minWidth: 44, minHeight: 44, alignItems: "center", justifyContent: "center" }}
-          >
-            <Ionicons name="notifications" size={26} color={colors.ink} />
-            {unread.count > 0 && (
-              <View style={{ position: "absolute", top: 4, right: 2, backgroundColor: colors.coral, borderRadius: 10, minWidth: 20, paddingHorizontal: 4 }}>
-                <Text style={{ color: colors.white, fontWeight: "800", fontSize: 12, textAlign: "center" }}>{unread.count}</Text>
-              </View>
-            )}
-          </Pressable>
-        </View>
-        <View style={styles.row}>
-          <Chip label={t("places.list")} selected={mode === "list"} onPress={() => setMode("list")} />
-          <Chip label={t("places.map")} selected={mode === "map"} onPress={() => setMode("map")} />
-          <Chip
-            label={activeFilters ? t("places.filtersActive", { count: activeFilters }) : t("places.filters")}
-            selected={showFilters || activeFilters > 0}
-            onPress={() => setShowFilters((v) => !v)}
           />
-        </View>
-        {showFilters && (
-          <>
-            {filterRow(t("places.profession"), options.professions, profession, setProfession)}
-            {filterRow(t("places.commune"), options.communes, commune, setCommune)}
-            {filterRow(t("places.startYear"), options.years.map((y) => ({ id: y, name: y })), year, setYear)}
-          </>
-        )}
+        }
+      >
+        {firstName ? <Txt variant="bodyStrong" style={{ color: c.rhone }}>{t("home.welcome", { name: firstName })}</Txt> : null}
+        <Txt variant="display" accessibilityRole="header">{t("places.title")}</Txt>
+        {listings.length > 0 && <Txt variant="small" style={{ color: c.night }}>{t("places.count", { count: listings.length })}</Txt>}
+      </SkyHeader>
+
+      <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 12, paddingHorizontal: GUTTER, paddingTop: 8 }}>
+        <Segmented
+          value={mode}
+          onChange={setMode}
+          options={[
+            { value: "list", label: t("places.list"), icon: "list" },
+            { value: "map", label: t("places.map"), icon: "map-outline" },
+          ]}
+        />
+        <Chip
+          icon="options-outline"
+          label={activeFilters ? t("places.filtersActive", { count: activeFilters }) : t("places.filters")}
+          selected={showFilters || activeFilters > 0}
+          onPress={() => setShowFilters((v) => !v)}
+        />
       </View>
 
+      {showFilters && (
+        <View style={{ gap: 16, paddingTop: 20 }}>
+          {filterRow(t("places.profession"), options.professions, profession, setProfession)}
+          {filterRow(t("places.commune"), options.communes, commune, setCommune)}
+          {filterRow(t("places.startYear"), options.years.map((y) => ({ id: y, name: y })), year, setYear)}
+        </View>
+      )}
+      <View style={{ height: 12 }} />
+    </>
+  );
+
+  return (
+    <Screen>
       {mode === "map" ? (
-        <PlacesMap listings={filtered} onOpen={(id) => router.push(`/listing/${id}`)} />
+        <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 32 }}>
+          {header}
+          <View style={{ flex: 1, paddingHorizontal: GUTTER }}>
+            <PlacesMap listings={filtered} onOpen={(id) => router.push(`/listing/${id}`)} />
+          </View>
+        </ScrollView>
       ) : (
         <FlatList
           data={filtered}
           keyExtractor={(l) => l.id!}
-          contentContainerStyle={{ padding: spacing.lg, gap: spacing.md }}
-          refreshControl={<RefreshControl refreshing={loading} onRefresh={load} />}
-          ListEmptyComponent={loading ? undefined : <Text style={styles.muted}>{t("places.empty")}</Text>}
-          renderItem={({ item: l }) => (
-            <Pressable accessibilityRole="button" onPress={() => router.push(`/listing/${l.id}`)} style={styles.card}>
-              <View style={[styles.row, { justifyContent: "space-between", flexWrap: "nowrap", alignItems: "flex-start" }]}>
-                <Text style={[styles.badge, { flexShrink: 1 }]} numberOfLines={1}>{professionName(l)}</Text>
-                {compat[l.id!] && (
-                  <Text accessibilityLabel={t("compat.ring", { score: compat[l.id!]!.score })} style={{ fontWeight: "800", color: colors.violet }}>
-                    {t("compat.short", { score: compat[l.id!]!.score })}
-                  </Text>
-                )}
-              </View>
-              <Text style={styles.cardTitle}>{l.title}</Text>
-              <Text style={styles.muted}>{l.company_name} · {l.commune_name}</Text>
-              <Text style={styles.muted}>
-                {t("places.startDate", { date: formatDate(l.start_date!) })} · {t("places.places", { count: l.places_count ?? 1 })}
-              </Text>
-            </Pressable>
-          )}
+          ListHeaderComponent={header}
+          contentContainerStyle={{ paddingBottom: 32 }}
+          refreshControl={<RefreshControl refreshing={loading} onRefresh={load} tintColor={c.rhone} />}
+          ItemSeparatorComponent={() => <Divider inset={GUTTER} />}
+          ListEmptyComponent={loading ? undefined : <Txt variant="small" style={{ paddingHorizontal: GUTTER, paddingTop: 12 }}>{t("places.empty")}</Txt>}
+          renderItem={({ item: l }) => <ListingRow listing={l} match={compat[l.id!]} onPress={() => router.push(`/listing/${l.id}`)} />}
         />
       )}
-    </SafeAreaView>
+    </Screen>
   );
 }

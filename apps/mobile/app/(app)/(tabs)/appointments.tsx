@@ -1,13 +1,13 @@
 import { useCallback, useState } from "react";
-import { Linking, Platform, RefreshControl, ScrollView, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Linking, Platform, Pressable, RefreshControl, ScrollView, View } from "react-native";
 import { useFocusEffect } from "expo-router";
 import * as Calendar from "expo-calendar";
 import { useTranslation } from "react-i18next";
-import { colors, spacing } from "@kickoff/ui-tokens";
+import { Ionicons } from "@expo/vector-icons";
+import { mobileFonts, palette as c, radius } from "@kickoff/ui-tokens";
 import { supabase } from "../../../src/lib/supabase";
 import { formatDate } from "../../../src/lib/format";
-import { Button, Chip, Section, styles } from "../../../src/ui";
+import { Button, GUTTER, IconLine, Panel, Pill, Screen, Section, SkyHeader, Txt } from "../../../src/ui";
 import { notify } from "../../../src/lib/confirm";
 
 type Slot = { id: string; starts_at: string };
@@ -18,6 +18,18 @@ type Appt = {
 };
 
 const when = (iso: string) => formatDate(iso, { weekday: "long", day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" });
+
+/** Bloc date façon éphéméride : jour en grand, mois et heure dessous. */
+function DateBlock({ iso, dark }: { iso: string; dark?: boolean }) {
+  const fg = dark ? c.snow : c.night;
+  return (
+    <View style={{ width: 64, paddingVertical: 10, borderRadius: radius.md, backgroundColor: dark ? c.night : c.snow, borderWidth: dark ? 0 : 1.5, borderColor: c.line, alignItems: "center", gap: 1 }}>
+      <Txt variant="micro" style={{ color: dark ? c.skyDeep : c.stone }}>{formatDate(iso, { weekday: "short" })}</Txt>
+      <Txt style={{ fontFamily: mobileFonts.black, fontSize: 26, lineHeight: 29, color: fg }}>{formatDate(iso, { day: "numeric" })}</Txt>
+      <Txt variant="micro" style={{ color: fg }}>{formatDate(iso, { month: "short" })}</Txt>
+    </View>
+  );
+}
 
 export default function Appointments() {
   const { t } = useTranslation();
@@ -53,7 +65,7 @@ export default function Appointments() {
     if (status !== "granted") return notify(t("appointments.calendarDenied"));
     const calendar = Platform.OS === "ios"
       ? await Calendar.getDefaultCalendarAsync()
-      : (await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT)).find((c) => c.allowsModifications);
+      : (await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT)).find((cal) => cal.allowsModifications);
     if (!calendar) return;
     const start = new Date(slot.starts_at);
     await Calendar.createEventAsync(calendar.id, {
@@ -78,47 +90,105 @@ export default function Appointments() {
   const upcoming = items.filter((a) => a.status === "scheduled" && new Date(chosenSlot(a)?.starts_at ?? 0).getTime() >= now);
   const past = items.filter((a) => !toChoose.includes(a) && !upcoming.includes(a));
 
-  const card = (a: Appt & { company: string }) => {
-    const slot = chosenSlot(a);
-    return (
-      <View key={a.id} style={[styles.card, { marginTop: spacing.sm }]}>
-        <Text style={styles.badge}>{t(`appointments.${a.kind}`)}</Text>
-        <Text style={styles.cardTitle}>{a.company}</Text>
-        {a.status === "cancelled" && <Text style={styles.muted}>{t("appointments.cancelled")}</Text>}
-        {slot && <Text style={{ fontWeight: "700" }}>{t("appointments.chosen", { date: when(slot.starts_at) })}</Text>}
-        {a.location && <Text>{t("appointments.location", { location: a.location })}</Text>}
-        {a.contact_person && <Text>{t("appointments.contact", { name: a.contact_person })}</Text>}
-        {a.what_to_bring && <Text>{t("appointments.bring", { items: a.what_to_bring })}</Text>}
-        {a.status === "proposed" && (
-          <>
-            <Text style={styles.label}>{t("appointments.chooseSlot")}</Text>
-            <View style={styles.row}>
-              {[...a.appointment_slots].sort((x, y) => x.starts_at.localeCompare(y.starts_at)).map((s) => (
-                <Chip key={s.id} label={when(s.starts_at)} onPress={() => void choose(a, s)} />
-              ))}
-            </View>
-            {busy === a.id && <Text style={styles.muted}>{t("common.loading")}</Text>}
-          </>
-        )}
-        {a.status === "scheduled" && slot && (
-          <View style={styles.row}>
-            {a.location && <Button variant="ghost" title={t("appointments.directions")} onPress={() => openDirections(a.location!)} />}
-            <Button variant="ghost" title={t("appointments.addToCalendar")} onPress={() => void addToCalendar(a, slot)} />
-          </View>
-        )}
-      </View>
-    );
-  };
+  const details = (a: Appt) => (
+    <View style={{ gap: 8 }}>
+      {a.location && <IconLine icon="location-outline" color={c.rhone}>{a.location}</IconLine>}
+      {a.contact_person && <IconLine icon="person-outline" color={c.rhone}>{t("appointments.contact", { name: a.contact_person })}</IconLine>}
+      {a.what_to_bring && <IconLine icon="bag-handle-outline" color={c.rhone}>{t("appointments.bring", { items: a.what_to_bring })}</IconLine>}
+      <IconLine icon="time-outline" color={c.rhone}>{t("appointments.duration", { minutes: a.duration_minutes })}</IconLine>
+    </View>
+  );
+
+  const heading = (a: Appt & { company: string }) => (
+    <View style={{ gap: 6 }}>
+      <Pill label={t(`appointments.${a.kind}`)} tone={a.kind === "trial" ? "vine" : "rhone"} />
+      <Txt variant="heading">{a.company}</Txt>
+    </View>
+  );
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface }} edges={["top"]}>
-      <ScrollView contentContainerStyle={styles.screen} refreshControl={<RefreshControl refreshing={loading} onRefresh={load} />}>
-        <Text style={styles.title}>{t("appointments.title")}</Text>
-        {items.length === 0 && !loading && <Text style={styles.muted}>{t("appointments.empty")}</Text>}
-        {toChoose.length > 0 && <Section title={t("appointments.toChoose")}>{toChoose.map(card)}</Section>}
-        {upcoming.length > 0 && <Section title={t("appointments.upcoming")}>{upcoming.map(card)}</Section>}
-        {past.length > 0 && <Section title={t("appointments.past")}>{past.map(card)}</Section>}
+    <Screen>
+      <ScrollView contentContainerStyle={{ paddingBottom: 40 }} refreshControl={<RefreshControl refreshing={loading} onRefresh={load} tintColor={c.rhone} />}>
+        <SkyHeader>
+          <Txt variant="display" accessibilityRole="header">{t("appointments.title")}</Txt>
+        </SkyHeader>
+        <View style={{ paddingHorizontal: GUTTER }}>
+          {items.length === 0 && !loading && <Txt variant="small" style={{ marginTop: 8 }}>{t("appointments.empty")}</Txt>}
+
+          {toChoose.length > 0 && (
+            <Section title={t("appointments.toChoose")} style={{ marginTop: 12 }}>
+              {toChoose.map((a) => (
+                <Panel key={a.id} tone="apricot">
+                  {heading(a)}
+                  {details(a)}
+                  <Txt variant="smallStrong" style={{ marginTop: 6 }}>{t("appointments.chooseSlot")}</Txt>
+                  <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 10 }}>
+                    {[...a.appointment_slots].sort((x, y) => x.starts_at.localeCompare(y.starts_at)).map((s) => (
+                      <Pressable
+                        key={s.id}
+                        accessibilityRole="button"
+                        accessibilityLabel={when(s.starts_at)}
+                        disabled={busy === a.id}
+                        onPress={() => void choose(a, s)}
+                        style={({ pressed }) => ({
+                          flexDirection: "row", alignItems: "center", gap: 12, padding: 8, paddingRight: 16, borderRadius: radius.md,
+                          backgroundColor: c.snow, borderWidth: 2, borderColor: pressed ? c.night : c.snow, flexGrow: 1, minWidth: 140,
+                        })}
+                      >
+                        <DateBlock iso={s.starts_at} dark />
+                        <Txt variant="title" style={{ flex: 1 }}>{formatDate(s.starts_at, { hour: "2-digit", minute: "2-digit" })}</Txt>
+                        <Ionicons name="radio-button-off" size={24} color={c.stone} />
+                      </Pressable>
+                    ))}
+                  </View>
+                  {busy === a.id && <Txt variant="small">{t("common.loading")}</Txt>}
+                </Panel>
+              ))}
+            </Section>
+          )}
+
+          {upcoming.length > 0 && (
+            <Section title={t("appointments.upcoming")}>
+              {upcoming.map((a) => {
+                const slot = chosenSlot(a)!;
+                return (
+                  <Panel key={a.id}>
+                    <View style={{ flexDirection: "row", gap: 16 }}>
+                      <DateBlock iso={slot.starts_at} dark />
+                      <View style={{ flex: 1, gap: 4 }}>
+                        {heading(a)}
+                        <Txt variant="bodyStrong">{t("appointments.chosen", { date: when(slot.starts_at) })}</Txt>
+                      </View>
+                    </View>
+                    {details(a)}
+                    <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 10, marginTop: 4 }}>
+                      {a.location && <Button compact variant="ghost" icon="navigate-outline" title={t("appointments.directions")} onPress={() => openDirections(a.location!)} />}
+                      <Button compact variant="ghost" icon="calendar-outline" title={t("appointments.addToCalendar")} onPress={() => void addToCalendar(a, slot)} />
+                    </View>
+                  </Panel>
+                );
+              })}
+            </Section>
+          )}
+
+          {past.length > 0 && (
+            <Section title={t("appointments.past")}>
+              {past.map((a) => {
+                const slot = chosenSlot(a);
+                return (
+                  <View key={a.id} style={{ flexDirection: "row", gap: 14, alignItems: "center", opacity: 0.75 }}>
+                    {slot ? <DateBlock iso={slot.starts_at} /> : <View style={{ width: 64 }} />}
+                    <View style={{ flex: 1, gap: 2 }}>
+                      <Txt variant="subheading">{a.company}</Txt>
+                      <Txt variant="small">{t(`appointments.${a.kind}`)}{a.status === "cancelled" ? `, ${t("appointments.cancelled").toLowerCase()}` : ""}</Txt>
+                    </View>
+                  </View>
+                );
+              })}
+            </Section>
+          )}
+        </View>
       </ScrollView>
-    </SafeAreaView>
+    </Screen>
   );
 }

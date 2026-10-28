@@ -12,6 +12,7 @@
     "demo:build": "node scripts/build-demo.mjs"
   },
   "dependencies": {
+    "@expo-google-fonts/archivo": "^0.4.2",
     "@expo/metro-runtime": "~58.0.15",
     "@expo/vector-icons": "^15.1.1",
     "@kickoff/shared": "workspace:*",
@@ -23,6 +24,7 @@
     "expo-constants": "~58.0.13",
     "expo-device": "~58.0.5",
     "expo-document-picker": "~58.0.4",
+    "expo-font": "~58.0.10",
     "expo-linking": "~58.0.14",
     "expo-localization": "~58.0.5",
     "expo-notifications": "~58.1.6",

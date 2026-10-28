@@ -1,15 +1,17 @@
 import { useCallback, useState } from "react";
-import { ActivityIndicator, ScrollView, Text, TextInput } from "react-native";
+import { ActivityIndicator, ScrollView, View } from "react-native";
 import { Stack, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { useTranslation } from "react-i18next";
+import { Ionicons } from "@expo/vector-icons";
 import { applicationInputSchema } from "@kickoff/shared";
-import { colors } from "@kickoff/ui-tokens";
+import { palette as c, radius } from "@kickoff/ui-tokens";
 import { supabase } from "../../../src/lib/supabase";
 import { useAuth } from "../../../src/auth/AuthProvider";
 import { formatDate, professionName } from "../../../src/lib/format";
 import type { ListingCard, ListingCriterion } from "../../../src/lib/types";
-import { Button, Section, styles } from "../../../src/ui";
+import { Button, Feedback, Field, GUTTER, IconLine, Monogram, Panel, Section, Txt, type IconName } from "../../../src/ui";
 import { CompatSection } from "../../../src/ui/CompatSection";
+import { Ridges } from "../../../src/ui/Ridge";
 import { fetchCompat, type StudentMatch } from "../../../src/lib/match";
 
 type State = {
@@ -19,6 +21,12 @@ type State = {
   cv: { id: string; file_name: string } | null;
   match: StudentMatch | null;
   transit: { minutes: number | null; transfers?: number; sameCommune?: boolean } | null;
+};
+
+const CRITERION_ICON: Record<string, { icon: IconName; color: string }> = {
+  met: { icon: "checkmark-circle", color: c.vine },
+  not_met: { icon: "ellipse-outline", color: c.stone },
+  unknown: { icon: "help-circle-outline", color: c.stone },
 };
 
 export default function ListingScreen() {
@@ -69,97 +77,129 @@ export default function ListingScreen() {
     await load();
   }
 
-  if (!s) return <ActivityIndicator style={{ marginTop: 48 }} color={colors.violet} />;
+  if (!s) return <ActivityIndicator style={{ marginTop: 48 }} color={c.rhone} />;
   const l = s.listing;
-  if (!l) return <Text style={[styles.screen, styles.muted]}>{t("listing.notFound")}</Text>;
+  if (!l) return <Txt variant="small" style={{ padding: GUTTER }}>{t("listing.notFound")}</Txt>;
 
-  const criterionText = (c: ListingCriterion) => {
-    const value = c.key === "languages" && Array.isArray(c.value)
-      ? c.value.map((x) => t(`languages.${String(x)}`)).join(", ")
-      : String(c.value);
-    return t(`criteria.${c.key}`, { value });
+  const criterionText = (cr: ListingCriterion) => {
+    const value = cr.key === "languages" && Array.isArray(cr.value)
+      ? cr.value.map((x) => t(`languages.${String(x)}`)).join(", ")
+      : String(cr.value);
+    return t(`criteria.${cr.key}`, { value });
   };
+  const statusOf = (cr: ListingCriterion) => s.match?.criteria.find((m) => m.key === cr.key && m.kind === cr.kind)?.status ?? "unknown";
 
   return (
-    <ScrollView contentContainerStyle={styles.screen} keyboardShouldPersistTaps="handled">
-      <Stack.Screen options={{ title: l.company_name ?? "" }} />
-      <Text style={styles.badge}>{professionName(l)}</Text>
-      <Text style={[styles.title, { marginBottom: 0 }]}>{l.title}</Text>
-      <Text style={styles.muted}>{l.company_name} · {l.commune_name}</Text>
-      <Text style={styles.muted}>
-        {t("places.startDate", { date: formatDate(l.start_date!) })} · {t("places.places", { count: l.places_count ?? 1 })}
-      </Text>
-      {s.transit?.sameCommune ? (
-        <Text style={{ fontWeight: "700" }}>{t("transit.sameCommune")}</Text>
-      ) : s.transit?.minutes ? (
-        <Text style={{ fontWeight: "700" }}>
-          {t("transit.minutes", { minutes: s.transit.minutes })}
-          {s.transit.transfers ? ` · ${t("transit.transfers", { count: s.transit.transfers })}` : ""}
-        </Text>
-      ) : null}
+    <ScrollView style={{ backgroundColor: c.snow }} contentContainerStyle={{ paddingBottom: 48 }} keyboardShouldPersistTaps="handled">
+      <Stack.Screen options={{ title: "" }} />
+      <View style={{ backgroundColor: c.sky }}>
+        <View style={{ paddingHorizontal: GUTTER, paddingTop: 4, paddingBottom: 10, gap: 10 }}>
+          <Txt variant="bodyStrong" style={{ color: c.rhone }}>{professionName(l)}</Txt>
+          <Txt variant="title" accessibilityRole="header">{l.title}</Txt>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 12, marginTop: 4 }}>
+            <Monogram name={l.company_name ?? ""} size={40} />
+            <View style={{ flex: 1 }}>
+              <Txt variant="bodyStrong">{l.company_name}</Txt>
+              <Txt variant="small" style={{ color: c.night }}>{l.commune_name}</Txt>
+            </View>
+          </View>
+        </View>
+        <Ridges />
+      </View>
 
-      {s.match && (
-        <CompatSection
-          match={s.match}
-          criterionLabel={(key, kind) => {
-            const c = s.criteria.find((x) => x.key === key && x.kind === kind);
-            return c ? criterionText(c) : key;
-          }}
-        />
-      )}
+      <View style={{ paddingHorizontal: GUTTER }}>
+        <View style={{ gap: 12, paddingTop: 8 }}>
+          {s.transit?.sameCommune ? (
+            <IconLine icon="walk-outline" color={c.rhone}>{t("transit.sameCommune")}</IconLine>
+          ) : s.transit?.minutes ? (
+            <IconLine icon="train-outline" color={c.rhone}>
+              {t("transit.minutes", { minutes: s.transit.minutes })}
+              {s.transit.transfers ? `, ${t("transit.transfers", { count: s.transit.transfers })}` : ""}
+            </IconLine>
+          ) : null}
+          <IconLine icon="calendar-clear-outline" color={c.rhone}>{t("places.startDate", { date: formatDate(l.start_date!) })}</IconLine>
+          <IconLine icon="people-outline" color={c.rhone}>{t("places.places", { count: l.places_count ?? 1 })}</IconLine>
+        </View>
 
-      <Section title={t("listing.about")}>
-        <Text>{l.description}</Text>
-        {l.contact_name ? <Text style={styles.muted}>{t("listing.contact", { name: l.contact_name })}</Text> : null}
-      </Section>
-
-      {s.criteria.length > 0 && (
-        <Section title={t("listing.criteria")}>
-          {(["required", "bonus"] as const).map((kind) => {
-            const items = s.criteria.filter((c) => c.kind === kind);
-            if (!items.length) return null;
-            return (
-              <Text key={kind}>
-                <Text style={{ fontWeight: "800" }}>{t(`listing.${kind}`)} : </Text>
-                {items.map(criterionText).join(" · ")}
-              </Text>
-            );
-          })}
-        </Section>
-      )}
-
-      {(l.trial_dates?.length ?? 0) > 0 && (
-        <Section title={t("listing.trialDates")}>
-          <Text>{l.trial_dates!.map((d) => formatDate(d, { day: "numeric", month: "long" })).join(" · ")}</Text>
-        </Section>
-      )}
-
-      <Section title={t("listing.applyTitle")}>
-        {s.appliedAt ? (
-          <>
-            <Text style={{ fontWeight: "800" }}>{t("listing.applied", { date: formatDate(s.appliedAt) })}</Text>
-            <Text style={styles.muted}>{t("listing.appliedHint")}</Text>
-          </>
-        ) : (
-          <>
-            <Text style={styles.label}>{t("listing.letter")}</Text>
-            <TextInput
-              accessibilityLabel={t("listing.letter")}
-              multiline
-              maxLength={5000}
-              value={letter}
-              onChangeText={setLetter}
-              placeholder={t("listing.letterPlaceholder")}
-              placeholderTextColor="#8A8FA3"
-              style={[styles.input, { minHeight: 140, paddingTop: 12, textAlignVertical: "top" }]}
-            />
-            <Text style={styles.muted}>{s.cv ? t("listing.cvAttached", { name: s.cv.file_name }) : t("listing.noCv")}</Text>
-            <Text style={[styles.muted, { fontSize: 13 }]}>{t("listing.aiNotice")}</Text>
-            {error && <Text accessibilityRole="alert" style={styles.error}>{error}</Text>}
-            <Button title={t("listing.apply")} onPress={apply} busy={busy} />
-          </>
+        {s.match && (
+          <CompatSection
+            match={s.match}
+            criterionLabel={(key, kind) => {
+              const cr = s.criteria.find((x) => x.key === key && x.kind === kind);
+              return cr ? criterionText(cr) : key;
+            }}
+          />
         )}
-      </Section>
+
+        <Section title={t("listing.about")}>
+          <Txt>{l.description}</Txt>
+          {l.contact_name ? <IconLine icon="person-circle-outline">{t("listing.contact", { name: l.contact_name })}</IconLine> : null}
+        </Section>
+
+        {s.criteria.length > 0 && (
+          <Section title={t("listing.criteria")}>
+            {(["required", "bonus"] as const).map((kind) => {
+              const items = s.criteria.filter((cr) => cr.kind === kind);
+              if (!items.length) return null;
+              return (
+                <View key={kind} style={{ gap: 10 }}>
+                  <Txt variant="smallStrong" style={{ color: c.stone }}>{t(`listing.${kind}`)}</Txt>
+                  {items.map((cr) => {
+                    const st = CRITERION_ICON[statusOf(cr)] ?? CRITERION_ICON.unknown!;
+                    return <IconLine key={cr.key} icon={st.icon} color={st.color}>{criterionText(cr)}</IconLine>;
+                  })}
+                </View>
+              );
+            })}
+          </Section>
+        )}
+
+        {(l.trial_dates?.length ?? 0) > 0 && (
+          <Section title={t("listing.trialDates")}>
+            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 10 }}>
+              {l.trial_dates!.map((d) => (
+                <View key={d} style={{ width: 76, paddingVertical: 12, borderRadius: radius.md, borderWidth: 1.5, borderColor: c.line, alignItems: "center" }}>
+                  <Txt variant="title" style={{ fontSize: 24, lineHeight: 28 }}>{formatDate(d, { day: "numeric" })}</Txt>
+                  <Txt variant="micro">{formatDate(d, { month: "short" })}</Txt>
+                </View>
+              ))}
+            </View>
+          </Section>
+        )}
+
+        <Section title={t("listing.applyTitle")}>
+          {s.appliedAt ? (
+            <Panel tone="vine">
+              <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
+                <Ionicons name="checkmark-circle" size={24} color={c.vine} />
+                <Txt variant="subheading" style={{ flex: 1 }}>{t("listing.applied", { date: formatDate(s.appliedAt) })}</Txt>
+              </View>
+              <Txt variant="small" style={{ color: c.night }}>{t("listing.appliedHint")}</Txt>
+            </Panel>
+          ) : (
+            <>
+              <Field
+                label={t("listing.letter")}
+                multiline
+                maxLength={5000}
+                value={letter}
+                onChangeText={setLetter}
+                autoCapitalize="sentences"
+                placeholder={t("listing.letterPlaceholder")}
+              />
+              <IconLine icon={s.cv ? "document-attach-outline" : "document-outline"} color={s.cv ? c.vine : c.stone}>
+                {s.cv ? t("listing.cvAttached", { name: s.cv.file_name }) : t("listing.noCv")}
+              </IconLine>
+              <View style={{ flexDirection: "row", gap: 10, alignItems: "flex-start" }}>
+                <Ionicons name="shield-checkmark-outline" size={16} color={c.stone} style={{ marginTop: 1 }} />
+                <Txt variant="micro" style={{ flex: 1 }}>{t("listing.aiNotice")}</Txt>
+              </View>
+              {error && <Feedback kind="error" text={error} />}
+              <Button title={t("listing.apply")} icon="paper-plane" onPress={apply} busy={busy} />
+            </>
+          )}
+        </Section>
+      </View>
     </ScrollView>
   );
 }

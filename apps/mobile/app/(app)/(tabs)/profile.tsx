@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { ActivityIndicator, ScrollView, Switch, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { ActivityIndicator, ScrollView, Share, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import * as DocumentPicker from "expo-document-picker";
 import { useTranslation } from "react-i18next";
 import {
@@ -14,15 +14,14 @@ import {
   toStudentRow,
   type Locale,
 } from "@kickoff/shared";
-import { colors } from "@kickoff/ui-tokens";
+import { mobileFonts, palette as c } from "@kickoff/ui-tokens";
 import { supabase } from "../../../src/lib/supabase";
 import { useAuth } from "../../../src/auth/AuthProvider";
-import { Button, Chip, Field, Section, styles } from "../../../src/ui";
+import { Button, Chip, Divider, Feedback, Field, GUTTER, IconButton, Panel, Screen, Section, SkyHeader, ToggleRow, Txt, type IconName } from "../../../src/ui";
 import { CommunePicker } from "../../../src/ui/CommunePicker";
 import { GuardiansSection } from "../../../src/ui/GuardiansSection";
 import { LegalLinks } from "../../../src/ui/LegalLinks";
 import { confirmAsync, notify } from "../../../src/lib/confirm";
-import { Share } from "react-native";
 
 type Test = { name: string; score?: number };
 type Trial = { professionCode: string; company: string; year: number };
@@ -86,7 +85,7 @@ export default function Profile() {
     void loadCv();
   }, [loadCv]);
 
-  if (!f) return <ActivityIndicator style={{ marginTop: 48 }} color={colors.violet} />;
+  if (!f) return <ActivityIndicator style={{ marginTop: 48 }} color={c.rhone} />;
   const set = <K extends keyof Form>(k: K, v: Form[K]) => setF((s) => (s ? { ...s, [k]: v } : s));
 
   async function save() {
@@ -172,134 +171,167 @@ export default function Profile() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface }} edges={["top"]}>
-      <ScrollView contentContainerStyle={styles.screen} keyboardShouldPersistTaps="handled">
-        <Text style={styles.title}>{t("profile.title")}</Text>
-
-        <Section title={f.firstName}>
-          <CommunePicker label={t("profile.commune")} value={f.commune} onChange={(name, id) => setF((s) => (s ? { ...s, commune: name, communeId: id } : s))} />
-          <Text style={styles.label}>{t("profile.schoolYear")}</Text>
-          <View style={styles.row}>
-            {SCHOOL_YEARS.map((y) => (
-              <Chip key={y} label={t("profile.schoolYearValue", { year: y })} selected={f.schoolYear === y} onPress={() => set("schoolYear", y)} />
-            ))}
-          </View>
-          <Field label={t("profile.average")} value={f.average} onChangeText={(v) => set("average", v)} keyboardType="decimal-pad" />
-        </Section>
-
-        <Section title={t("targetProfessions.label")}>
-          <View style={styles.row}>
-            {PILOT_PROFESSIONS.map((p) => (
-              <Chip key={p.code} label={professionLabel(p.code)} selected={f.targetProfessions.includes(p.code)}
-                onPress={() => set("targetProfessions", toggle(f.targetProfessions, p.code))} />
-            ))}
-          </View>
-        </Section>
-
-        <Section title={t("profile.tests")}>
-          {f.tests.map((x, i) => (
-            <View key={i} style={[styles.row, { justifyContent: "space-between" }]}>
-              <Text>{x.name}{x.score !== undefined ? ` : ${x.score}` : ""}</Text>
-              <Chip label={t("common.remove")} onPress={() => set("tests", f.tests.filter((_, j) => j !== i))} />
+    <Screen>
+      <ScrollView contentContainerStyle={{ paddingBottom: 48 }} keyboardShouldPersistTaps="handled">
+        <SkyHeader>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 16 }}>
+            <View style={{ width: 64, height: 64, borderRadius: 32, backgroundColor: c.night, alignItems: "center", justifyContent: "center" }}>
+              <Txt style={{ fontFamily: mobileFonts.black, fontSize: 28, lineHeight: 32, color: c.snow }}>{f.firstName.slice(0, 1).toUpperCase()}</Txt>
             </View>
-          ))}
-          <Field label={t("profile.testName")} value={newTest.name} onChangeText={(v) => setNewTest((s) => ({ ...s, name: v }))} autoCapitalize="words" />
-          <Field label={t("profile.testScore")} value={newTest.score} onChangeText={(v) => setNewTest((s) => ({ ...s, score: v }))} keyboardType="number-pad" />
-          <Button
-            variant="ghost"
-            title={t("common.add")}
-            disabled={!newTest.name.trim()}
-            onPress={() => {
-              set("tests", [...f.tests, { name: newTest.name.trim(), ...(newTest.score ? { score: Number(newTest.score) } : {}) }]);
-              setNewTest({ name: "", score: "" });
-            }}
-          />
-        </Section>
-
-        <Section title={t("profile.trials")}>
-          {f.trials.map((x, i) => (
-            <View key={i} style={[styles.row, { justifyContent: "space-between" }]}>
-              <Text style={{ flex: 1 }}>{professionLabel(x.professionCode)} – {x.company} ({x.year})</Text>
-              <Chip label={t("common.remove")} onPress={() => set("trials", f.trials.filter((_, j) => j !== i))} />
+            <View style={{ flex: 1, gap: 2 }}>
+              <Txt variant="display" accessibilityRole="header">{f.firstName}</Txt>
+              <Txt variant="small" style={{ color: c.night }}>{t("profile.title")}</Txt>
             </View>
-          ))}
-          <View style={styles.row}>
-            {PILOT_PROFESSIONS.map((p) => (
-              <Chip key={p.code} label={professionLabel(p.code)} selected={newTrial.professionCode === p.code} onPress={() => setNewTrial((s) => ({ ...s, professionCode: p.code }))} />
+          </View>
+        </SkyHeader>
+
+        <View style={{ paddingHorizontal: GUTTER }}>
+          <Section title={t("profile.school")} style={{ marginTop: 12 }}>
+            <CommunePicker label={t("profile.commune")} value={f.commune} onChange={(name, id) => setF((s) => (s ? { ...s, commune: name, communeId: id } : s))} />
+            <View style={{ gap: 8 }}>
+              <Txt variant="smallStrong">{t("profile.schoolYear")}</Txt>
+              <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+                {SCHOOL_YEARS.map((y) => (
+                  <Chip key={y} label={t("profile.schoolYearValue", { year: y })} selected={f.schoolYear === y} onPress={() => set("schoolYear", y)} />
+                ))}
+              </View>
+            </View>
+            <Field label={t("profile.average")} value={f.average} onChangeText={(v) => set("average", v)} keyboardType="decimal-pad" />
+          </Section>
+
+          <Section title={t("targetProfessions.label")}>
+            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+              {PILOT_PROFESSIONS.map((p) => (
+                <Chip key={p.code} label={professionLabel(p.code)} selected={f.targetProfessions.includes(p.code)}
+                  icon={f.targetProfessions.includes(p.code) ? "heart" : undefined}
+                  onPress={() => set("targetProfessions", toggle(f.targetProfessions, p.code))} />
+              ))}
+            </View>
+          </Section>
+
+          <Section title={t("profile.tests")}>
+            {f.tests.map((x, i) => (
+              <ItemRow key={i} icon="ribbon-outline" title={x.name} detail={x.score !== undefined ? String(x.score) : undefined}
+                removeLabel={t("common.remove")} onRemove={() => set("tests", f.tests.filter((_, j) => j !== i))} />
             ))}
-          </View>
-          <Field label={t("profile.trialCompany")} value={newTrial.company} onChangeText={(v) => setNewTrial((s) => ({ ...s, company: v }))} autoCapitalize="words" />
-          <Field label={t("profile.trialYear")} value={newTrial.year} onChangeText={(v) => setNewTrial((s) => ({ ...s, year: v }))} keyboardType="number-pad" />
-          <Button
-            variant="ghost"
-            title={t("common.add")}
-            disabled={!newTrial.company.trim()}
-            onPress={() => {
-              set("trials", [...f.trials, { professionCode: newTrial.professionCode, company: newTrial.company.trim(), year: Number(newTrial.year) }]);
-              setNewTrial((s) => ({ ...s, company: "" }));
-            }}
-          />
-        </Section>
+            <Panel>
+              <Field label={t("profile.testName")} value={newTest.name} onChangeText={(v) => setNewTest((s) => ({ ...s, name: v }))} autoCapitalize="words" style={{ backgroundColor: c.snow, borderColor: c.snow }} />
+              <Field label={t("profile.testScore")} value={newTest.score} onChangeText={(v) => setNewTest((s) => ({ ...s, score: v }))} keyboardType="number-pad" style={{ backgroundColor: c.snow, borderColor: c.snow }} />
+              <Button
+                variant="ghost"
+                compact
+                icon="add"
+                title={t("common.add")}
+                disabled={!newTest.name.trim()}
+                onPress={() => {
+                  set("tests", [...f.tests, { name: newTest.name.trim(), ...(newTest.score ? { score: Number(newTest.score) } : {}) }]);
+                  setNewTest({ name: "", score: "" });
+                }}
+              />
+            </Panel>
+          </Section>
 
-        <Section title={t("profile.languages")}>
-          <View style={styles.row}>
-            {LANGUAGE_CODES.map((l) => (
-              <Chip key={l} label={t(`languages.${l}`)} selected={f.languages.includes(l)} onPress={() => set("languages", toggle(f.languages, l))} />
+          <Section title={t("profile.trials")}>
+            {f.trials.map((x, i) => (
+              <ItemRow key={i} icon="briefcase-outline" title={professionLabel(x.professionCode)} detail={`${x.company}, ${x.year}`}
+                removeLabel={t("common.remove")} onRemove={() => set("trials", f.trials.filter((_, j) => j !== i))} />
             ))}
+            <Panel>
+              <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+                {PILOT_PROFESSIONS.map((p) => (
+                  <Chip key={p.code} label={professionLabel(p.code)} selected={newTrial.professionCode === p.code} onPress={() => setNewTrial((s) => ({ ...s, professionCode: p.code }))} />
+                ))}
+              </View>
+              <Field label={t("profile.trialCompany")} value={newTrial.company} onChangeText={(v) => setNewTrial((s) => ({ ...s, company: v }))} autoCapitalize="words" style={{ backgroundColor: c.snow, borderColor: c.snow }} />
+              <Field label={t("profile.trialYear")} value={newTrial.year} onChangeText={(v) => setNewTrial((s) => ({ ...s, year: v }))} keyboardType="number-pad" style={{ backgroundColor: c.snow, borderColor: c.snow }} />
+              <Button
+                variant="ghost"
+                compact
+                icon="add"
+                title={t("common.add")}
+                disabled={!newTrial.company.trim()}
+                onPress={() => {
+                  set("trials", [...f.trials, { professionCode: newTrial.professionCode, company: newTrial.company.trim(), year: Number(newTrial.year) }]);
+                  setNewTrial((s) => ({ ...s, company: "" }));
+                }}
+              />
+            </Panel>
+          </Section>
+
+          <Section title={t("profile.languages")}>
+            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+              {LANGUAGE_CODES.map((l) => (
+                <Chip key={l} label={t(`languages.${l}`)} selected={f.languages.includes(l)} onPress={() => set("languages", toggle(f.languages, l))} />
+              ))}
+            </View>
+          </Section>
+
+          <Section title={t("profile.softSkills")}>
+            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+              {SOFT_SKILLS.map((x) => (
+                <Chip key={x} label={t(`softSkills.${x}`)} selected={f.softSkills.includes(x)} onPress={() => set("softSkills", toggle(f.softSkills, x))} />
+              ))}
+            </View>
+            <Field label={t("profile.interests")} value={f.interests} onChangeText={(v) => set("interests", v)} />
+            <View>
+              <ToggleRow label={t("profile.moped")} value={f.hasMopedLicense} onChange={(v) => set("hasMopedLicense", v)} />
+              <Divider />
+              <ToggleRow label={t("profile.volunteering")} value={f.doesVolunteering} onChange={(v) => set("doesVolunteering", v)} />
+              <Divider />
+              <ToggleRow label={t("profileFeedback.label")} value={f.shareTrialFeedback} onChange={(v) => set("shareTrialFeedback", v)} />
+            </View>
+          </Section>
+
+          <View style={{ marginTop: 24, gap: 12 }}>
+            {status && <Feedback kind={status.kind} text={status.text} />}
+            <Button title={t("common.save")} icon="checkmark" onPress={save} busy={busy} />
           </View>
-        </Section>
 
-        <Section title={t("profile.softSkills")}>
-          <View style={styles.row}>
-            {SOFT_SKILLS.map((x) => (
-              <Chip key={x} label={t(`softSkills.${x}`)} selected={f.softSkills.includes(x)} onPress={() => set("softSkills", toggle(f.softSkills, x))} />
-            ))}
-          </View>
-          <Field label={t("profile.interests")} value={f.interests} onChangeText={(v) => set("interests", v)} />
-          <View style={[styles.row, { marginTop: 8 }]}>
-            <Switch value={f.hasMopedLicense} onValueChange={(v) => set("hasMopedLicense", v)} accessibilityLabel={t("profile.moped")} />
-            <Text style={{ flex: 1 }}>{t("profile.moped")}</Text>
-          </View>
-          <View style={styles.row}>
-            <Switch value={f.doesVolunteering} onValueChange={(v) => set("doesVolunteering", v)} accessibilityLabel={t("profile.volunteering")} />
-            <Text style={{ flex: 1 }}>{t("profile.volunteering")}</Text>
-          </View>
-          <View style={styles.row}>
-            <Switch value={f.shareTrialFeedback} onValueChange={(v) => set("shareTrialFeedback", v)} accessibilityLabel={t("profileFeedback.label")} />
-            <Text style={{ flex: 1 }}>{t("profileFeedback.label")}</Text>
-          </View>
-        </Section>
+          <Section title={t("profile.cv")}>
+            <Panel style={{ flexDirection: "row", alignItems: "center" }}>
+              <Ionicons name={cv ? "document-text" : "document-outline"} size={26} color={cv ? c.rhone : c.stone} />
+              <Txt variant={cv ? "bodyStrong" : "small"} style={{ flex: 1 }} numberOfLines={2}>{cv ? cv : t("profile.cvNone")}</Txt>
+            </Panel>
+            <Button variant="ghost" icon="cloud-upload-outline" title={t("profile.cvUpload")} onPress={uploadCv} busy={uploading} />
+          </Section>
 
-        {status && (
-          <Text accessibilityRole="alert" style={status.kind === "ok" ? { color: colors.success, fontWeight: "700" } : styles.error}>
-            {status.text}
-          </Text>
-        )}
-        <Button title={t("common.save")} onPress={save} busy={busy} />
+          <Section title={t("profile.language")}>
+            <View style={{ flexDirection: "row", gap: 8 }}>
+              {LOCALES.map((l) => (
+                <Chip key={l} label={t(`profile.locales.${l}`)} selected={i18n.language === l} onPress={() => void changeLanguage(l)} />
+              ))}
+            </View>
+          </Section>
 
-        <Section title={t("profile.cv")}>
-          <Text style={styles.muted}>{cv ? t("profile.cvCurrent", { name: cv }) : t("profile.cvNone")}</Text>
-          <Button variant="ghost" title={t("profile.cvUpload")} onPress={uploadCv} busy={uploading} />
-        </Section>
+          {session && <GuardiansSection studentId={session.user.id} shareCheckups={f.shareCheckups} onShareChange={(v) => void setShareCheckups(v)} />}
 
-        <Section title={t("profile.language")}>
-          <View style={styles.row}>
-            {LOCALES.map((l) => (
-              <Chip key={l} label={l.toUpperCase()} selected={i18n.language === l} onPress={() => void changeLanguage(l)} />
-            ))}
-          </View>
-        </Section>
-
-        {session && <GuardiansSection studentId={session.user.id} shareCheckups={f.shareCheckups} onShareChange={(v) => void setShareCheckups(v)} />}
-
-        <Section title={t("myData.title")}>
-          <Button variant="ghost" title={t("myData.export")} onPress={() => void exportData()} />
-          <Button variant="ghost" title={t("myData.delete")} onPress={() => void deleteAccount()} />
-          <LegalLinks />
-        </Section>
-
-        <Button title={t("common.logout")} variant="ghost" onPress={() => void supabase.auth.signOut()} />
+          <Section title={t("myData.title")}>
+            <View>
+              <Button variant="quiet" icon="download-outline" title={t("myData.export")} onPress={() => void exportData()} />
+              <Button variant="quiet" icon="log-out-outline" title={t("common.logout")} onPress={() => void supabase.auth.signOut()} />
+              <Button variant="danger" icon="trash-outline" title={t("myData.delete")} onPress={() => void deleteAccount()} />
+            </View>
+            <Divider />
+            <LegalLinks />
+          </Section>
+        </View>
       </ScrollView>
-    </SafeAreaView>
+    </Screen>
+  );
+}
+
+/** Élément ajouté (test, stage) avec son bouton Retirer. */
+function ItemRow({ icon, title, detail, removeLabel, onRemove }: { icon: IconName; title: string; detail?: string; removeLabel: string; onRemove: () => void }) {
+  return (
+    <View style={{ flexDirection: "row", alignItems: "center", gap: 14 }}>
+      <View style={{ width: 40, height: 40, borderRadius: 12, backgroundColor: c.rhoneSoft, alignItems: "center", justifyContent: "center" }}>
+        <Ionicons name={icon} size={20} color={c.rhone} />
+      </View>
+      <View style={{ flex: 1 }}>
+        <Txt variant="bodyStrong">{title}</Txt>
+        {detail ? <Txt variant="small">{detail}</Txt> : null}
+      </View>
+      <IconButton icon="close" label={`${removeLabel} : ${title}`} onPress={onRemove} />
+    </View>
   );
 }

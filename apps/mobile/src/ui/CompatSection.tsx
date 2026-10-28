@@ -1,10 +1,11 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { useTranslation } from "react-i18next";
+import { Ionicons } from "@expo/vector-icons";
+import { mobileFonts, palette as c } from "@kickoff/ui-tokens";
 import type { StudentMatch } from "../lib/match";
-import { Section, styles } from "./index";
-import { Ring } from "./Ring";
+import { Divider, IconLine, Panel, Section, Txt } from "./index";
+import { RidgeGauge } from "./Ridge";
 
-/** Anneau + ce qui correspond + ce qu'il manque (avec le score projeté de chaque action). */
 // Critère rempli -> atout qui le décrit déjà (évite les doublons dans « Ce qui correspond »).
 const STRENGTH_FOR_CRITERION: Record<string, string[]> = {
   trial_done: ["trials_in_profession"],
@@ -15,7 +16,7 @@ const STRENGTH_FOR_CRITERION: Record<string, string[]> = {
   volunteering: ["volunteering"],
 };
 
-/** Anneau + ce qui correspond + ce qu'il manque (avec le score projeté de chaque action). */
+/** Altitude de compatibilité + ce qui correspond + comment monter plus haut (avec le gain de chaque action). */
 export function CompatSection({ match, criterionLabel }: { match: StudentMatch; criterionLabel: (key: string, kind: string) => string }) {
   const { t } = useTranslation();
   const lang = (codes: unknown) =>
@@ -25,33 +26,45 @@ export function CompatSection({ match, criterionLabel }: { match: StudentMatch; 
   const matches = [
     ...match.strengths.map((s) => t(`compat.strengths.${s.key}`, { ...s.params, count: Number(s.params?.count ?? 1) })),
     ...match.criteria
-      .filter((c) => c.status === "met" && !(STRENGTH_FOR_CRITERION[c.key] ?? []).some((k) => shownStrengths.has(k)))
-      .map((c) => t("compat.criterionMet", { label: criterionLabel(c.key, c.kind) })),
+      .filter((cr) => cr.status === "met" && !(STRENGTH_FOR_CRITERION[cr.key] ?? []).some((k) => shownStrengths.has(k)))
+      .map((cr) => criterionLabel(cr.key, cr.kind)),
   ];
 
   return (
     <Section title={t("compat.title")}>
-      <View style={[styles.row, { gap: 16, flexWrap: "nowrap" }]}>
-        <Ring score={match.score} label={t("compat.ring", { score: match.score })} />
-        <View style={{ flex: 1, gap: 4 }}>
-          <Text style={{ fontWeight: "800" }}>{t("compat.matches")}</Text>
-          {matches.slice(0, 4).map((m, i) => (
-            <Text key={i}>• {m}</Text>
-          ))}
-        </View>
+      <Panel>
+        <RidgeGauge score={match.score} label={t("compat.ring", { score: match.score })} caption={t("compat.caption")} />
+        {matches.length > 0 && (
+          <>
+            <Divider />
+            <Txt variant="smallStrong">{t("compat.matches")}</Txt>
+            {matches.slice(0, 4).map((m, i) => (
+              <IconLine key={i} icon="checkmark-circle" color={c.vine}>{m}</IconLine>
+            ))}
+          </>
+        )}
+      </Panel>
+
+      <View style={{ gap: 4, marginTop: 8 }}>
+        <Txt variant="subheading">{t("compat.missing")}</Txt>
+        {match.improvements.length === 0 && <Txt variant="small">{t("compat.nothingMissing")}</Txt>}
       </View>
-      <Text style={[styles.label, { fontSize: 16 }]}>{t("compat.missing")}</Text>
-      {match.improvements.length === 0 ? (
-        <Text>{t("compat.nothingMissing")}</Text>
-      ) : (
-        match.improvements.map((i) => (
-          <View key={i.action} style={[styles.row, { justifyContent: "space-between", flexWrap: "nowrap" }]}>
-            <Text style={{ flex: 1 }}>→ {t(`compat.actions.${i.action}`, { ...i.params, languages: lang(i.params?.languages) })}</Text>
-            {i.projectedScore !== null && <Text style={styles.badge}>{t("compat.projected", { score: i.projectedScore })}</Text>}
-          </View>
-        ))
-      )}
-      <Text style={[styles.muted, { fontSize: 13 }]}>{t("compat.notice")}</Text>
+      {match.improvements.map((i) => (
+        <View key={i.action} style={{ flexDirection: "row", alignItems: "center", gap: 12, paddingVertical: 4 }}>
+          <Ionicons name="trending-up" size={20} color={c.rhone} />
+          <Txt style={{ flex: 1 }}>{t(`compat.actions.${i.action}`, { ...i.params, languages: lang(i.params?.languages) })}</Txt>
+          {i.projectedScore !== null && i.projectedScore > match.score && (
+            <View
+              accessible
+              accessibilityLabel={t("compat.projected", { score: i.projectedScore })}
+              style={{ backgroundColor: c.apricotSoft, borderRadius: 999, paddingHorizontal: 10, paddingVertical: 4 }}
+            >
+              <Txt variant="smallStrong" style={{ fontFamily: mobileFonts.extraBold }}>+{i.projectedScore - match.score}</Txt>
+            </View>
+          )}
+        </View>
+      ))}
+      <Txt variant="micro" style={{ marginTop: 4 }}>{t("compat.notice")}</Txt>
     </Section>
   );
 }
